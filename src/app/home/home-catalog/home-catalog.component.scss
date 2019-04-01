@@ -1,0 +1,57 @@
+.catalog-grid-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: auto;
+
+  .catalog-grid-item {
+    overflow: hidden;
+    //border: 1px solid #fff;
+    width: 650px;
+    height: 300px;
+    vertical-align: middle;
+
+    .opacity {
+      transition-duration:1s;
+      display: none;
+      position: absolute;
+      background-color: #002C40;
+      opacity: 0.75;
+      transition: display 5s;
+      z-index: 1000;
+    }
+
+    .home-catalog-title {
+      display: none;
+      position: absolute;
+      line-height: 300px;
+      text-align: center;
+      color: white;
+      z-index: 1000;
+    }
+
+    .home-catalog-img {
+      width: 650px;
+      height: 300px;
+    }
+
+    &:hover {
+      .opacity, .home-catalog-title {
+        //border: 1px solid #fff;
+        width: 650px;
+        height: 300px;
+        display: block;
+        /*background-color: #002C40;*/
+        /*opacity: 0.75;*/
+        vertical-align: middle;
+      }
+    }
+
+    &:hover {
+      .home-catalog-img {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+

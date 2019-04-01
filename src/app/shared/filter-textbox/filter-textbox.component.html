@@ -1,0 +1,9 @@
+<form class="form-inline my-2 my-lg-0">
+  <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Пошук..." aria-label="Search"
+         [(ngModel)]="model.filter"
+         (keyup)="filterChanged($event)"/>
+</form>
+
+<p>
+  filter-textbox works!
+</p>

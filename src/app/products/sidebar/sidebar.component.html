@@ -1,0 +1,105 @@
+<div id="sidebar">
+  <div class="flex-direction-column">
+    <p><a routerLink="/products">Каталог</a></p>
+    <button routerLink="/products/veloglasses">Велоокуляри</button>
+    <button routerLink="/products/skiglasses">Лижні окуляри</button>
+    <button routerLink="/products/frames">Оправи</button>
+    <button routerLink="/products/accessories">Аксесуари</button>
+  </div>
+
+  <div>
+    <p>Ціна</p>
+    <form class="flex-direction-row">
+      <div>
+        <input type="text" name="min-price" placeholder="min">
+        <span> - </span>
+        <input type="text" name="max-price" placeholder="max">
+        <span> грн </span>
+      </div>
+      <input type="submit" name="price-submit" value="OK">
+    </form>
+  </div>
+
+  <div>
+    <p>Колір лінзи</p>
+    <form class="flex-direction-row">
+      <div>
+        <input type="checkbox" id="color-lens-filter-1" name="color-lens-checkbox-1" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-2" name="color-lens-checkbox-2" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-3" name="color-lens-checkbox-3" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-4" name="color-lens-checkbox-4" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-5" name="color-lens-checkbox-5" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-6" name="color-lens-checkbox-6" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-7" name="color-lens-checkbox-7" class="color-selector">
+        <input type="checkbox" id="color-lens-filter-8" name="color-lens-checkbox-8" class="color-selector">
+      </div>
+      <input type="submit" name="color-lens-submit" value="OK">
+    </form>
+  </div>
+  <div>
+    <p>Колір оправи</p>
+    <form class="flex-direction-row">
+      <div>
+        <input type="checkbox" id="color-frame-filter-1" name="color-frame-checkbox-1" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-2" name="color-frame-checkbox-2" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-3" name="color-frame-checkbox-3" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-4" name="color-frame-checkbox-4" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-5" name="color-frame-checkbox-5" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-6" name="color-frame-checkbox-6" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-7" name="color-frame-checkbox-7" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-8" name="color-frame-checkbox-8" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-9" name="color-frame-checkbox-9" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-10" name="color-frame-checkbox-10" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-11" name="color-frame-checkbox-11" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-12" name="color-frame-checkbox-12" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-13" name="color-frame-checkbox-13" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-14" name="color-frame-checkbox-14" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-15" name="color-frame-checkbox-15" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-16" name="color-frame-checkbox-16" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-17" name="color-frame-checkbox-17" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-18" name="color-frame-checkbox-18" class="color-selector">
+        <input type="checkbox" id="color-frame-filter-19" name="color-frame-checkbox-19" class="color-selector">
+      </div>
+      <input type="submit" name="color-frame-submit" value="OK">
+    </form>
+  </div>
+  <div>
+    <p>Кількість лінз у комплекті</p>
+    <div>
+      <form class="flex-direction-row">
+        <div>
+          <label>1 <input type="checkbox" name="quantity-checkbox-1"></label>
+          <label>2 <input type="checkbox" name="quantity-checkbox-2"></label>
+          <label>3 <input type="checkbox" name="quantity-checkbox-3"></label>
+          <label>4 <input type="checkbox" name="quantity-checkbox-4"></label>
+          <label>5 <input type="checkbox" name="quantity-checkbox-5"></label>
+        </div>
+        <input type="submit" name="quantity-submit" value="OK">
+      </form>
+    </div>
+    <div>
+      <p>Поляризація</p>
+    </div>
+    <div>
+      <form class="flex-direction-row">
+        <div class="flex-direction-column">
+          <label><input type="checkbox" name="polaraze-checkbox"> Поляризовані</label>
+          <label><input type="checkbox" name="nonpolaraze-checkbox"> Не поляризовані</label>
+        </div>
+        <input type="submit" name="polaraze-submit" value="OK">
+      </form>
+    </div>
+
+    <div>
+      <p>
+        Наявність
+      </p>
+      <form class="flex-direction-row">
+        <div>
+          <label><input type="checkbox" name="availability-checkbox"> Наявні</label>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

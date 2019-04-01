@@ -1,0 +1,89 @@
+#sidebar {
+  width: 250px;
+  display: block;
+  flex-direction: column;
+  padding: 0 10px;
+
+  p {
+    margin: 10px 0 0;
+  }
+
+  input[type="submit"] {
+    height: 25px;
+    width: 25px;
+    font-size: small;
+    padding: 0;
+
+  }
+
+  .flex-direction-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //width: 200px;
+
+    button {
+      height: 25px;
+      width: 150px;
+      font-size: small;
+      text-align: left;
+      margin: 5px 0;
+    }
+  }
+
+  .flex-direction-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      width: 200px;
+
+      input[name="min-price"], input[name="max-price"] {
+        width: 60px;
+        height: 20px;
+      }
+
+      .color-selector {
+        -webkit-appearance: none;
+        margin: 5px;
+        border: 1px solid #000000;
+        border-radius: 1px;
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        background-position: center center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        outline: none;
+
+        &:checked, &:active {
+          border-radius: 5px;
+          box-shadow: 4px 4px 5px #002C40;
+        }
+      }
+
+      @for $i from 1 through 9 {
+        #color-lens-filter-#{$i} {
+          background-image: url("~src/assets/images/color-lenses/cl#{$i}.jpg");
+        }
+      }
+
+      @for $a from 1 through 19 {
+        #color-frame-filter-#{$a} {
+          background-image: url("~src/assets/images/color-frames/cf#{$a}.jpg");
+        }
+      }
+
+      label {
+        margin: 0 5px 0;
+      }
+    }
+  }
+}
+
+
