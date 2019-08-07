@@ -1,7 +1,13 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ProductsComponent} from './products/products.component';
 import {HomeComponent} from './home/home.component';
+import {LoginComponent} from './login/login.component';
+import {SignupComponent} from './signup/signup.component';
+import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
+import {CartComponent} from './order/cart/cart.component';
+import {AdminProductsComponent} from './admin/admin-products/admin-products.component';
+import {AuthGuard} from './shared/auth/auth.guard';
+import {OrderComponent} from './order/order.component';
 
 const routes: Routes = [
   // {path: '', pathMatch: 'full', redirectTo: '/home'},
@@ -12,12 +18,18 @@ const routes: Routes = [
   // {path: 'products/skiglasses', redirectTo: 'products/skiglasses'},
   // {path: 'products/frames', redirectTo: 'products/frames'},
   // {path: 'products/accessories', redirectTo: 'products/accessories'},
-  {path: '**', pathMatch: 'full', redirectTo: ''}
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'forgotpassword', component: ForgotPasswordComponent},
+  {path: 'profile', loadChildren: './profile/profile.module#ProfileModule'},
+  {path: 'cart', component: OrderComponent, canActivate: [CartComponent]},
+  {path: 'admin', loadChildren: './admin/admin.module#AdminModule' , canActivate: [AuthGuard]},
+  {path: '**', pathMatch: 'full', redirectTo: ''},
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

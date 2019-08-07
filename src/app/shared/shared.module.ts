@@ -8,7 +8,7 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TrimPipe } from './pipes/trim.pipe';
 
 @NgModule({
-  declarations: [SortByDirective, CapitalizePipe, TrimPipe, ],
+  declarations: [SortByDirective, CapitalizePipe, TrimPipe],
   imports: [
     CommonModule, FilterTextboxModule, PaginationModule
   ],

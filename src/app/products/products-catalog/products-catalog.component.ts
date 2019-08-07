@@ -1,103 +1,71 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {products} from '../../shared/mocks';
-import {IProduct} from '../../shared/models/IProduct';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Product} from '../../shared/models/product';
+import {ProductsService} from '../../shared/services/products.service';
+import {SidebarComponent} from '../sidebar/sidebar.component';
+import {filter} from 'rxjs/operators';
+import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 
 @Component({
   selector: 'app-products-catalog',
   templateUrl: './products-catalog.component.html',
   styleUrls: ['./products-catalog.component.scss']
 })
-export class ProductsCatalogComponent implements OnInit {
+export class ProductsCatalogComponent implements OnInit, AfterViewInit {
 
-  // veloglasses: IProduct[] = [];
+  @ViewChild(SidebarComponent)
+  private sidebar: SidebarComponent;
+  products = Product[''];
+  minPrice: number;
+  maxPrice: number;
+  searchedLensColors = new Array<number>();
+  searchedFrameColors = new Array<number>();
+  showExtendedItem: boolean;
 
-  public products = [
-    {
-      category: 'veloglasse',
-      lensColor: 'чорний',
-      lensWidth: 70,
-      lensHeight: 40,
-      lensMaterial: 'полікарбонат',
-      totalWidth: 160,
-      bracketLength: 130,
-      frameColor: 'чорний',
-      frameMaterial: 'ацетат',
-      source: '/veloglasses-catalog/2.1.11.jpg',
-      article: '00011',
-      price: 99,
-      routerLink: '0001'
-    },
-    {
-      category: 'veloglasses',
-      lensColor: 'чорний',
-      lensWidth: 70,
-      lensHeight: 40,
-      lensMaterial: 'полікарбонат',
-      totalWidth: 160,
-      bracketLength: 130,
-      frameColor: 'чорний',
-      frameMaterial: 'ацетат',
-      source: '/veloglasses-catalog/2.1.12.jpg',
-      article: '00012',
-      price: 99,
-      routerLink: '0001'
-    },
-    {
-      category: 'veloglasses',
-      lensColor: 'чорний',
-      lensWidth: 70,
-      lensHeight: 40,
-      lensMaterial: 'полікарбонат',
-      totalWidth: 160,
-      bracketLength: 130,
-      frameColor: 'чорний',
-      frameMaterial: 'ацетат',
-      source: '/veloglasses-catalog/2.1.13.jpg',
-      article: '00013',
-      price: 99,
-      routerLink: '0001'
-    },
-    {
-      category: 'veloglasses',
-      lensColor: 'чорний',
-      lensWidth: 70,
-      lensHeight: 40,
-      lensMaterial: 'полікарбонат',
-      totalWidth: 160,
-      bracketLength: 130,
-      frameColor: 'чорний',
-      frameMaterial: 'ацетат',
-      source: '/veloglasses-catalog/2.1.14.jpg',
-      article: '00014',
-      price: 99,
-      routerLink: '0001'
-    },
-    {
-      category: 'veloglasses',
-      lensColor: 'чорний',
-      lensWidth: 70,
-      lensHeight: 40,
-      lensMaterial: 'полікарбонат',
-      totalWidth: 160,
-      bracketLength: 130,
-      frameColor: 'чорний',
-      frameMaterial: 'ацетат',
-      source: '/veloglasses-catalog/2.1.15.jpg',
-      article: '00015',
-      price: 80,
-      routerLink: '0001'
-    },
-  ];
-
-
-  getVeloglasses() {
-    const getVeloglasses = products.filter(veloglasses => veloglasses.category === 'veloglasses');
-    this.products = getVeloglasses;
-  }
-
-  constructor() {
+  constructor(private router: Router,
+              private productsService: ProductsService) {
   }
 
   ngOnInit() {
+    this.loadProducts();
+    this.showExtendedItem = false;
+
+  }
+
+  private loadProducts() {
+    const parameters = {
+      minPrice: this.minPrice,
+      maxPrice: this.maxPrice,
+      searchedLensColors: this.searchedLensColors,
+      searchedFrameColors: this.searchedFrameColors
+    };
+
+    this.productsService.getProducts(parameters)
+      .subscribe(data => {
+        this.products = data;
+        console.log(parameters);
+        console.log('PRODUCT-CATALOG!!', this.products, this.minPrice, this.maxPrice, this.searchedLensColors, this.searchedFrameColors);
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)).subscribe(() => {
+        this.minPrice = this.sidebar.minPrice;
+        this.maxPrice = this.sidebar.maxPrice;
+        this.searchedLensColors = this.sidebar.searchedLensColors;
+        this.searchedFrameColors = this.sidebar.searchedFrameColors;
+        console.log(this.maxPrice);
+        this.router.events.pipe(
+          filter((event: RouterEvent) => event instanceof NavigationEnd)).subscribe(() => {
+            this.loadProducts();
+          }
+        );
+      }
+    );
+  }
+
+  onMouse(div: string) {
+    console.log("mouse enter : " + div);
+
   }
 }

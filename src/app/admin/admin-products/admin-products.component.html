@@ -1,0 +1,27 @@
+<div id="products-list" class="col-md-6">
+  <h2> Products List</h2>
+
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Product Number</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Lens Color</th>
+      <th>Frame Color</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{product.id}}</td>
+      <td>{{product.productNumber}}</td>
+      <td>{{product.category.uaName}}</td>
+      <td>{{product.productDetails.price}}</td>
+      <td>{{product.lensColor.uaName}}</td>
+      <td>{{product.frameColor.uaName}}</td>
+      <td><button class="btn btn-danger" (click)="deleteProduct(product)">Delete</button></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

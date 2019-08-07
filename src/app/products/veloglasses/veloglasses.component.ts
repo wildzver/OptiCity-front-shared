@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {products} from '../../shared/mocks';
-import {IProduct} from '../../shared/models/IProduct';
 
 @Component({
   selector: 'app-veloglasses',
@@ -8,12 +6,12 @@ import {IProduct} from '../../shared/models/IProduct';
   styleUrls: ['./veloglasses.component.scss']
 })
 export class VeloglassesComponent implements OnInit {
-// @Input() products;
-
+@Input() categoryInput;
 
 
   constructor() {
   }
 
-  ngOnInit() {  }
+  ngOnInit() {
+  }
 }

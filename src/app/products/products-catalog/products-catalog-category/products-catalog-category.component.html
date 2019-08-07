@@ -1,0 +1,6 @@
+<div class="page-row">
+  <app-sidebar></app-sidebar>
+  <div class="products-category">
+    <app-products-catalog-item *ngFor="let product of products" [productInput]="product"></app-products-catalog-item>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div id="order">
+  <app-cart></app-cart>
+  <div class="row">
+    <div>
+      <button class="btn btn-danger" (click)="clearCart()">X ОЧИСТИТИ КОРЗИНУ</button>
+    </div>
+    <div>
+      <button class="btn btn-success" *ngIf="totalCartQuantity > 0 else chooseProducts"
+              [disabled]="totalCartQuantity <1" (click)="showOrderDetails = true">ОФОРМИТИ ЗАМОВЛЕННЯ
+      </button>
+    </div>
+  </div>
+
+  <div [hidden]="!showOrderDetails">
+    <app-order-details></app-order-details>
+
+    <button class="order btn btn-success"
+            [disabled]="!isBuyerContactsFormValid || !isDeliveryAdressFormValid ||totalCartQuantity <1"
+            (click)="order()">ЗАМОВИТИ
+    </button>
+  </div>
+
+  <ng-template #chooseProducts>
+    <button class="btn btn-success" routerLink="/products" [hidden]="totalCartQuantity > 0" title="Оберіть товар">ОБРАТИ ТОВАР</button>
+  </ng-template>
+</div>

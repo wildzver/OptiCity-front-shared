@@ -1,0 +1,138 @@
+<div id="buyerContacts">
+  <div>
+    <h3>Дані отримувача:</h3>
+  </div>
+
+  <form [formGroup]="buyerContactsForm" novalidate (change)="makeOrder()">
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <input class="form-control" type="text" name="firstName" placeholder="Ім'я отримувача *"
+                 formControlName="userFirstName"
+                 title="лише літери латинниці та кирилиці"
+                 [ngClass]="checker(buyerContactsForm, 'userFirstName')">
+        </div>
+      </div>
+      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userFirstName')">Це поле є обов'язковим!</small>
+      <small class="form-text" *ngIf="isControlPatterned(buyerContactsForm, 'userFirstName')">Введіть правильне імя!</small>
+    </div>
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <input class="form-control" type="text" name="lastName" placeholder="Прізвище отримувача *"
+                 formControlName="userLastName"
+                 title="лише літери латинниці та кирилиці"
+                 [ngClass]="checker(buyerContactsForm, 'userLastName')">
+        </div>
+      </div>
+      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userLastName')">Це поле є обов'язковим!</small>
+      <small class="form-text" *ngIf="isControlPatterned(buyerContactsForm, 'userLastName')">Введіть правильне прізвище!</small>
+    </div>
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <input class="form-control" type="text" name="email"
+                 placeholder="Email *"
+                 formControlName="userEmail"
+                 [ngClass]="checker(buyerContactsForm, 'userEmail')">
+        </div>
+      </div>
+      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userEmail')">Це поле є обов'язковим!</small>
+      <small class="form-text" *ngIf="buyerContactsForm.controls['userEmail'].hasError('email')">Введіть активний email!
+      </small>
+    </div>
+
+    <div formArrayName="userPhones">
+      <div class="form-group"
+           *ngFor="let userPhone of buyerContactsForm.controls['userPhones'].controls; let i = index">
+        <div class="flex-row">
+          <div>
+            <input class="form-control" type="tel" name="phoneList"
+                   placeholder="Номер мобільного *"
+                   formControlName="{{i}}"
+                   [ngClass]="checker(buyerContactsForm, 'userPhones')">
+          </div>
+        </div>
+        <small class="form-text"
+               *ngIf="userPhone.touched && userPhone.hasError('required')">
+          Це поле є обов'язковим!
+        </small>
+        <small class="form-text"
+               *ngIf="userPhone.touched && userPhone.hasError('pattern')">
+          Введіть активний номер мобільного
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <textarea class="form-control" maxLength="100" rows="3" type="text" name="comment" placeholder="Коментар *"
+                    formControlName="userComment"
+                    title="коментар"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <form [formGroup]="deliveryAdressForm" novalidate (change)="makeOrder()">
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div id="adress" class="flex-column">
+          <div class="flex-row">
+            <input id="store" class="custom-radio" type="radio" name="adress"
+                   formControlName="adress"
+                   value="store" checked>
+            <label for="store" class="flex-column">
+              Заберу сам
+              <span>просп. В. Чорновола, 67а, ринок "Старий лицар"</span>
+            </label>
+          </div>
+          <div class="flex-row">
+            <input #np id="novaPoshta" type="radio" name="adress"
+                   formControlName="adress"
+                   value="novaPoshta">
+            <label for="novaPoshta" class="flex-column">
+              <img src="assets/images/order/logo-np.png" alt="Nova Poshta">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="np.checked">
+      <div class="form-group">
+        <div class="flex-row">
+          <div>
+            <input class="form-control" type="text" name="settlement" placeholder="Населений пункт *"
+                   formControlName="settlement"
+                   title=""
+                   [ngClass]="checker(deliveryAdressForm, 'settlement')">
+          </div>
+        </div>
+        <small class="form-text" *ngIf="isControlRequired(deliveryAdressForm, 'settlement')">Це поле є обов'язковим!</small>
+        <small class="form-text" *ngIf="isControlPatterned(deliveryAdressForm, 'settlement')">Введіть правильне імя!</small>
+      </div>
+
+      <div class="form-group">
+        <div class="flex-row">
+          <div>
+            <input class="form-control" type="text" name="branch" placeholder="Номер відділення *"
+                   formControlName="branch" [required]="np.checked"
+                   title=""
+                   [ngClass]="checker(deliveryAdressForm, 'branch')">
+          </div>
+        </div>
+        <small class="form-text" *ngIf="isControlRequired(deliveryAdressForm, 'branch')">Це поле є обов'язковим!</small>
+        <small class="form-text" *ngIf="isControlPatterned(deliveryAdressForm, 'branch')">Введіть правильне імя!</small>
+      </div>
+
+    </div>
+
+  </form>
+</div>

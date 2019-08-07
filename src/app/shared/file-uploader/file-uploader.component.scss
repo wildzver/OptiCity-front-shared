@@ -1,0 +1,57 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+
+// https://codepen.io/Saminou24/pen/kXEYGB
+.file-drop-area {
+  border: 1px dashed #7c7db3;
+  border-radius: 3px;
+  position: absolute;
+  width: 450px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 26px 20px 30px;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+
+}
+
+.file-drop-area.is-active {
+  background-color: #3F4069;
+}
+
+.fake-btn {
+  background-color: #002C40;
+  opacity: 0.75;
+  border: 1px solid #9E9EC4;
+  border-radius: 3px;
+  padding: 8px 15px;
+  margin-right: 8px;
+  color: #E4E4E4;
+  font-size: 12px;
+  cursor: pointer;
+
+}
+
+.file-msg {
+  font-size: small;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: calc(100% - 130px);
+  vertical-align: middle;
+}
+
+.file-input {
+  position: relative;
+  left: 0;
+  top: -30px;
+  height: 30px;
+  width: 300px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-input:focus {
+  outline: none;
+}

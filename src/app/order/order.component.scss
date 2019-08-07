@@ -1,0 +1,15 @@
+#order {
+  .row {
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  button {
+    width: 300px;
+    &.order {
+      margin-left: 320px;
+    }
+  }
+}

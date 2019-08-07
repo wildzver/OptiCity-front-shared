@@ -1,0 +1,64 @@
+<form id="productCategories" [formGroup]="categoryForm">
+  <div class="form-group" formArrayName="categories">
+    <div *ngFor="let category of categoriesArray.controls; let i = index;">
+      <div class="row"  [formGroupName]="i">
+        <input class="form-control" type="number" formControlName="id">
+        <input class="form-control" type="text" formControlName="name">
+        <input class="form-control" type="text" formControlName="uaName">
+        <button class="btn btn-primary" type="button" (click)="removeCategory(i)">Remove</button>
+        <button class="btn" type="submit" (click)="onSubmit(i)">Update</button>
+      </div>
+    </div>
+    <button class="btn" type="button" (click)="addCategory()">Add Category</button>
+  </div>
+</form>
+
+<!--<form [formGroup]="addCategoryForm" (ngSubmit)="onSubmit()">-->
+  <!--<div formArrayName="categories">-->
+    <!--<div class="form-group"-->
+         <!--*ngFor="let category of categories; let i = index">-->
+      <!--&lt;!&ndash;<label class="label">Ваша ел. пошта або номер мобільного:<br>&ndash;&gt;-->
+      <!--<div [formGroupName]="i" class="row">-->
+
+        <!--<div><input class="form-control" type="number" placeholder="id *" formControlName="id" [ngClass]="checker('id')"></div>-->
+      <!--<div><input class="form-control" type="text" placeholder="name *" formControlName="name" [ngClass]="checker('name')"></div>-->
+    <!--<div><input class="form-control" type="text" placeholder="uaName *" formControlName="{{category.uaName}}" [ngClass]="checker('uaName')"></div>-->
+        <!--<button class="btn btn-success" (click)="onSubmit()">OK</button>-->
+        <!--<button class="btn btn-danger" type="button" (click)="removeCategory(i)">X</button>-->
+      <!--</div>-->
+      <!--<small class="form-text"-->
+      <!--*ngIf="addCategoryForm.controls['productCategories'].dirty && addCategoryForm.controls['productCategories'].hasError('required')">-->
+      <!--Це поле є обов'язковим!-->
+      <!--</small>-->
+    <!--</div>-->
+    <!--<div>-->
+      <!--<button class="btn btn-danger" (click)="addCategory()">+</button>-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</form>-->
+
+<!--<form [formGroup]="addCategoryForm">-->
+<!--<div *ngFor="let category of categories; let i = index" class="row">-->
+<!--<div class="form-group row">-->
+<!--<div>-->
+<!--<input class="form-control" type="text" name="category" placeholder="category *"-->
+<!--formControlName="{{category.id}}">-->
+<!--</div>-->
+<!--<div>-->
+<!--<input class="form-control" type="text" name="category" placeholder="category *"-->
+<!--formControlName="{{category.name}}">-->
+<!--</div>-->
+<!--<div>-->
+<!--<input class="form-control" type="text" name="category" placeholder="category *"-->
+<!--formControlName="{{category.uaName}}">-->
+<!--</div>-->
+
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<input class="btn btn-success" type="button" value="ok" name="saveCategory" [disabled]="addCategoryForm.invalid" (click)="sendCategory()">-->
+<!--<input class="btn btn-success" type="button" value="X" name="saveCategory" [disabled]="addCategoryForm.invalid">-->
+<!--</div>-->
+<!--</div>-->
+<!--<button (click)="addCategory()">+</button>-->
+<!--</form>-->

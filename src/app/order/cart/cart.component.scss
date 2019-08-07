@@ -1,0 +1,29 @@
+#cart {
+
+  table {
+    width: 1000px;
+
+    tr {
+      height: 10px;
+
+      th, td {
+        vertical-align: middle;
+        padding: auto;
+
+      }
+
+      &:last-child {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+img {
+  height: 100px;
+}
+
+input {
+  width: 50px;
+}
+

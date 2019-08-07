@@ -1,0 +1,25 @@
+#categories-list {
+  width: 50%;
+  text-align: center;
+  margin: 20px;
+
+  table {
+    text-align: left;
+
+    th, td {
+      padding: 6px;
+      height: 40px;
+
+      .delete {
+        border: none;
+        width: 10%;
+      }
+    }
+  }
+
+  .material-icons {
+    padding: 1px;
+    height: 28px;
+    width: 28px;
+  }
+}

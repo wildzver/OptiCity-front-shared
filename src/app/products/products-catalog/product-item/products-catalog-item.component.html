@@ -1,10 +1,21 @@
-<a routerLink="/products/veloglasses/{{productInput.routerLink}}">
+<!--<a [routerLink]="/products/{{productInput.category.name}}/{{productInput.productNumber}}">-->
+<a (mouseenter)="showExtendedItem=true" (mouseleave)="showExtendedItem=false">
   <div class="product">
-    <img class="product-image" src="assets/images{{productInput.source}}">
+    <a [routerLink]="[productInput.category.name, productInput.productNumber]">
+      <img class="product-image" [src]=imageUrl>
+    </a>
     <div class="product-info">
-      <img src="assets/images/u663.png">
-      <p class="article"><i>Арт. {{productInput.article}}</i></p>
-      <p class="price">{{productInput.price}} грн</p>
+
+      <a class="like" (click)="addToCart(productInput.productNumber)">
+        <img src="/assets/images/like.png">
+      </a>
+      <p class="article"><i>Арт. {{productInput.productNumber}}</i></p>
+      <p class="price">{{productInput.productDetails.price}} грн</p>
     </div>
+    <!--<div class="extendedItem">-->
+    <!--<p>I`m here!</p>-->
+    <!--</div>-->
   </div>
+
+
 </a>

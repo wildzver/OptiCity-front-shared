@@ -1,0 +1,57 @@
+<div id="categories-list">
+  <h2> Categories List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Name</th>
+      <th class="">UA Name</th>
+      <!--<th class=""></th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let category of categories">
+      <ng-template [ngTemplateOutlet]="loadTemplate(category)"
+                   [ngTemplateOutletContext]="{$implicit: category}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addCategory()"/>
+
+  <ng-template #readOnlyTemplate let-category>
+    <!--<a (click)="editCategory(category)">-->
+    <td (click)="editCategory(category)">{{category.id}}</td>
+    <td (click)="editCategory(category)">{{category.name}}</td>
+    <td (click)="editCategory(category)">{{category.uaName}}</td>
+    <!--</a>-->
+    <!--<td>-->
+    <!--<input type="button" value="Edit" class="btn btn-info" (click)="editCategory(category)" />-->
+    <!--</td>-->
+
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteCategory(category)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedCategory.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedCategory.name" class="form-control"/>
+    </td>
+    <td class="uaName">
+      <input type="text" [(ngModel)]="editedCategory.uaName" class="form-control"/>
+    </td>
+    <!--<td>-->
+    <!--<input type="button" value="Save" (click)="saveCategory()" class="btn btn-success" />-->
+    <!--</td>-->
+    <!--<td>-->
+    <!--<input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />-->
+    <!--</td>-->
+  </ng-template>
+
+</div>

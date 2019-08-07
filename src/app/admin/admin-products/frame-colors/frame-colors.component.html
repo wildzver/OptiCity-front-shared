@@ -1,0 +1,44 @@
+<div id="frame-colors-list">
+  <h2> Frame Colors List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Name</th>
+      <th class="">UA Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let frameColor of frameColors">
+      <ng-template [ngTemplateOutlet]="loadTemplate(frameColor)"
+                   [ngTemplateOutletContext]="{$implicit: frameColor}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addFrameColor()"/>
+
+  <ng-template #readOnlyTemplate let-frameColor>
+    <td (click)="editFrameColor(frameColor)">{{frameColor.id}}</td>
+    <td (click)="editFrameColor(frameColor)">{{frameColor.name}}</td>
+    <td (click)="editFrameColor(frameColor)">{{frameColor.uaName}}</td>
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteFrameColor(frameColor)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedFrameColor.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedFrameColor.name" class="form-control"/>
+    </td>
+    <td class="uaName">
+      <input type="text" [(ngModel)]="editedFrameColor.uaName" class="form-control"/>
+    </td>
+  </ng-template>
+
+</div>

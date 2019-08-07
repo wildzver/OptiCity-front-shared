@@ -1,6 +1,6 @@
-<div class="header-main">
+<div id="main-header">
   <div class="header">
-    <nav class="navbar1 navbar-expand-lg navbar-light header">
+    <nav class="navbar navbar-expand-lg navbar-light header">
       <a class="navbar-brand" routerLink=""><img src="assets/images/logo.png" alt="logo" height="40"></a>
       <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,27 +8,51 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="products">Каталог</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Послуги</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Про нас</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Контакти</a>
-          </li>
-        </ul>
-        <div class="<!--navbar-nav--> navbar1">
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Пошук..." aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Знайти</button>
-          </form>
-          <a href="#"><img src="assets/images/like.png"></a>
-          <a href="#"><img src="assets/images/log.png" height="30px"></a>
+        <div class="navbar-left">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="products">Каталог</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Послуги</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Про нас</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Контакти</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="profile">Мій кабінет</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="<!--navbar-nav--> navbar navbar-right">
+          <div class="search">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Пошук..." aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Знайти</button>
+            </form>
+          </div>
+          <a routerLink="admin">
+            <div class="item">
+              <img src="assets/images/admin.png">
+            </div>
+          </a>
+          <a routerLink="cart">
+            <div class="item row">
+              <div [hidden]="totalCartQuantity < 1" id="counter">
+                <span>{{totalCartQuantity}}</span>
+              </div>
+              <img src="assets/images/like.png">
+            </div>
+          </a>
+          <a routerLink="login">
+            <div class="item">
+              <img src="assets/images/log.png" height="30px">
+            </div>
+          </a>
         </div>
       </div>
     </nav>

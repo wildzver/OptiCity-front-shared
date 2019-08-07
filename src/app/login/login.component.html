@@ -1,0 +1,59 @@
+<div id="login" class="flex-row">
+  <div class="logination flex-column">
+    <h3>Увійти</h3>
+
+    <form action="" method="post" [formGroup]="loginForm" novalidate (ngSubmit)="login()">
+
+      <div class="form-group">
+        <input class="form-control" type="email" name="email" placeholder="Email *" required formControlName="userEmail"
+               [ngClass]="checker('userEmail')">
+
+        <small class="form-text" *ngIf="">Користувача з такою ел. поштою чи номером моб. не знайдено. Перевірте, будь ласка
+        </small>
+        <small class="form-text" *ngIf="isControlRequired('userEmail')">Це поле обов'язковe!</small>
+        <small class="form-text" *ngIf="loginForm.controls['userEmail'].hasError('email')">Введіть активний email!
+        </small>
+      </div>
+
+      <div class="form-group">
+        <!--<label>Пароль:<br>-->
+        <input class="form-control" type="password" name="password" placeholder="Пароль *"
+               formControlName="userPassword" [ngClass]="checker('userPassword')">
+        <!--</label>-->
+        <br>
+        <small class="form-text" *ngIf="isControlRequired('userPassword')">Це поле обов'язковe!</small>
+        <div [hidden]="loginForm.controls['userPassword'].valid || loginForm.controls['userPassword'].pristine"
+             class="">
+
+          <small class="form-text">Пароль повинен мати:</small>
+          <ul>
+            <li [ngStyle]="{color: loginForm.controls['userPassword'].hasError('minlength') || isControlEmpty('userPassword')  ? 'red' : 'black'}">
+              принаймні 8 символів
+            </li>
+            <li [ngStyle]="{color: loginForm.controls['userPassword'].hasError('hasDigit') || isControlEmpty('userPassword')  ? 'red' : 'black'}">принаймні
+              1 цифру
+            </li>
+            <li [ngStyle]="{color: loginForm.controls['userPassword'].hasError('hasCapitalLetter') || isControlEmpty('userPassword')  ? 'red' : 'black'}">
+              принаймні 1 велику літеру латинського алфавіту
+            </li>
+            <li
+              [ngStyle]="{color: loginForm.controls['userPassword'].hasError('hasLowercaseLetter') || isControlEmpty('userPassword')  ? 'red' : 'black'}">
+              принаймні 1 малу літеру латинського алфавіту
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" name="" value="УВІЙТИ" [disabled]="loginForm.invalid">
+      </div>
+    </form>
+    <button (click)="getInfo()">Get it!</button>
+    <a routerLink="/forgotpassword">Я забув пароль :(</a>
+  </div>
+  <div class="registration flex-column">
+    <h3>Новий користувач?</h3>
+    <p>Зареєструйтеся, будь ласка.<br/>Це займе всього кілька хвилин</p>
+    <button routerLink="/signup">ЗАРЕЄСТРУВАТИСЯ</button>
+  </div>
+</div>

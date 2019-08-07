@@ -1,3 +1,7 @@
-<div class="all-products">
-  <app-products-catalog-item *ngFor="let product of products" [productInput]="product"></app-products-catalog-item>
+<div class="page-row">
+  <app-sidebar></app-sidebar>
+  <div class="all-products">
+    <app-products-catalog-item *ngFor="let product of products" [productInput]="product"></app-products-catalog-item>
+  </div>
 </div>
+<router-outlet></router-outlet>

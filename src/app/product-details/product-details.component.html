@@ -1,3 +1,49 @@
-<p>
-  product-details works!
-</p>
+<div id="product-details">
+  <div class="flex-row">
+    <div class="forward">
+      <a routerLink="#">Повернутися у Велоокуляри</a>
+    </div>
+    <div id="title">
+      <h4>Велоокуляри. Окуляри для спорту (00011, 00012, 00013, 00014, 00015)</h4>
+    </div>
+  </div>
+
+  <div class="description flex-row">
+    <div class="flex-column">
+      <div class="leftside flex-row">
+        <div class="added-imgs flex-column">
+          <div *ngFor="let image of currentProductImages">
+            <div>
+              <img src='http://localhost:8080/product-image/{{image.imageName}}' alt="img">
+            </div>
+          </div>
+        </div>
+        <div class="img-placeholder">
+          <img [src]=mainImageUrl>
+        </div>
+      </div>
+    </div>
+    <div class="rightside flex-column">
+      <div id="category-types-imgs" class="flex-row">
+        <div *ngFor="let product of auxiliaryProducts">
+          <div>
+            <img src="http://localhost:8080/product-image/{{findMainImage(product)}}">
+          </div>
+        </div>
+      </div>
+      <div id="characteristics">
+        <div id="table-title">
+          <b><i>Характеристики:</i></b>
+        </div>
+        <div id="table">
+          <table>
+            <tr *ngFor="let parameter of parameters">
+              <th>{{parameter.name}}</th>
+              <td>{{parameter.value}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

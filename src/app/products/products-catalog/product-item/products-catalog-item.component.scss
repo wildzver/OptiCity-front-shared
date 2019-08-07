@@ -1,5 +1,6 @@
 a {
   .product {
+    //position: absolute;
     width: 240px;
     height: 230px;
     display: flex;
@@ -10,6 +11,7 @@ a {
     margin: 10px;
 
     .product-image {
+      margin: 5px;
       border-radius: 0px;
       width: 230px;
       height: 180px;
@@ -42,13 +44,30 @@ a {
         color: #990000;
         margin: 0 0 0 20px;
         //line-height: normal;
+      }
 
-
+      .btn {
+        padding: 0.1rem;
+        line-height: 0.8;
       }
     }
 
+    //.extendedItem {
+    //  display: none;
+    //}
   }
+
   &:hover {
     text-decoration: none;
+    .product {
+       width: 260px;
+       height: 400px;
+
+      .extendedItem {
+        display: block;
+      }
+    }
   }
 }
+
+

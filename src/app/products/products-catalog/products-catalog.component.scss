@@ -1,7 +1,12 @@
+.page-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .all-products {
   margin: 10px 20px;
   display: flex;
+  align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
-
 }
