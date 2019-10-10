@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+  <li routerLink="">
+    <i class="material-icons">home</i>
+  </li>
+  <li *ngFor="let breadcrumb of breadcrumbs">
+    <a [routerLink]="breadcrumb.url" [ngClass]="{'router-link-active' : lastRoutePart.includes(breadcrumb.path)}">
+      {{ breadcrumb.label }}
+    </a>
+  </li>
+</ol>

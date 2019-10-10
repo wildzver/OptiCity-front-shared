@@ -1,10 +1,11 @@
+<app-breadcrumb-navigation></app-breadcrumb-navigation>
 <div id="product-details">
   <div class="flex-row">
-    <div class="forward">
-      <a routerLink="#">Повернутися у Велоокуляри</a>
-    </div>
+    <!--<div class="forward">-->
+      <!--<a routerLink="#">Повернутися у Велоокуляри</a>-->
+    <!--</div>-->
     <div id="title">
-      <h4>Велоокуляри. Окуляри для спорту (00011, 00012, 00013, 00014, 00015)</h4>
+      <h4>{{currentProduct.category.uaName}} {{currentProduct.productNumber}}</h4>
     </div>
   </div>
 
@@ -12,23 +13,21 @@
     <div class="flex-column">
       <div class="leftside flex-row">
         <div class="added-imgs flex-column">
-          <div *ngFor="let image of currentProductImages">
-            <div>
-              <img src='http://localhost:8080/product-image/{{image.imageName}}' alt="img">
-            </div>
+          <div [ngClass]="{active: image.imageName===mainImageName}" *ngFor="let image of currentProductImages">
+            <!--<div>-->
+              <img src='/api/product-image/{{image.imageName}}' alt="img" (mouseover)="changeImage(image.imageName)" (click)="openSlider()">
+            <!--</div>-->
           </div>
         </div>
         <div class="img-placeholder">
-          <img [src]=mainImageUrl>
+          <img *ngIf="mainImageUrl != null" [src]= mainImageUrl alt="image-placeholder" (click)="openSlider()">
         </div>
       </div>
     </div>
     <div class="rightside flex-column">
       <div id="category-types-imgs" class="flex-row">
-        <div *ngFor="let product of auxiliaryProducts">
-          <div>
-            <img src="http://localhost:8080/product-image/{{findMainImage(product)}}">
-          </div>
+        <div class="category-type-img" *ngFor="let product of auxiliaryProducts" [routerLink]="['../../', product.category.name, product.productNumber]">
+            <img src="/api/product-image/{{findMainImage(product)}}">
         </div>
       </div>
       <div id="characteristics">
@@ -46,4 +45,52 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="showSlider">
+    <div class="slider-background" (click)="closeSlider()"></div>
+    <div class="slider">
+      <div id="previousImage" (click)="fetchPreviousImage()">
+        <button><i class="material-icons">arrow_back_ios</i></button>
+      </div>
+      <img class="image-slider" [src]="mainImageUrl" alt="">
+      <div id="nextImage" (click)="fetchNextImage()">
+        <button><i class="material-icons">arrow_forward_ios</i></button>
+      </div>
+      <!--<button class="close-button" (click)="closeSlider()">-->
+        <i class="material-icons md-light close-button" (click)="closeSlider()">close</i>
+      <!--</button>-->
+    </div>
+  </div>
+
+
+  <!--<ngb-carousel *ngIf="images">-->
+    <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+        <!--<img [src]="images[0]" alt="Random first slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+        <!--<h3>First slide label</h3>-->
+        <!--<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+      <!--</div>-->
+    <!--</ng-template>-->
+    <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+        <!--<img [src]="images[1]" alt="Random second slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+        <!--<h3>Second slide label</h3>-->
+        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+      <!--</div>-->
+    <!--</ng-template>-->
+    <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+        <!--<img [src]="images[2]" alt="Random third slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+        <!--<h3>Third slide label</h3>-->
+        <!--<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>-->
+      <!--</div>-->
+    <!--</ng-template>-->
+  <!--</ngb-carousel>-->
 </div>
+

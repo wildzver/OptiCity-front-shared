@@ -1,0 +1,98 @@
+//@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+form {
+
+
+  width: 300px !important;
+  color: white;
+
+
+}
+
+.mat-form-field {
+  border: 0px;
+  min-width: 150px !important;
+  max-width: 500px !important;
+  width: 100% !important;
+}
+
+.mat-option {
+  min-width: 150px !important;
+  max-width: 500px !important;
+  width: 100% !important;
+}
+
+
+::ng-deep .mat-autocomplete-panel {
+  max-height: 300px !important;
+}
+
+//mat-autocomplete {
+//  height: 100% !important;
+//  max-height: 500px !important;
+//
+//}
+
+.cell {
+  margin-left: 10px;
+
+
+
+}
+
+.price{
+  margin-left: auto;
+
+  p{
+    margin: 0;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  //width: 300px;
+}
+
+.mat-option {
+  line-height: 18px !important;
+}
+
+
+//input {
+//  color: white;
+//}
+
+.searchAll {
+  margin: 0 0 0 16px;
+  color: blue;
+  //position: fixed;
+  //bottom: 450px;
+  //z-index: 10;
+}
+
+.searchAll:hover {
+  color: hotpink;
+  cursor: pointer;
+  text-decoration: underline;
+
+
+}
+
+.mat-icon-button:hover:enabled {
+  color: hotpink;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+
+

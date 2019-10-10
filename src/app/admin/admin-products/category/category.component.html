@@ -25,6 +25,7 @@
     <td (click)="editCategory(category)">{{category.id}}</td>
     <td (click)="editCategory(category)">{{category.name}}</td>
     <td (click)="editCategory(category)">{{category.uaName}}</td>
+    <td>{{category.imageName}}</td>
     <!--</a>-->
     <!--<td>-->
     <!--<input type="button" value="Edit" class="btn btn-info" (click)="editCategory(category)" />-->
@@ -45,6 +46,9 @@
     </td>
     <td class="uaName">
       <input type="text" [(ngModel)]="editedCategory.uaName" class="form-control"/>
+    </td>
+    <td class="imageName">
+      <input type="file" [(ngModel)]="editedCategory.imageName" (change)="selectFile($event)" class="form-control"/>
     </td>
     <!--<td>-->
     <!--<input type="button" value="Save" (click)="saveCategory()" class="btn btn-success" />-->

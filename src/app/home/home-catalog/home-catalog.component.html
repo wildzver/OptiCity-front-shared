@@ -1,54 +1,10 @@
 <div class="catalog-grid-container">
   <!--<div class="home-catalog-grid">-->
-  <a routerLink="products/veloglasses">
+  <a *ngFor="let category of categories" [routerLink]="['/products/',category.name]">
     <div class="catalog-grid-item">
       <div class="opacity"></div>
-      <p class="home-catalog-title">Велоокуляри</p>
-      <img class="home-catalog-img" src="/assets/images/veloglasses.jpg"/>
+      <p class="home-catalog-title">{{category.uaName}}</p>
+      <img class="home-catalog-img" src='/api/category-image/{{category.imageName}}'>
     </div>
   </a>
-  <a routerLink="products/skiglasses">
-    <div class="catalog-grid-item">
-      <div class="opacity"></div>
-      <p class="home-catalog-title">Лижні окуляри</p>
-      <img class="home-catalog-img" src="/assets/images/skiglasses.jpg"/>
-    </div>
-  </a>
-  <a routerLink="products/frames">
-    <div class="catalog-grid-item">
-      <div class="opacity"></div>
-      <p class="home-catalog-title">Оправи</p>
-      <img class="home-catalog-img" src="/assets/images/frames.jpg"/>
-    </div>
-  </a>
-  <a routerLink="products/accessories">
-    <div class="catalog-grid-item">
-      <div class="opacity"></div>
-      <p class="home-catalog-title">Аксесуари</p>
-      <img class="home-catalog-img" src="/assets/images/accessories.jpg"/>
-    </div>
-  </a>
-  <!--</div>-->
 </div>
-<!--<router-outlet></router-outlet>-->
-
-<!--<div class='home-catalog-grid-container'>-->
-<!--<div class='home-catalog-grid'>-->
-<!--<div class='home-catalog-grid-item first-item'>-->
-<!--1-->
-<!--</div>-->
-<!--<div class='home-catalog-grid-item'>-->
-<!--2-->
-<!--</div>-->
-<!--<div class='home-catalog-grid-item'>-->
-<!--3-->
-<!--</div>-->
-<!--<div class='home-catalog-grid-item'>-->
-<!--4-->
-<!--</div>-->
-<!--<div class='home-catalog-grid-item last-item'>-->
-<!--5-->
-<!--</div>-->
-<!--</div>-->
-
-<!--</div>-->

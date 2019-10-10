@@ -1,6 +1,14 @@
 .page-row {
   display: flex;
   flex-direction: row;
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .all-products {
@@ -9,4 +17,28 @@
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
+  align-self: flex-start;
+}
+
+a {
+  cursor: pointer;
+}
+
+.container {
+  //position: relative;
+  width: auto;
+  bottom: 100vw;
+  //align-self: center;
+  //right: 25%;
+  //left: 50%;
+  //margin-left: -150px;
+}
+
+.page-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
 }

@@ -11,7 +11,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  private orderUrl = 'http://localhost:8080/orders';
+  private orderUrl = '/api/orders';
 
   public createOrder(order) {
     const url = `${this.orderUrl}/addOrder`;

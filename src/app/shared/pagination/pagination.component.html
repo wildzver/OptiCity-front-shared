@@ -1,3 +1,29 @@
+<nav class="container">
+  <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+      <a class="page-link" (click)="setPage(1)"><img src="assets/images/arrow-begin.png"></a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+      <a class="page-link" (click)="setPage(pager.currentPage - 1)"><img src="assets/images/arrow-previous.png"></a>
+    </li>
+    <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+      <a class="page-link" (click)="setPage(page)">{{page}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+      <a class="page-link" (click)="setPage(pager.currentPage + 1)"><img src="assets/images/arrow-next.png"></a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+      <a class="page-link" (click)="setPage(pager.totalPages)"><img src="assets/images/arrow-end.png"></a>
+    </li>
+  </ul>
+</nav>
+
+<!--<ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="pageNumber" [maxSize]="5" [boundaryLinks]="true"></ngb-pagination>-->
+
+<p>TOTAL ITEMS {{totalItems}}</p>
+<p>PAGE {{pageNumber}}</p>
+
+<!--
 <nav [hidden]="!isVisible">
   <ul class="pagination">
     <li [class.disabled]="!previousEnabled" (click)="previousNext(-1, $event)">
@@ -15,3 +41,4 @@
     </li>
   </ul>
 </nav>
+-->

@@ -2,12 +2,13 @@
 <a (mouseenter)="showExtendedItem=true" (mouseleave)="showExtendedItem=false">
   <div class="product">
     <a [routerLink]="[productInput.category.name, productInput.productNumber]">
-      <img class="product-image" [src]=imageUrl>
+      <img class="product-image" [src]=imageUrl alt="product main image">
     </a>
     <div class="product-info">
 
       <a class="like" (click)="addToCart(productInput.productNumber)">
-        <img src="/assets/images/like.png">
+        <!--<img src="/assets/images/like.png">-->
+        <i class="material-icons">add_shopping_cart</i>
       </a>
       <p class="article"><i>Арт. {{productInput.productNumber}}</i></p>
       <p class="price">{{productInput.productDetails.price}} грн</p>

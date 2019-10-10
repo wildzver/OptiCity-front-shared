@@ -1,51 +1,109 @@
-<div id="main-header">
-  <div class="header">
-    <nav class="navbar navbar-expand-lg navbar-light header">
-      <a class="navbar-brand" routerLink=""><img src="assets/images/logo.png" alt="logo" height="40"></a>
-      <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!--<div id="main-header">-->
+  <!--<div class="header">-->
+    <!--<nav class="navbar navbar-expand-lg navbar-dark header">-->
+      <!--<a class="navbar-brand" routerLink=""><img src="assets/images/logo.png" alt="logo" height="40"></a>-->
+      <!--<button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+              <!--aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+        <!--<span class="navbar-toggler-icon"></span>-->
+      <!--</button>-->
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+        <!--<div class="navbar-left">-->
+          <!--<ul class="navbar-nav mr-auto">-->
+            <!--<li class="nav-item active">-->
+              <!--<a class="nav-link" routerLink="products">Каталог</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+              <!--<a class="nav-link" routerLink="services">Послуги</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+              <!--<a class="nav-link" routerLink="contacts">Контакти</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+              <!--<a class="nav-link" routerLink="howorder">Як замовити?</a>-->
+            <!--</li>-->
+            <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+              <!--&lt;!&ndash;<a class="nav-link" routerLink="profile">Мій кабінет</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+          <!--</ul>-->
+        <!--</div>-->
+
+        <!--<div class="search">-->
+          <!--&lt;!&ndash;<form class="form-inline my-2 my-lg-0">&ndash;&gt;-->
+          <!--&lt;!&ndash;<input class="form-control mr-sm-2" type="search" placeholder="Пошук..." aria-label="Search">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Знайти</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;</form>&ndash;&gt;-->
+          <!--<app-search></app-search>-->
+        <!--</div>-->
+
+        <!--<div class="&lt;!&ndash;navbar-nav&ndash;&gt;  navbar-right">-->
+
+          <!--<a routerLink="admin">-->
+            <!--<div class="item">-->
+              <!--<img src="assets/images/admin.png">-->
+            <!--</div>-->
+          <!--</a>-->
+          <!--<a routerLink="cart">-->
+            <!--<div class="item row">-->
+              <!--<div [hidden]="totalCartQuantity < 1" id="counter">-->
+                <!--<span>{{totalCartQuantity}}</span>-->
+              <!--</div>-->
+              <!--&lt;!&ndash;<img src="assets/images/like.png">&ndash;&gt;-->
+              <!--<i class="material-icons md-light">shopping_cart</i>-->
+            <!--</div>-->
+          <!--</a>-->
+          <!--<a routerLink="login">-->
+            <!--<div class="item">-->
+              <!--<img src="assets/images/log.png" height="30px">-->
+            <!--</div>-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</nav>-->
+  <!--</div>-->
+<!--</div>-->
+
+
+<!--<div id="main-header">-->
+  <div id="header">
+      <a class="navbar-brand" routerLink=""><img src="assets/images/logo.png" alt="logo" height="40"></a>
+
+    <div id="navbar">
         <div class="navbar-left">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+          <ul class="navbar-left-ul">
+            <li class="">
               <a class="nav-link" routerLink="products">Каталог</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Послуги</a>
+            <li class="">
+              <a class="nav-link" routerLink="services">Послуги</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Про нас</a>
+            <li class="">
+              <a class="nav-link" routerLink="contacts">Контакти</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Контакти</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="profile">Мій кабінет</a>
+            <li class="">
+              <a class="nav-link" routerLink="howorder">Доставка</a>
             </li>
           </ul>
         </div>
 
-        <div class="<!--navbar-nav--> navbar navbar-right">
-          <div class="search">
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Пошук..." aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Знайти</button>
-            </form>
-          </div>
+        <div class="search">
+          <app-search></app-search>
+        </div>
+
+        <div class="navbar-right">
           <a routerLink="admin">
             <div class="item">
               <img src="assets/images/admin.png">
             </div>
           </a>
+
           <a routerLink="cart">
             <div class="item row">
+              <!--<img src="assets/images/like.png">-->
+              <i class="material-icons md-light">shopping_cart</i>
               <div [hidden]="totalCartQuantity < 1" id="counter">
                 <span>{{totalCartQuantity}}</span>
               </div>
-              <img src="assets/images/like.png">
             </div>
           </a>
           <a routerLink="login">
@@ -55,6 +113,6 @@
           </a>
         </div>
       </div>
-    </nav>
   </div>
-</div>
+<!--</div>-->
+

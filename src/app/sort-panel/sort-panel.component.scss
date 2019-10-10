@@ -1,0 +1,44 @@
+#sort-panel {
+  padding: 10px 16px;
+
+  form {
+    font-size: 14px;
+
+    label {
+      margin: 0 5px 0 0;
+    }
+    select {
+      height: 25px;
+      font-size: 14px;
+      margin-right: 20px;
+      padding: 0;
+
+      option {
+        font-size: 14px;
+        padding: 0;
+        height: inherit;
+        min-height: 1em;
+        width: inherit;
+      }
+
+    }
+    select[name="sortBy"] {
+      width: 200px;
+    }
+    select[name="pageSize"] {
+      width: 100px;
+    }
+  }
+
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.material-icons{
+  font-size: 14px;
+}

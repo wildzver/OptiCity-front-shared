@@ -8,6 +8,24 @@
   border-color: #027FF4;
 }
 
+.pagination > .active > a:hover {
+  color: white;
+}
+
 .pagination a {
   cursor: pointer;
 }
+
+
+.pagination {
+  border: #002C40;
+}
+
+li {
+  height: 35px;
+  width: 35px;
+  & img {
+    height: 10px;
+  }
+}
+

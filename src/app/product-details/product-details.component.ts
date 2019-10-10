@@ -1,10 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {Product} from '../shared/models/product';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductsService} from '../shared/services/products.service';
 import {Subscription} from 'rxjs';
 import {Image} from '../shared/models/image';
 import {upperCase} from '@rxweb/reactive-form-validators';
+import {query} from '@angular/animations';
+
+export enum KEY_CODE {
+  RIGHT_ARROW = 39,
+  LEFT_ARROW = 37,
+  ESCAPE = 27
+}
 
 @Component({
   selector: 'app-product-details',
@@ -13,22 +20,19 @@ import {upperCase} from '@rxweb/reactive-form-validators';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  private currentProduct: Product;
-  private currentProductImages: Image[];
-  private auxiliaryProducts: Product[];
-  // {
-  //   productDetails: {},
-  //   category: {},
-  //   lensColor: {},
-  //   frameColor: {},
-  //   productNumber: '',
-  //   images: [{}]
-  // };
-  private category: string;
-  private productNumber: string;
-  private subscription: Subscription;
+  currentProduct: Product;
+  currentProductImages: Image[];
+  auxiliaryProducts: Product[];
+  category: string;
+  productNumber: string;
+  subscription: Subscription;
   parameters: Array<{ name: string, value: any }>;
-  private mainImageUrl: string;
+  mainImageUrl: string;
+  mainImageName: string;
+
+  images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
+
+  showSlider = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -40,20 +44,42 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
+  @HostListener
+  ('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.keyCode === KEY_CODE.LEFT_ARROW) {
+      this.fetchPreviousImage();
+    }
+
+    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
+      this.fetchNextImage();
+    }
+
+    if (event.keyCode === KEY_CODE.ESCAPE) {
+      this.closeSlider();
+    }
+  }
+
   ngOnInit() {
-    this.getProductDetails(this.category, this.productNumber);
+    this.route.params.subscribe(queryParams => {
+      // this.category = queryParams.category;
+      // this.productNumber = queryParams.productNumber;
+      this.getProductDetails(queryParams.category, queryParams.productNumber);
+    });
 
     // console.log('THIS IS PRODUCT!', this.product);
   }
+
 
   private getProductDetails(category, productNumber) {
     this.productService.getProductsByModelNumberThroughProductNumber(category, productNumber).subscribe(data => {
       this.currentProduct = data.find(value => value.productNumber === this.productNumber);
       this.currentProductImages = data.find(value => value.productNumber === this.productNumber).images;
       this.auxiliaryProducts = data.filter(value => value.productNumber !== this.productNumber);
+      // console.log('THIS IS CURRENT PRODUCT <>', this.currentProduct);
       console.log('This is auxiliaryProducts!!!', this.auxiliaryProducts);
-      console.log(data.filter(value => value.productNumber !== this.productNumber));
-      console.log(this.currentProduct.mainImage)
+      // console.log(data.filter(value => value.productNumber !== this.productNumber));
+      // console.log(this.currentProduct.mainImage);
       // this.product.productDetails = data.productDetails,
       //   this.product.category = data.category,
       //   this.product.lensColor = data.lensColor,
@@ -63,7 +89,7 @@ export class ProductDetailsComponent implements OnInit {
       this.getParametersArray(this.currentProduct);
       this.navigate();
       // const mainImageIndex = this.currentProductImages.findIndex(value => value.mainImage = true);
-      this.mainImageUrl = `http://localhost:8080/product-image/${this.findMainImage(this.currentProduct)}`;
+      this.mainImageUrl = `/api/product-image/${this.findMainImage(this.currentProduct)}`;
       console.log('THIS IS DATA!', data);
     });
   }
@@ -80,13 +106,13 @@ export class ProductDetailsComponent implements OnInit {
     this.parameters = [
       {name: 'Категорія:', value: product.category.uaName},
       {name: 'Ціна:', value: product.productDetails.price + ' грн'},
-      {name: 'Колір лінзи:', value: ['чорний', 'сірий', 'білий', 'жовтий', 'коричневий']},
+      {name: 'Колір лінзи:', value: product.lensColor.uaName},
       {name: 'Ширина лінзи:', value: product.productDetails.lensWidth},
       {name: 'Висота лінзи:', value: product.productDetails.lensHeight},
       {name: 'Матеріал лінзи:', value: product.productDetails.lensMaterial},
       {name: 'Ширина загальна:', value: product.productDetails.totalWidth},
       {name: 'Довжина дужки:', value: product.productDetails.bracketLength},
-      {name: 'Колір оправи:', value: ''},
+      {name: 'Колір оправи:', value: product.frameColor.uaName},
       {name: 'Матеріал оправи:', value: product.productDetails.frameMaterial},
       {name: 'Виробник:', value: product.productDetails.origin},
     ];
@@ -95,4 +121,51 @@ export class ProductDetailsComponent implements OnInit {
   private navigate() {
     this.router.navigateByUrl(this.router.url.replace(this.category, this.currentProduct.category.name));
   }
+
+  private changeImage(imageName: string) {
+    this.mainImageUrl = `/api/product-image/${imageName}`;
+    this.mainImageName = imageName;
+  }
+
+  private openSlider() {
+    this.showSlider = true;
+  }
+
+  private closeSlider() {
+    this.showSlider = false;
+  }
+
+  private currentImagePosition() {
+    return this.currentProductImages.findIndex(image => image.imageName === this.mainImageName);
+  }
+
+  private fetchPreviousImage() {
+    let previousImageName: string;
+
+    if (this.currentImagePosition() <= 0) {
+      previousImageName = this.currentProductImages[this.currentProductImages.length - 1].imageName;
+    } else {
+      previousImageName = this.currentProductImages[this.currentImagePosition() - 1].imageName;
+    }
+    console.log('MY CURRENT IMAGE POSITION', this.currentImagePosition());
+    this.mainImageName = previousImageName;
+
+    this.mainImageUrl = `/api/product-image/${previousImageName}`;
+  }
+
+  private fetchNextImage() {
+    let nextImageName: string;
+
+    if (this.currentImagePosition() + 1 >= this.currentProductImages.length) {
+      nextImageName = this.currentProductImages[0].imageName;
+    } else {
+      nextImageName = this.currentProductImages[this.currentImagePosition() + 1].imageName;
+    }
+    console.log('MY CURRENT IMAGE POSITION', this.currentImagePosition());
+    this.mainImageName = nextImageName;
+
+    this.mainImageUrl = `/api/product-image/${nextImageName}`;
+  }
+
 }
+

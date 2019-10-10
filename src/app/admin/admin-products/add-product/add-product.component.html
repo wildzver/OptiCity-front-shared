@@ -29,11 +29,11 @@
     <!--<small class="form-text" *ngIf="isControlRequired('productImage')">Це поле є обов'язковим!</small>-->
     <!--</div>-->
 
-    <div formArrayName="productImages">
+    <div formArrayName="productMainImages">
       <div class="form-group" *ngFor="let productMainImage of addProductForm.controls['productMainImages'].controls; let i = index">
         <div>
           <div *ngIf="currentMainFileUpload" class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+            <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
                  attr.aria-valuenow="{{progressMain.percentage}}"
                  aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progressMain.percentage+'%'}">
               {{progressMain.percentage}}%

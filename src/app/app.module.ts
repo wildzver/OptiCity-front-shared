@@ -17,6 +17,26 @@ import {AuthGuard} from './shared/auth/auth.guard';
 import {CartComponent} from './order/cart/cart.component';
 import { OrderDetailsComponent } from './order/order-details/order-details.component';
 import { OrderComponent } from './order/order.component';
+import { SearchComponent } from './search/search.component';
+import {NgbCarousel, NgbCarouselModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatInputModule} from '@angular/material/input';
+import {SharedModule} from './shared/shared.module';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatFormField,
+  MatFormFieldControl,
+  MatIconModule, MatMenuModule,
+  MatOption,
+  MatOptionModule, MatSidenavModule, MatTabsModule, MatToolbarModule
+} from '@angular/material';
+import { ContactsComponent } from './contacts/contacts.component';
+import { HowOrderComponent } from './how-order/how-order.component';
+import {BreadcrumbNavigationModule} from './breadcrumb-navigation/breadcrumb-navigation.module';
+import {ServicesModule} from './services/services.module';
+import { FooterComponent } from './footer/footer.component';
+import { SortPanelComponent } from './sort-panel/sort-panel.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +48,11 @@ import { OrderComponent } from './order/order.component';
     CartComponent,
     OrderDetailsComponent,
     OrderComponent,
+    // ServicesComponent,
+    ContactsComponent,
+    HowOrderComponent,
+    FooterComponent,
+    // SearchComponent,
     // AuthGuard
   ],
   imports: [
@@ -38,10 +63,29 @@ import { OrderComponent } from './order/order.component';
     FormsModule,
     ReactiveFormsModule,
     ProfileModule,
-    AdminModule
+    AdminModule,
+    NgbTypeaheadModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    SharedModule,
+    MatButtonModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    BreadcrumbNavigationModule,
+    ServicesModule,
+
+
   ],
+  // exports: [
+  //   SearchComponent
+  // ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

@@ -30,7 +30,8 @@ import {UserService} from '../shared/services/user.service';
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder,
+              private userService: UserService) {
   }
 
   submitted = false;

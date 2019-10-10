@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     console.log(this.loginForm.controls.userEmail.value);
-    this.http.post('http://localhost:8080/login', JSON.stringify({
+    this.http.post('http://localhost:8080/api/login', JSON.stringify({
       username: this.loginForm.controls.userEmail.value,
       password: this.loginForm.controls.userPassword.value
     }), {observe: 'response'}).subscribe(value => {

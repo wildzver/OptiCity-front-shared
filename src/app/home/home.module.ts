@@ -5,11 +5,15 @@ import { HomeCatalogComponent } from './home-catalog/home-catalog.component';
 import {RouterModule} from '@angular/router';
 
 @NgModule({
-  declarations: [HomeComponent, HomeCatalogComponent],
+  declarations: [
+    HomeComponent,
+    HomeCatalogComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
   ],
-  // exports: [HomeComponent]
+  exports: [
+    HomeComponent
+  ]
 })
 export class HomeModule { }

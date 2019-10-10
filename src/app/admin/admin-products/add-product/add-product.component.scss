@@ -47,9 +47,12 @@
     input[type=text], input[type=email], input[type=tel], input[type=password], input[type=submit], input[type=file], select {
       width: 300px;
     }
-app-file-uploader {
-  height: 30px;
-}
+
+
+    app-file-uploader {
+      height: 30px;
+    }
+
     input[type=file] {
       border: none;
     }
@@ -225,4 +228,8 @@ app-file-uploader {
     display: flex;
     flex-direction: column;
   }
+}
+
+.progress {
+  width: 300px;
 }

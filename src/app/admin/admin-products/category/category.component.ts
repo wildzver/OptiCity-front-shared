@@ -19,6 +19,9 @@ export class CategoryComponent implements OnInit {
   isNewRecord: boolean;
   statusMessage: string;
 
+  selectedFiles: FileList;
+  currentFileUpload: File;
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     // console.log(event);
@@ -31,7 +34,7 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  constructor(private productService: ProductsService) {
+  constructor(private productsService: ProductsService) {
     this.categories = new Array<Category>();
   }
 
@@ -40,7 +43,7 @@ export class CategoryComponent implements OnInit {
   }
 
   private loadCategories() {
-    this.productService.getCategories().subscribe((data: Category[]) => {
+    this.productsService.getCategories().subscribe((data: Category[]) => {
       this.categories = data;
       console.log(this.categories);
     });
@@ -70,7 +73,14 @@ export class CategoryComponent implements OnInit {
 
   saveCategory() {
     if (this.isNewRecord) {
-      this.productService.createCategory(this.editedCategory).subscribe(data => {
+      this.currentFileUpload = this.selectedFiles.item(0);
+      const json = JSON.stringify(this.editedCategory);
+      const blob = new Blob([json], {type: 'application/json'});
+      const formData = new FormData();
+      formData.append('category', blob);
+      formData.append('categoryImage', this.currentFileUpload);
+
+      this.productsService.createCategory(formData).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadCategories();
       });
@@ -78,7 +88,7 @@ export class CategoryComponent implements OnInit {
       this.isNewRecord = false;
       this.editedCategory = null;
     } else {
-      this.productService.updateCategory(this.editedCategory).subscribe(data => {
+      this.productsService.updateCategory(this.editedCategory).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadCategories();
       });
@@ -95,9 +105,13 @@ export class CategoryComponent implements OnInit {
   }
 
   deleteCategory(category: Category) {
-    this.productService.deleteCategory(category).subscribe(data => {
+    this.productsService.deleteCategory(category).subscribe(data => {
       this.statusMessage = 'Data deleted successfully',
         this.loadCategories();
     });
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 }

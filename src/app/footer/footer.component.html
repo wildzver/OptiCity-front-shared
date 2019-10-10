@@ -1,0 +1,29 @@
+<div id="footer" class="flex-row">
+  <div id="footer-nav" class="flex-row">
+    <div id="footer-products" class="flex-column">
+      <p routerLink="products">Каталог:</p>
+      <ul>
+        <li *ngFor="let category of categories">
+          <a href="" [routerLink]="['/products/',category.name]">{{category.uaName}}</a>
+        </li>
+      </ul>
+    </div>
+    <div id="footer-services" class="flex-column">
+      <p>Послуги</p>
+    </div>
+    <div id="footer-delivery" class="flex-column">
+      <p>Доставка</p>
+    </div>
+  </div>
+
+  <div id="footer-contacts" class="flex-column">
+    <p  routerLink="contacts">Контакти:</p>
+    <p>м. Львів, просп. В. Чорновола, 67а, <br> ринок "Старий рицар" <a routerLink="contacts">(детальніше)</a></p>
+    <p class="phone"> <i class="material-icons md-light">contact_phone</i>(097)558 333 2</p>
+    <p class="email"> <i class="material-icons md-light">email</i>tarassvidnytskyy@gmail.com</p>
+  </div>
+  <div>
+
+  </div>
+
+</div>

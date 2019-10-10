@@ -6,7 +6,7 @@ import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 
 const profileRoutes: Routes = [
   {path: '', component: ProfileComponent},
-  {path: 'edit', component: ProfileEditComponent},
+  {path: 'edit', component: ProfileEditComponent, data: {breadcrumb: 'Редагувати'}},
 
 ]
 @NgModule({

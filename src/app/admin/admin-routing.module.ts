@@ -10,12 +10,14 @@ import {CategoryComponent} from './admin-products/category/category.component';
 import {FrameColorsComponent} from './admin-products/frame-colors/frame-colors.component';
 import {LensColorsComponent} from './admin-products/lens-colors/lens-colors.component';
 import {AuthGuard} from '../shared/auth/auth.guard';
+import {UploadProductsComponent} from './admin-products/upload-products/upload-products.component';
 
 const adminRoutes: Routes = [
   {path: '', component: AdminComponent,
     children: [
       {path: 'products', component: AdminProductsComponent},
       {path: 'products/add', component: AddProductComponent},
+      {path: 'products/upload-products', component: UploadProductsComponent},
       {path: 'products/categories', component: CategoriesComponent},
       {path: 'products/category', component: CategoryComponent},
       {path: 'products/frame-colors', component: FrameColorsComponent},

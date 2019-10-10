@@ -1,0 +1,57 @@
+<!--<div id="scrollable-dropdown-menu">-->
+<form class="searchForm flex-row" [formGroup]="searchForm" novalidate (ngSubmit)="getSearchedProducts()">
+  <!--<div id="scrollable-dropdown-menu">-->
+
+  <!--<input id="search" class="form-control mr-sm-2 typeahead tt-query tt-menu" type="search" autocomplete="off" spellcheck="false"-->
+  <!--placeholder="Пошук..." aria-label="Search" formControlName="search" [ngbTypeahead]="search"-->
+  <!--[resultTemplate]="rt" [inputFormatter]="formatter">-->
+  <!--<input id="search" class="form-control mr-sm-2 typeahead tt-query tt-menu" type="search" autocomplete="off" spellcheck="false"-->
+  <!--placeholder="Пошук..." aria-label="Search" formControlName="search">-->
+  <!--</div>-->
+  <mat-form-field class="full-width" floatLabel="auto">
+    <input matInput placeholder="Пошук..." type="search" aria-label="Search" [matAutocomplete]="auto"
+           formControlName="search">
+    <button type="button" mat-icon-button *ngIf="searchForm.controls['search'].value != (null || '')" matSuffix mat-icon-button
+            aria-label="Clear" (click)="clearSearch()">
+      <mat-icon class="m">close</mat-icon>
+    </button>
+    <mat-autocomplete class="autocomplete mat-autocomplete-panel" #auto="matAutocomplete">
+      <mat-option class="option" (onSelectionChange)="selectProduct(product.category.name, product.productNumber)"
+                  *ngFor="let product of products" [value]="product.productNumber">
+        <div class="flex-row">
+          <img aria-hidden src="/api/product-image/5d1dc3e46d1bd680503848.jpg" height="40">
+          <div class="cell flex-column">
+            <span>{{product.productNumber}}</span>
+            <small>{{product.category.uaName}}</small>
+          </div>
+          <div class="price">
+            <p>{{product.productDetails.price}} грн.</p>
+          </div>
+        </div>
+      </mat-option>
+      <p class="searchAll" (click)="searchAllProducts()">Знайти усі товари</p>
+    </mat-autocomplete>
+  </mat-form-field>
+  <!--<mat-placeholder>Пошук...</mat-placeholder>-->
+
+  <!--<ul class="filter-select">-->
+  <!--<li tabindex="{{i+1}}" class="filter-select-list" *ngFor="let product of products; let i = index"-->
+  <!--(keydown)="moveList($event)">-->
+  <!--{{product.productNumber}}-->
+  <!--</li>-->
+
+  <!--</ul>-->
+  <button mat-icon-button disabled="{{searchForm.controls['search'].value === (null || '')}}" type="submit">
+    <mat-icon>search</mat-icon>
+  </button>
+
+</form>
+<!--</div>-->
+
+<!--<ng-template #rt let-r="result" let-t="term">-->
+<!--<img src="/api/product-image/5d1dc3e46d1bd680503848.jpg" alt="product main image" class="mr-1" style="width: 16px">-->
+<!--<ngb-highlight [result]="r.productNumber" [term]="t"></ngb-highlight>-->
+<!--<ngb-highlight [result]="r.category.uaName" [term]="t"></ngb-highlight>-->
+<!--<hr>-->
+<!--</ng-template>-->
+<!--<template #rt></template>-->

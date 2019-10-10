@@ -1,0 +1,40 @@
+#upload-products {
+
+  margin: 20px auto 20px 320px;
+
+  form {
+
+    input[type=file] {
+      width: 300px;
+      border: none;
+    }
+  }
+
+  .progress {
+    width: 300px;
+  }
+}
+
+#products-list {
+
+  table {
+    width: 1000px;
+
+    tr {
+      height: 10px;
+
+      th, td {
+        padding: auto;
+
+        input[type=file] {
+          width: 150px;
+          border: none;
+        }
+
+      }
+    }
+  }
+}
+
+
+

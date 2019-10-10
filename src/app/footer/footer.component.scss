@@ -1,0 +1,70 @@
+#footer {
+  height: 160px;
+  background-color: #002C40;
+  justify-content: flex-start;
+  padding: 0 20px;
+  color: #E4E4E4;
+  font-size: 14px;
+  padding: 10px 20px;
+
+  #footer-nav {
+    width: 60%;
+    height: 100%;
+    justify-content: space-between;
+
+    div {
+      margin-right: 40px;
+    }
+
+    #footer-products {
+
+      ul {
+        padding-left: 20px;
+      }
+    }
+  }
+  #footer-contacts {
+    margin-left: auto;
+    height: 100%;
+
+  }
+
+}
+
+.flex-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+
+}
+
+.flex-column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+
+}
+
+.phone, .email {
+  display: inline;
+  text-align: center;
+  i {
+    position: relative;
+    top: 5px;
+    margin-right: 5px;
+  }
+}
+
+.material-icons.md-light {
+  font-size: 20px;
+  //text-decoration: none;
+  //outline: 0px !important;
+}
+
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+
+p {
+  margin-bottom: 8px;
+}

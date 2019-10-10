@@ -1,7 +1,7 @@
 <div id="sidebar">
   <div class="flex-direction-column">
     <p><a routerLink="/products">Каталог</a></p>
-    <button routerLink="/products/{{category.name}}" queryParamsHandling="merge" *ngFor="let category of categories">{{category.uaName}}</button>
+    <button [routerLink]="['/products', category.name]" queryParamsHandling="merge" *ngFor="let category of categories">{{category.uaName}}</button>
   </div>
 
   <div>
@@ -21,7 +21,7 @@
     <p>Колір лінзи</p>
     <form class="flex-direction-column">
       <div *ngFor="let lensColor of lensColors">
-        <input id="{{lensColor.id}}" type="checkbox" name="lensColor" (change)="doLensColorsFilter($event, lensColor.id)">
+        <input id="lensColor{{lensColor.id}}" [checked]="lensColor.checked" type="checkbox" name="lensColor" (change)="doLensColorsFilter(lensColor.id)">
         <label>{{lensColor.uaName}}</label>
         <!--<input type="checkbox" id="color-lens-filter-1" name="color-lens-checkbox-1" class="color-selector">-->
         <!--<input type="checkbox" id="color-lens-filter-2" name="color-lens-checkbox-2" class="color-selector">-->
@@ -39,7 +39,7 @@
     <p>Колір оправи</p>
     <form class="flex-direction-column">
       <div *ngFor="let frameColor of frameColors">
-        <input id="{{frameColor.id}}" type="checkbox" name="frameColor" (change)="doFrameColorsFilter($event, frameColor.id)">
+        <input id="frameColor{{frameColor.id}}" [checked]="frameColor.checked" type="checkbox" name="frameColor" (change)="doFrameColorsFilter(frameColor.id)">
         <label>{{frameColor.uaName}}</label>
         <!--<input type="checkbox" id="color-frame-filter-1" name="color-frame-checkbox-1" class="color-selector">-->
         <!--<input type="checkbox" id="color-frame-filter-2" name="color-frame-checkbox-2" class="color-selector">-->

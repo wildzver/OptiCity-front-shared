@@ -4,7 +4,7 @@
     <p *ngIf="!submitted else successSubmitted">Я уже зареєстрований(-а). <a routerLink="/login">Увійти</a></p>
   </div>
   <ng-template #successSubmitted>
-    <p>Ви успішно зареєстровані! <a routerLink="/login">Увійти</a></p>
+    <p>Ви успішно зареєстровані! <a routerLink="/api/login">Увійти</a></p>
   </ng-template>
 
   <form [formGroup]="signupForm" novalidate (ngSubmit)="addUser()">

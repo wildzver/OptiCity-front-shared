@@ -4,39 +4,10 @@ import {Product} from '../../../shared/models/product';
 import {ProductsService} from '../../../shared/services/products.service';
 import {filter, map, tap} from 'rxjs/operators';
 import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
-import {pipe} from 'rxjs';
 import {Category} from '../../../shared/models/category';
 import {Color} from '../../../shared/models/color';
-import {CategoriesDataService} from '../../../shared/services/categories-data.service';
 import {UploadFileService} from '../../../shared/services/upload-file.service';
-
-// import {RxFormBuilder, RxFormGroup, FormGroupExtension} from '@rxweb/reactive-form-validators';
-
-export function uploadProgress<T>(cb: (progress: number) => void) {
-  return tap((event: HttpEvent<T>) => {
-    if (event.type === HttpEventType.UploadProgress) {
-      cb(Math.round((100 * event.loaded) / event.total));
-    }
-  });
-}
-
-export function toResponseBody<T>() {
-  return pipe(
-    filter((event: HttpEvent<T>) => event.type === HttpEventType.Response),
-    map((res: HttpResponse<T>) => res.body)
-  );
-}
-
-export function toFormData<T>(formValue: T) {
-  const formData = new FormData();
-
-  for (const key of Object.keys(formValue)) {
-    const value = formValue[key];
-    formData.append(key, value);
-  }
-
-  return formData;
-}
+import {fileSize} from '@rxweb/reactive-form-validators';
 
 @Component({
   selector: 'app-add-product',
@@ -82,8 +53,6 @@ export class AddProductComponent implements OnInit {
   progressMain: { percentage: number } = {percentage: 0};
 
 
-
-
   @ViewChild('productImage') file;
 
 
@@ -98,7 +67,7 @@ export class AddProductComponent implements OnInit {
   private loadCategories() {
     this.productsService.getCategories().subscribe((data: Category[]) => {
       this.categories = data;
-      console.log(this.categories);
+      console.log('CAtegories', this.categories);
     });
   }
 
@@ -178,13 +147,17 @@ export class AddProductComponent implements OnInit {
 
   upload() {
     this.progress.percentage = 0;
+    this.progressMain.percentage = 0;
 
-    this.currentFileUpload = this.selectedFiles.item(0);
+    this.currentMainFileUpload = this.selectedMainFiles.item(0);
     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
       console.log('currentFileUpload', this.currentFileUpload);
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round(100 * event.loaded / event.total);
+        this.progressMain.percentage = Math.round(100 * event.loaded / event.total);
       } else if (event instanceof HttpResponse) {
+        console.log('selectedFiles!!!' + this.selectedFiles);
+        console.log('selectedMainFiles!!!' + this.selectedMainFiles);
         console.log('File is completely uploaded!');
       }
     });
@@ -249,8 +222,8 @@ export class AddProductComponent implements OnInit {
       frameColor: {id: parseInt(this.addProductForm.controls.productFrameColor.value, 10)},
       // image.ts: this.currentFileUpload
     };
-    console.log('productImage.value', this.currentFileUpload, this.currentMainFileUpload.name);
-    console.log(this.addProductForm.controls.productImages.value[0]);
+    // console.log('productImage.value', this.currentFileUpload, this.currentMainFileUpload.name);
+    // console.log(this.addProductForm.controls.productImages.value[0]);
 
     const json = JSON.stringify(product);
     const blob = new Blob([json], {type: 'application/json'});
@@ -267,8 +240,16 @@ export class AddProductComponent implements OnInit {
 
     this.productsService.createProduct(formData)
       .subscribe((event) => {
+          const mainFileSize = this.currentMainFileUpload.size;
+          const filesSize = this.currentFileUpload.size;
           if (event.type === HttpEventType.UploadProgress) {
-            this.progress.percentage = Math.round(100 * event.loaded / event.total);
+            // for (let i = 0; i < this.selectedFiles.length; i++) {
+            //   filesSize += this.selectedFiles.item(i).pageSize;
+            // }
+            this.progress.percentage = Math.round(100 * (event.loaded - mainFileSize) / (event.total - mainFileSize));
+            this.progressMain.percentage = Math.round(100 * (event.loaded - filesSize) / (event.total - filesSize));
+            console.log(filesSize + 'and' + mainFileSize);
+
           } else if (event instanceof HttpResponse) {
             console.log('File is completely uploaded!');
           }
@@ -278,25 +259,25 @@ export class AddProductComponent implements OnInit {
     // this.selectedMainFiles = undefined;
   }
 
-  buildFormData(formData, data, parentKey?) {
-    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-      Object.keys(data).forEach(key => {
-        this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-      });
-    } else {
-      const value = data == null ? '' : data;
-
-      formData.append(parentKey, value);
-    }
-  }
-
-  jsonToFormData(data) {
-    const formData = new FormData();
-
-    this.buildFormData(formData, data);
-
-    return formData;
-  }
+  // buildFormData(formData, data, parentKey?) {
+  //   if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+  //     Object.keys(data).forEach(key => {
+  //       this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+  //     });
+  //   } else {
+  //     const value = data == null ? '' : data;
+  //
+  //     formData.append(parentKey, value);
+  //   }
+  // }
+  //
+  // jsonToFormData(data) {
+  //   const formData = new FormData();
+  //
+  //   this.buildFormData(formData, data);
+  //
+  //   return formData;
+  // }
 
   // addImage(): void {
   //   (this.addProductForm.controls.productImages as FormArray).push(new FormControl('', [

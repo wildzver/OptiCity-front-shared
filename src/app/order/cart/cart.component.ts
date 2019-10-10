@@ -79,7 +79,7 @@ export class CartComponent implements OnInit, AfterContentChecked, CanActivate {
   addItem(productNumber: string) {
     this.productsService.getProductByProductNumber(productNumber).subscribe(value => {
       const mainImageIndex = value.images.findIndex(value2 => value2.mainImage = true);
-      this.imageUrl = `http://localhost:8080/product-image/${value.images[mainImageIndex].imageName}`;
+      this.imageUrl = `/api/product-image/${value.images[mainImageIndex].imageName}`;
       const item: CartItem = {
         product: {
           productNumber: value.productNumber,

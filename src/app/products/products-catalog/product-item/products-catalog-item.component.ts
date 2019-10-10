@@ -15,17 +15,22 @@ export class ProductsCatalogItemComponent implements OnInit {
   showExtendedItem: boolean;
 
 
-  constructor(private cartComponent: CartComponent) {}
+  constructor(private cartComponent: CartComponent) {
+  }
 
   ngOnInit() {
     const mainImageIndex = this.productInput.images.findIndex(value => value.mainImage = true);
-    this.imageUrl = `http://localhost:8080/product-image/${this.productInput.images[mainImageIndex].imageName}`;
+    if (this.productInput.images.length === 0) {
+      this.imageUrl = `/api/product-image/5d1dc3e46d1bd680503848.jpg`;
+    } else {
+      this.imageUrl = `/api/product-image/${this.productInput.images[mainImageIndex].imageName}`;
+    }
     this.showExtendedItem = false;
   }
 
   addToCart(productNumber: string) {
-    this.cartComponent.addItem(productNumber)
+    this.cartComponent.addItem(productNumber);
     console.log('productAddedToCart!!!');
-    console.log(productNumber);
+    console.log('--->', productNumber);
   }
 }
