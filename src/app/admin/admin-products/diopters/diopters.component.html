@@ -1,0 +1,39 @@
+<div id="sexes">
+  <h2> Diopters List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let diopter of diopters">
+      <ng-template [ngTemplateOutlet]="loadTemplate(diopter)"
+                   [ngTemplateOutletContext]="{$implicit: diopter}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addDiopter()"/>
+
+  <ng-template #readOnlyTemplate let-diopter>
+    <td (click)="editDiopter(diopter)">{{diopter.id}}</td>
+    <td (click)="editDiopter(diopter)">{{diopter.value}}</td>
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteDiopter(diopter)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedDiopter.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedDiopter.value" class="form-control"/>
+    </td>
+  </ng-template>
+
+</div>

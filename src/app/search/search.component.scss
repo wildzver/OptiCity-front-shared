@@ -1,98 +1,65 @@
-//@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-form {
-
-
-  width: 300px !important;
-  color: white;
-
-
-}
-
-.mat-form-field {
-  border: 0px;
-  min-width: 150px !important;
-  max-width: 500px !important;
-  width: 100% !important;
-}
-
-.mat-option {
-  min-width: 150px !important;
-  max-width: 500px !important;
-  width: 100% !important;
-}
-
-
-::ng-deep .mat-autocomplete-panel {
-  max-height: 300px !important;
-}
-
-//mat-autocomplete {
-//  height: 100% !important;
-//  max-height: 500px !important;
-//
-//}
-
-.cell {
-  margin-left: 10px;
-
-
-
-}
-
-.price{
-  margin-left: auto;
-
-  p{
-    margin: 0;
-  }
-}
-
 .flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
+.jc-flex-start {
   justify-content: flex-start;
-  align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+//.all-products {
+//  margin: 10px 20px;
+//  display: flex;
+//  align-content: flex-start;
+//  flex-direction: row;
+//  flex-wrap: wrap;
+//  align-self: flex-start;
+//}
+//
+//a {
+//  cursor: pointer;
+//}
+
+.container {
+  //position: relative;
+  width: auto;
+  bottom: 100vw;
+  //align-self: center;
+  //right: 25%;
+  //left: 50%;
+  //margin-left: -150px;
 }
 
 .flex-column {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  //width: 300px;
+  //justify-content: space-between;
+  //align-items: flex-start;
+  width: 100%;
 }
 
-.mat-option {
-  line-height: 18px !important;
+app-pagination {
+  align-self: center;
 }
 
-
-//input {
-//  color: white;
-//}
-
-.searchAll {
-  margin: 0 0 0 16px;
-  color: blue;
-  //position: fixed;
-  //bottom: 450px;
-  //z-index: 10;
+.total-items {
+  position: relative;
+  margin: 0 0 10px 40px;
+  //left: 300px;
 }
-
-.searchAll:hover {
-  color: hotpink;
-  cursor: pointer;
-  text-decoration: underline;
-
-
-}
-
-.mat-icon-button:hover:enabled {
-  color: hotpink;
-}
-
-button:focus {
-  outline: none !important;
-}
-
-
-

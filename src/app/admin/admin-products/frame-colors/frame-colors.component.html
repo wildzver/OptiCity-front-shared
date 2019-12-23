@@ -6,6 +6,7 @@
       <th class="">Id</th>
       <th class="">Name</th>
       <th class="">UA Name</th>
+      <th class="">Image</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
     <td (click)="editFrameColor(frameColor)">{{frameColor.id}}</td>
     <td (click)="editFrameColor(frameColor)">{{frameColor.name}}</td>
     <td (click)="editFrameColor(frameColor)">{{frameColor.uaName}}</td>
+    <td>{{frameColor.imageName}}</td>
     <td class="delete">
       <input type="button" value="delete" class="btn btn-danger material-icons form-control"
              (click)="deleteFrameColor(frameColor)"/>
@@ -38,6 +40,9 @@
     </td>
     <td class="uaName">
       <input type="text" [(ngModel)]="editedFrameColor.uaName" class="form-control"/>
+    </td>
+    <td class="imageName">
+      <input type="file" [(ngModel)]="editedFrameColor.imageName" (change)="selectFile($event)" class="form-control"/>
     </td>
   </ng-template>
 

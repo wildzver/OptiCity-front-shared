@@ -1,0 +1,339 @@
+<div id="edit-product">
+  <h5>Редагувати:</h5>
+
+  <form [formGroup]="editProductForm" novalidate
+        (ngSubmit)="updateProduct()">
+
+    <div class="flex-row jc-center wrap">
+      <div class="flex-column align-items-end info-column">
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Номер моделі*:</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="modelNumber" title="Лише цифри"
+                     formControlName="modelNumber"
+                     [ngClass]="checker('modelNumber')">
+              <small class="form-text" *ngIf="products?.length && editProductForm.controls['modelNumber'].valid">Номер
+                "{{products[0].productDetails.modelNumber}}" присутній у базі
+              </small>
+              <small class="form-text" *ngIf="freeModelNumber">Наступний вільний номер: "{{freeModelNumber}}"</small>
+              <small class="warning-text" *ngIf="hasError('modelNumber', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('modelNumber', 'hasDigit')">Лише цілі додатні числа!</small>
+              <small class="warning-text" *ngIf="hasError('modelNumber', 'intSrartsAtZero')">Неправильний формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Категорія товару*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="category"
+                      formControlName="productCategory"
+                      [ngClass]="checker('productCategory')">
+                <option disabled value="">Категорія товару*</option>
+                <option *ngFor="let category of categories" [value]="category.id">{{category.uaName}}</option>
+              </select>
+              <small class="warning-text" *ngIf="hasError('productCategory', 'required')">Обов'язкове поле!</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="flex-row">
+          <label for="diopters">
+            <span>Діоптрії</span>
+          </label>
+
+          <div id="diopters" class="form-group">
+            <div class="select-box" (click)="toggleDioptersCheckboxes()">
+              <select class="form-control">
+                <option>Діоптрії</option>
+              </select>
+              <div class="over-select"></div>
+            </div>
+
+            <div id="diopter-checkboxes" class="form-group">
+              <div formArrayName="productDiopters"
+                   *ngFor="let diopter of editProductForm.controls['productDiopters'].controls; let i = index">
+                <label>
+                  <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked" type="checkbox"
+                         name="productDiopter"
+                         [formControlName]="i" (change)=changeDiopter(diopters[i].id)>
+                  {{diopters[i].value}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Ціна*</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="price"
+                     formControlName="productPrice"
+                     title="лише цифри"
+                     [ngClass]="checker('productPrice')">
+              <small class="warning-text" *ngIf="hasError('productPrice', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('productPrice', 'hasDigit')">Лише цілі додатні числа!
+              </small>
+              <small class="warning-text" *ngIf="hasError('productPrice', 'intSrartsAtZero')">Неправильний формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Стать*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="price"
+                      formControlName="productSex"
+                      [ngClass]="checker('productSex')">
+                <option disabled value="">Стать*</option>
+                <option *ngFor="let sex of sexes" [value]="sex.id">{{sex.uaName}}</option>
+              </select>
+              <small class="warning-text" *ngIf="hasError('productCategory', 'required')">Обов'язкове поле!</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Колір лінзи*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="lensColor"
+                      formControlName="productLensColor"
+                      [ngClass]="checker('productLensColor')">
+                <option disabled value="">Колір лінзи*</option>
+                <option *ngFor="let lensColor of lensColors; let i = index"
+                        [disabled]="lensColors[i].enableOption === false"
+                        [value]="lensColor.id">{{lensColor.uaName}}</option>
+              </select>
+              <small class="warning-text" *ngIf="hasError('productLensColor', 'required')">Обов'язкове поле!</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Матеріал лінзи*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="lensMaterial"
+                      formControlName="productLensMaterial"
+                      [ngClass]="checker('productLensMaterial')">
+                <option disabled value="">Матеріал лінзи*</option>
+                <option *ngFor="let lensMaterial of lensMaterials; let i = index"
+                        [disabled]="lensMaterials[i].enableOption === false"
+                        [value]="lensMaterial.id">{{lensMaterial.uaName}}</option>
+              </select>
+            </div>
+          </label>
+          <small class="warning-text" *ngIf="hasError('productLensMaterial', 'required')">Обов'язкове поле!</small>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Ширина лінзи*</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="lensWidth" placeholder="Ширина лінзи*"
+                     formControlName="productLensWidth"
+                     title="лише цифри"
+                     [ngClass]="checker('productLensWidth')">
+              <small class="warning-text" *ngIf="hasError('productLensWidth', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('productLensWidth', 'hasDigit')">Лише цілі додатні числа!
+              </small>
+              <small class="warning-text" *ngIf="hasError('productLensWidth', 'intSrartsAtZero')">Неправильний формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Висота лінзи*</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="lensHeight" placeholder="Висота лінзи *"
+                     formControlName="productLensHeight"
+                     title="лише цифри"
+                     [ngClass]="checker('productLensHeight')">
+              <small class="warning-text" *ngIf="hasError('productLensHeight', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('productLensHeight', 'hasDigit')">Лише цілі додатні числа!
+              </small>
+              <small class="warning-text" *ngIf="hasError('productLensHeight', 'intSrartsAtZero')">Неправильний формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Загальна ширина*</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="totalWidth" placeholder="Загальна ширина *"
+                     formControlName="productTotalWidth"
+                     title="лише цифри"
+                     [ngClass]="checker('productTotalWidth')">
+              <small class="warning-text" *ngIf="hasError('productTotalWidth', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('productTotalWidth', 'hasDigit')">Лише цілі додатні числа!
+              </small>
+              <small class="warning-text" *ngIf="hasError('productTotalWidth', 'intSrartsAtZero')">Неправильний формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Довжина дужки*</span>
+            <div class="flex-column">
+              <input class="form-control" type="number" min="0" step="1" name="bracketLength" placeholder="Довжина дужки *"
+                     formControlName="productBracketLength"
+                     title="лише цифри"
+                     [ngClass]="checker('productBracketLength')">
+              <small class="warning-text" *ngIf="hasError('productBracketLength', 'required')">Обов'язкове поле!</small>
+              <small class="warning-text" *ngIf="hasError('productBracketLength', 'hasDigit')">Лише цілі додатні числа!
+              </small>
+              <small class="warning-text" *ngIf="hasError('productBracketLength', 'intSrartsAtZero')">Неправильний
+                формат!
+              </small>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group polarization-container">
+          <label>
+            <input #polarized type="checkbox" name="polarization"
+                   formControlName="productPolarization" [checked]="polarization" (change)=changePolarization()
+                   [value]="polarized.checked? true : false">
+            Поляризація
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Колір оправи*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="frameColor"
+                      formControlName="productFrameColor"
+                      [ngClass]="checker('productFrameColor')">
+                <option disabled value="">Колір оправи *</option>
+                <option *ngFor="let frameColor of frameColors, let i = index"
+                        [disabled]="frameColors[i].enableOption === false"
+                        [value]="frameColor.id">{{frameColor.uaName}}</option>
+              </select>
+            </div>
+          </label>
+          <small class="warning-text" *ngIf="hasError('productFrameColor', 'required')">Обов'язкове поле!</small>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Матеріал оправи*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="frameMaterial"
+                      formControlName="productFrameMaterial"
+                      [ngClass]="checker('productFrameMaterial')">
+                <option disabled value="">Матеріал оправи *</option>
+                <option *ngFor="let frameMaterial of frameMaterials, let i = index"
+                        [disabled]="frameMaterials[i].enableOption === false"
+                        [value]="frameMaterial.id">{{frameMaterial.uaName}}</option>
+              </select>
+            </div>
+          </label>
+          <small class="warning-text" *ngIf="hasError('productFrameMaterial', 'required')">Обов'язкове поле!</small>
+        </div>
+
+        <div class="form-group">
+          <label class="flex-row">
+            <span>Країна походження*</span>
+            <div class="flex-column">
+              <select aria-label="13" class="form-control" name="origin"
+                      formControlName="productOrigin"
+                      [ngClass]="checker('productOrigin')">
+                <option disabled value="">Країна походження *</option>
+                <option *ngFor="let origin of origins"
+                        [value]="origin.id">{{origin.uaName}}</option>
+              </select>
+            </div>
+          </label>
+          <small class="warning-text" *ngIf="hasError('productOrigin', 'required')">Обов'язкове поле!</small>
+        </div>
+
+      </div>
+
+      <div class="flex-column jc-space-between imgs-column">
+
+        <div>
+          <div formArrayName="productMainImages">
+            <div class="form-group"
+                 *ngFor="let productMainImage of editProductForm.controls['productMainImages'].controls; let i = index">
+              <div class="flex-column imgs-container">
+
+                <div class="images">
+                  <div *ngIf="mainImage">
+                    <div class="img-container">
+                      <img [src]="[productImagesUrl + mainImage?.imageName]" alt="main-img">
+                    </div>
+                    <button type='button' class="remove-img-btn flex-row jc-center align-items-center">
+                      <img src="assets/images/close_white.png" alt="X" (click)="removeImage(mainImage.id)">
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="selectedMainImages?.length" class="progress">
+                  <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
+                       attr.aria-valuenow="{{progressMainImages.percentage}}"
+                       aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progressMainImages.percentage+'%'}">
+                    {{progressMainImages.percentage}}%
+                  </div>
+                </div>
+                <input #mainImageInput id="main-image" type="file" (change)="selectMainImage($event)"
+                       name="main-image" formControlName="{{i}}">
+                <!--<label for="main-image">-->
+                <button type="button" class="submit-btn"
+                        (click)="mainImageInput.click()">{{mainImage ? "змінити головне зображення" : "додати головне зображення"}}</button>
+                <!--</label>-->
+              </div>
+            </div>
+          </div>
+
+          <div formArrayName="productImages">
+            <div class="form-group"
+                 *ngFor="let productImage of editProductForm.controls['productImages'].controls; let i = index">
+              <div class="flex-column imgs-container">
+                <div class="flex-row images">
+                  <div *ngFor="let addedImg of addedImages let i = index">
+                    <div class="img-container">
+                      <img [src]="[productImagesUrl + addedImg.imageName]" alt="image {{i}}">
+                    </div>
+                    <button type='button' class="remove-img-btn flex-row jc-center align-items-center">
+                      <img src="assets/images/close_white.png" alt="X"
+                           (click)="removeImage(addedImg.id)"></button>
+                  </div>
+                </div>
+                <div *ngIf="selectedImages" class="progress">
+                  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                       attr.aria-valuenow="{{progressAddedImages.percentage}}"
+                       aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progressAddedImages.percentage+'%'}">
+                    {{progressAddedImages.percentage}}%
+                  </div>
+                </div>
+                <input #addedImagesInput id="added-images" type="file" (change)="selectImages($event)"
+                       name="added-images" formControlName="{{i}}" multiple>
+                <button type="button" class="submit-btn" (click)="addedImagesInput.click()">додати зображення</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <input class="submit-btn" type="submit" value="Оновити продукт" [disabled]="editProductForm.invalid">
+
+      </div>
+    </div>
+
+
+  </form>
+</div>

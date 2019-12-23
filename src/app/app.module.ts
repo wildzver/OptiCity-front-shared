@@ -17,7 +17,7 @@ import {AuthGuard} from './shared/auth/auth.guard';
 import {CartComponent} from './order/cart/cart.component';
 import { OrderDetailsComponent } from './order/order-details/order-details.component';
 import { OrderComponent } from './order/order.component';
-import { SearchComponent } from './search/search.component';
+import { SearchPanelComponent } from './header/search-panel/search-panel.component';
 import {NgbCarousel, NgbCarouselModule, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -37,6 +37,9 @@ import {BreadcrumbNavigationModule} from './breadcrumb-navigation/breadcrumb-nav
 import {ServicesModule} from './services/services.module';
 import { FooterComponent } from './footer/footer.component';
 import { SortPanelComponent } from './sort-panel/sort-panel.component';
+import { SearchComponent } from './search/search.component';
+import {SearchModule} from './search/search.module';
+import {SpinnerOverlayModule} from './core/spinner-overlay/spinner-overlay.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,7 @@ import { SortPanelComponent } from './sort-panel/sort-panel.component';
     ContactsComponent,
     HowOrderComponent,
     FooterComponent,
-    // SearchComponent,
+    // SearchPanelComponent,
     // AuthGuard
   ],
   imports: [
@@ -78,11 +81,11 @@ import { SortPanelComponent } from './sort-panel/sort-panel.component';
     MatToolbarModule,
     BreadcrumbNavigationModule,
     ServicesModule,
-
-
+    SearchModule,
+    SpinnerOverlayModule
   ],
   // exports: [
-  //   SearchComponent
+  //   SearchPanelComponent
   // ],
   providers: [],
   bootstrap: [AppComponent],

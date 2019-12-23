@@ -1,22 +1,24 @@
-<!--<a [routerLink]="/products/{{productInput.category.name}}/{{productInput.productNumber}}">-->
-<a (mouseenter)="showExtendedItem=true" (mouseleave)="showExtendedItem=false">
-  <div class="product">
-    <a [routerLink]="[productInput.category.name, productInput.productNumber]">
-      <img class="product-image" [src]=imageUrl alt="product main image">
+<div class="product flex-column jc-space-between align-items-center">
+  <a class="product-img-container flex-row jc-center align-items-center"
+     [routerLink]="['/products', productInput.category ? productInput.category.name : productInput.categoryName, productInput.productNumber]">
+    <img class="product-image" [src]=imageUrl alt="product main image">
+  </a>
+  <div class="flex-column jc-flex-start align-items-center product-info">
+    <!--<div class="pn-price flex-column jc-flex-start align-items-center">-->
+    <!--<div class="flex-column align-items-start">-->
+    <a
+      [routerLink]="['/products', productInput.category ? productInput.category.name : productInput.categoryName, productInput.productNumber]">
+      <p class="category">
+        <i>арт. {{productInput.productNumber}}</i>
+      </p>
     </a>
-    <div class="product-info">
-
-      <a class="like" (click)="addToCart(productInput.productNumber)">
-        <!--<img src="/assets/images/like.png">-->
-        <i class="material-icons">add_shopping_cart</i>
-      </a>
-      <p class="article"><i>Арт. {{productInput.productNumber}}</i></p>
-      <p class="price">{{productInput.productDetails.price}} грн</p>
-    </div>
-    <!--<div class="extendedItem">-->
-    <!--<p>I`m here!</p>-->
     <!--</div>-->
+    <!--</div>-->
+    <div class="flex-row jc-space-between align-items-center">
+      <p class="price">{{productInput.productDetails ? productInput.productDetails.price : productInput.price}} грн</p>
+      <a class="cart" (click)="cartService.addItem(productInput.uuid, 1)">
+        <img src="assets/images/shopping-bag-blue.svg">
+      </a>
+    </div>
   </div>
-
-
-</a>
+</div>

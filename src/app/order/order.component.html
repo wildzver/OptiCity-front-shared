@@ -1,26 +1,22 @@
-<div id="order">
-  <app-cart></app-cart>
-  <div class="row">
-    <div>
-      <button class="btn btn-danger" (click)="clearCart()">X ОЧИСТИТИ КОРЗИНУ</button>
-    </div>
-    <div>
-      <button class="btn btn-success" *ngIf="totalCartQuantity > 0 else chooseProducts"
-              [disabled]="totalCartQuantity <1" (click)="showOrderDetails = true">ОФОРМИТИ ЗАМОВЛЕННЯ
-      </button>
-    </div>
+<div id="order" class="flex-column align-items-center">
+  <div class="flex-column">
+    <app-cart></app-cart>
+    <button *ngIf="!showOrderDetails && cartService.cart?.orderList.length > 0 else chooseProducts"
+            (click)="scrollToOrderDetails()">ОФОРМИТИ
+    </button>
   </div>
 
-  <div [hidden]="!showOrderDetails">
-    <app-order-details></app-order-details>
+  <div id="order-details" #target *ngIf="showOrderDetails" class="flex-column" [@fadeInOut]>
+    <app-order-details [buyerContactsForm]="buyerContactsForm"></app-order-details>
 
-    <button class="order btn btn-success"
-            [disabled]="!isBuyerContactsFormValid || !isDeliveryAdressFormValid ||totalCartQuantity <1"
+    <button [disabled]="!isBuyerContactsFormValid || !isDeliveryAdressFormValid ||totalCartQuantity <1"
             (click)="order()">ЗАМОВИТИ
     </button>
   </div>
 
   <ng-template #chooseProducts>
-    <button class="btn btn-success" routerLink="/products" [hidden]="totalCartQuantity > 0" title="Оберіть товар">ОБРАТИ ТОВАР</button>
+    <button *ngIf="cartService.cart?.orderList.length == 0" class="" routerLink="/products" [hidden]="totalCartQuantity > 0" title="Оберіть товар">КАТАЛОГ</button>
   </ng-template>
 </div>
+
+<app-spinner-overlay *ngIf="showSpinner"></app-spinner-overlay>

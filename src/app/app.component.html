@@ -1,8 +1,10 @@
 <div id="container">
-  <app-header id="header"></app-header>
+  <div id="page-wrap">
+    <app-header id="header" class="sticky"></app-header>
+  </div>
 
-  <div id="content" class="content">
-    <router-outlet></router-outlet>
+  <div id="content" (scroll)="onWindowScroll($event)" class="content">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
 
   <app-footer id="footer"></app-footer>

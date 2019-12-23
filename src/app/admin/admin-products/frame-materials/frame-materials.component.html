@@ -1,0 +1,44 @@
+<div id="sexes">
+  <h2> Frame Materials List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Name</th>
+      <th class="">UA Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let frameMaterial of frameMaterials">
+      <ng-template [ngTemplateOutlet]="loadTemplate(frameMaterial)"
+                   [ngTemplateOutletContext]="{$implicit: frameMaterial}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addFrameMaterial()"/>
+
+  <ng-template #readOnlyTemplate let-frameMaterial>
+    <td (click)="editFrameMaterial(frameMaterial)">{{frameMaterial.id}}</td>
+    <td (click)="editFrameMaterial(frameMaterial)">{{frameMaterial.name}}</td>
+    <td (click)="editFrameMaterial(frameMaterial)">{{frameMaterial.uaName}}</td>
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteFrameMaterial(frameMaterial)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedFrameMaterial.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedFrameMaterial.name" class="form-control"/>
+    </td>
+    <td class="uaName">
+      <input type="text" [(ngModel)]="editedFrameMaterial.uaName" class="form-control"/>
+    </td>
+  </ng-template>
+
+</div>

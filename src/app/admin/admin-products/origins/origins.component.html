@@ -1,0 +1,44 @@
+<div id="sexes">
+  <h2> Origins List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Name</th>
+      <th class="">UA Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let origin of origins">
+      <ng-template [ngTemplateOutlet]="loadTemplate(origin)"
+                   [ngTemplateOutletContext]="{$implicit: origin}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addOrigin()"/>
+
+  <ng-template #readOnlyTemplate let-origin>
+    <td (click)="editOrigin(origin)">{{origin.id}}</td>
+    <td (click)="editOrigin(origin)">{{origin.name}}</td>
+    <td (click)="editOrigin(origin)">{{origin.uaName}}</td>
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteOrigin(origin)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedOrigin.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedOrigin.name" class="form-control"/>
+    </td>
+    <td class="uaName">
+      <input type="text" [(ngModel)]="editedOrigin.uaName" class="form-control"/>
+    </td>
+  </ng-template>
+
+</div>

@@ -1,4 +1,4 @@
-<div id="lens-colors-list">
+<div id="sexes">
   <h2> Lens Colors List</h2>
   <table class="table table-hover">
     <thead>
@@ -6,6 +6,7 @@
       <th class="">Id</th>
       <th class="">Name</th>
       <th class="">UA Name</th>
+      <th class="">Image</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
     <td (click)="editLensColor(lensColor)">{{lensColor.id}}</td>
     <td (click)="editLensColor(lensColor)">{{lensColor.name}}</td>
     <td (click)="editLensColor(lensColor)">{{lensColor.uaName}}</td>
+    <td>{{lensColor.imageName}}</td>
     <td class="delete">
       <input type="button" value="delete" class="btn btn-danger material-icons form-control"
              (click)="deleteLensColor(lensColor)"/>
@@ -38,6 +40,9 @@
     </td>
     <td class="uaName">
       <input type="text" [(ngModel)]="editedLensColor.uaName" class="form-control"/>
+    </td>
+    <td class="imageName">
+      <input type="file" [(ngModel)]="editedLensColor.imageName" (change)="selectFile($event)" class="form-control"/>
     </td>
   </ng-template>
 

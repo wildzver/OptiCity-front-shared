@@ -1,12 +1,10 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Sort} from '../shared/models/sort';
 import {SortDirection} from '../shared/models/sortDirection';
-import {ProductsService} from '../shared/services/products.service';
-import {BehaviorSubject} from 'rxjs';
-import {PagerService} from '../shared/services/pager.service';
-import {ActivatedRoute} from '@angular/router';
-import {query} from '@angular/animations';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {PagerService} from '../shared/app-services/pager.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -15,64 +13,76 @@ import {query} from '@angular/animations';
   styleUrls: ['./sort-panel.component.scss']
 })
 
-export class SortPanelComponent implements OnInit {
+export class SortPanelComponent implements OnInit, OnDestroy {
 
-  sortBy = 'price';
-  private sortBySource = new BehaviorSubject(this.sortBy);
-  currentSortBy = this.sortBySource.asObservable();
+  sortBy = 'productNumber';
   sortDirection = 'ASC';
 
-  pageSizeOptions: number[] = [16, 24, 32];
+  pageSizeOptions: number[] = [24, 48, 96];
 
   pageSize = this.pageSizeOptions[0];
   sortPanelForm: FormGroup;
-  // categories = Category[''];
 
   sortOptions: Sort[] = [
-    {label: 'від дешевих до дорогих', value: 'price', direction: SortDirection.ASC},
-    {label: 'від дорогих до дешевих', value: 'price', direction: SortDirection.DESC},
-    {label: 'А-яA-z', value: 'productNumber', direction: SortDirection.ASC},
-    {label: 'Я-аZ-a', value: 'productNumber', direction: SortDirection.DESC},
+    {label: 'назва '.concat(String.fromCharCode(8593)), value: 'productNumber', direction: SortDirection.ASC},
+    {label: 'назва '.concat(String.fromCharCode(8595)), value: 'productNumber', direction: SortDirection.DESC},
+    {label: 'ціна '.concat(String.fromCharCode(8593)), value: 'price', direction: SortDirection.ASC},
+    {label: 'ціна '.concat(String.fromCharCode(8595)), value: 'price', direction: SortDirection.DESC},
   ];
 
   sortOptionsLabels: string[] = [];
 
+  querySubscription = new Subscription();
+  pageSizeSubscription = this.pagerService.currentPageSize.subscribe(
+    pageSize => {
+      this.pageSize = pageSize;
+      console.log('PAGINATION - SORT PANEL PAGE SIZE', this.pageSize);
+    }
+  );
+  sortBySubscription = this.pagerService.currentSortBy.subscribe(
+    sortBy => {
+      this.sortBy = sortBy;
+      console.log('PAGINATION - SORT PANEL SORT BY', this.sortBy);
+    }
+  );
+  sortDirectionSubscription = this.pagerService.currentSortDirection.subscribe(
+    sortDirection => {
+      this.sortDirection = sortDirection;
+      console.log('PAGINATION - SORT PANEL SORT DIRECTION', this.sortDirection);
+    }
+  );
 
   constructor(private fb: FormBuilder,
               private pagerService: PagerService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.loadCurrentPageSize();
+    this.querySubscription
+      .add(this.pageSizeSubscription)
+      .add(this.sortBySubscription)
+      .add(this.sortDirectionSubscription);
     this.initSortOptionsLabels();
     this.initSortPanelGroup();
-    this.setSortByAndPageSize();
+    this.setSortBy();
+    this.setPageSize();
   }
 
-  // private loadCategories() {
-  //   this.pS.getCategories().subscribe((data: Category[]) => {
-  //     this.categories = data;
-  //     console.log('CAtegories', this.categories);
-  //   });
-  // }
-
-  private setCurrentPageSize() {
-    const queryParams = this.activatedRoute.snapshot.queryParamMap;
-    if (queryParams.has('pagesize')) {
-      this.pageSize = parseInt(queryParams.get('pagesize'), 10);
-    }
-    this.pagerService.changePageSize(this.pageSize);
-    return this.pageSize;
+  ngOnDestroy(): void {
+    this.querySubscription.unsubscribe();
   }
 
-  private loadCurrentPageSize() {
-    this.pagerService.currentPageSize.subscribe(
-      pageSize => {
-        this.pageSize = pageSize;
-        console.log('PAGINATION - SORT PANEL PAGE SIZE', this.pageSize);
-      }
-    );
+
+
+  private setCurrentSort() {
+    const currentSortOption = this.sortOptions
+      .find(sortoption => {
+          return sortoption.value === this.sortBy && SortDirection[sortoption.direction] === this.sortDirection;
+        }
+      );
+    console.log('currentSortOptionLabel FOR CHECK', currentSortOption);
+    return currentSortOption ? currentSortOption.label : this.sortOptionsLabels[0];
   }
 
   private initSortOptionsLabels() {
@@ -81,8 +91,8 @@ export class SortPanelComponent implements OnInit {
 
   private initSortPanelGroup() {
     this.sortPanelForm = this.fb.group({
-      sortBy: new FormControl('від дешевих до дорогих', Validators.required),
-      pageSize: new FormControl(this.setCurrentPageSize(), Validators.required)
+      sortBy: new FormControl(this.setCurrentSort(), Validators.required),
+      pageSize: new FormControl(this.pageSize, Validators.required)
     });
   }
 
@@ -97,20 +107,40 @@ export class SortPanelComponent implements OnInit {
     }
   }
 
-  setSortByAndPageSize() {
-    this.sortPanelForm.valueChanges.subscribe(value => {
+  setSortBy() {
+    this.sortPanelForm.controls.sortBy.valueChanges.subscribe(value => {
         console.log('MY VALUE ON CHANGE', value);
-        const sortOption = this.sortOptions.find(value1 => value1.label === value.sortBy);
+        const sortOption = this.sortOptions.find(element => element.label === value);
         console.log('SORT OPTION', sortOption);
         this.sortBy = sortOption.value;
+        this.pagerService.changeSortBy(sortOption.value);
         console.log('MY SORTBY ON CHANGE', this.sortBy);
         this.sortDirection = SortDirection[sortOption.direction];
-        console.log('MY SORTDIRECTION ON CHANGE', this.sortDirection);
-        this.pageSize = value.pageSize;
-        console.log('MY SORT PANEL PAGE SIZE ON CHANGE', this.pageSize);
-        this.pagerService.changePageSize(value.pageSize);
+        this.pagerService.changeSortDirection(SortDirection[sortOption.direction]);
+        this.doSortQuery();
       }
     );
+  }
+
+  setPageSize() {
+    this.sortPanelForm.controls.pageSize.valueChanges.subscribe(value => {
+        this.pageSize = value;
+        console.log('MY SORT PANEL PAGE SIZE ON CHANGE', this.pageSize);
+        this.pagerService.changePageSize(value);
+      }
+    );
+  }
+
+
+  private doSortQuery() {
+    this.router.navigate(['.'], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        sb: this.sortBy,
+        sd: this.sortDirection
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
 }

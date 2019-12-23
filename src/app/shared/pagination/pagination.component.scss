@@ -1,31 +1,46 @@
-.pagination > .active > a,
-.pagination > .active > a:focus,
-.pagination > .active > a:hover,
-.pagination > .active > span,
-.pagination > .active > span:focus,
-.pagination > .active > span:hover {
-  background-color: #027FF4;
-  border-color: #027FF4;
-}
-
-.pagination > .active > a:hover {
-  color: white;
-}
-
-.pagination a {
-  cursor: pointer;
-}
-
-
 .pagination {
-  border: #002C40;
-}
+  display: flex;
+  align-items: center;
+  //width: 300px;
+  margin: 0 0 16px;
 
-li {
-  height: 35px;
-  width: 35px;
-  & img {
-    height: 10px;
+  li {
+    //height: 35px;
+    //width: min-content;
+    padding: 0 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      cursor: pointer;
+      color: rgba(#002C40, 0.7);
+
+      img {
+        height: 10px;
+        opacity: .7;
+      }
+
+      &:hover {
+        color: rgba(#002C40, 1);
+
+        img {
+          opacity: 1;
+        }
+      }
+    }
+
+    &.active {
+      a,
+      a:focus,
+      a:hover,
+      span,
+      span:focus,
+      span:hover {
+        border: none !important;
+        font-weight: bold;
+        color: rgba(#002C40, 1);
+      }
+    }
   }
 }
-

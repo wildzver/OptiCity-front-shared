@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router, UrlSegment} from '@angular/router';
 import {distinctUntilChanged, filter, map} from 'rxjs/operators';
-import {ProductsService} from '../shared/services/products.service';
+import {ProductsService} from '../shared/app-services/products.service';
 
 
 interface IBreadCrumb {
@@ -50,10 +50,10 @@ export class BreadcrumbNavigationComponent implements OnInit {
 
       if (category !== null) {
         this.productsService.getCategoryByName(category).subscribe(data => {
-          this.categoryLabel = data.uaName;
-
-          this.breadcrumbs = this.buildBreadCrumb(this.activatedRoute.root);
-
+          if (data) {
+            this.categoryLabel = data.uaName;
+            this.breadcrumbs = this.buildBreadCrumb(this.activatedRoute.root);
+          }
         });
       }
     });
@@ -80,6 +80,8 @@ export class BreadcrumbNavigationComponent implements OnInit {
           path = path.replace(param, route.snapshot.params[paramName]);
           if (param.startsWith(':category')) {
             label = this.categoryLabel;
+          } else if (param.startsWith(':productNumber')) {
+            label = 'Aрт. '.concat(route.snapshot.params[paramName]);
           } else {
             label = route.snapshot.params[paramName];
           }

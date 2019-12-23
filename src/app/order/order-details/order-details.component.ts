@@ -1,27 +1,47 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../shared/services/user.service';
+import {UserService} from '../../shared/app-services/user.service';
 import {CustomValidators} from '../../signup/custom-validators';
 import {User} from '../../shared/models/user';
 import {Adress} from '../../shared/models/adress';
+import {ValidateFn} from 'codelyzer/walkerFactory/walkerFn';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.scss'],
   styles: [`
+    input, textarea, textarea.ng-pristine {
+      border: 1px solid rgba(0, 44, 64, .3);
+    }
+
+    input.ng-valid, textarea.ng-dirty {
+      border: 1px solid rgba(0, 44, 64, 1);
+    }
+
     input.ng-touched.ng-invalid, select.ng-touched.ng-pristine {
       border: solid red 1px;
       /*border-left: solid red 6px;*/
     }
   `],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1000)),
+    ])
+  ]
 })
 export class OrderDetailsComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
   }
 
+  @Input()
   buyerContactsForm: FormGroup;
+
   deliveryAdressForm: FormGroup;
   buyerContacts: User;
   userComment: string;
@@ -33,18 +53,29 @@ export class OrderDetailsComponent implements OnInit {
     this.initBuyerContactsForm();
     this.initDeliveryAdressForm();
 
+    this.buyerContactsForm.controls.userComment.valueChanges.subscribe(value => {
+      if (value === '') {
+        this.buyerContactsForm.get('userComment').markAsPristine();
+      }
+    });
+
   }
 
   private initBuyerContactsForm() {
     this.buyerContactsForm = this.fb.group({
         userFirstName: new FormControl('', [
           Validators.required,
-          Validators.pattern('^[A-Za-zА-Яа-яІіЇїЄє\'-.\\s]+$')
+          Validators.pattern('^([A-Za-zА-Яа-яІіЇїЄє]+(\\\'|\\-|\\.?\\s))*[A-Za-zА-Яа-яІіЇїЄє]+$'),
+          CustomValidators.sizeValidator(2, 30, {size: true}),
         ]),
         userLastName: new FormControl('', [
           Validators.required,
-          Validators.pattern('^[A-Za-zА-Яа-яІіЇїЄє\'-.\\s]+$')]),
-        userEmail: new FormControl('', [Validators.required,
+          Validators.pattern('^([A-Za-zА-Яа-яІіЇїЄє]+(\\\'|\\-|\\.?\\s))*[A-Za-zА-Яа-яІіЇїЄє]+$'),
+          CustomValidators.sizeValidator(2, 30, {size: true}),
+
+        ]),
+        userEmail: new FormControl('', [
+          Validators.required,
           Validators.email
           // Validators.pattern('[a-zA-Z_]+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}')
         ]),
@@ -61,8 +92,13 @@ export class OrderDetailsComponent implements OnInit {
   private initDeliveryAdressForm() {
     this.deliveryAdressForm = this.fb.group({
 
-        adress: new FormControl('store', [Validators.required]),
-        settlement: new FormControl('', [Validators.required]),
+        adress: new FormControl('store', [
+          Validators.required
+        ]),
+        settlement: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2)
+        ]),
         branch: new FormControl('', [Validators.required]),
       },
     );
@@ -76,13 +112,19 @@ export class OrderDetailsComponent implements OnInit {
     }
   }
 
-  private isControlRequired(form: FormGroup, controlName: string): boolean {
-    const control = form.controls[controlName];
+  hasError(form: FormGroup, controlName: string, error: string): boolean {
+    const control = form.get(controlName);
 
-    const result = control.touched && control.hasError('required');
-
-    return result;
+    return (control.touched || control.dirty) && control.hasError(error);
   }
+
+  // private isControlRequired(form: FormGroup, controlName: string): boolean {
+  //   const control = form.controls[controlName];
+  //
+  //   const result = control.touched && control.hasError('required');
+  //
+  //   return result;
+  // }
 
   private isControlPatterned(form: FormGroup, controlName: string): boolean {
     const control = form.controls[controlName];
@@ -103,8 +145,7 @@ export class OrderDetailsComponent implements OnInit {
   private checker(form: FormGroup, controlName: string): string {
     if (form.controls[controlName].valid) {
       return 'is-valid';
-    }
-    if (form.controls[controlName].touched && form.controls[controlName].invalid) {
+    } else if (form.controls[controlName].touched && form.controls[controlName].invalid) {
       return 'is-invalid';
     } else {
       return 'is-default';

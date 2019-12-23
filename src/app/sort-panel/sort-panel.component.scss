@@ -3,33 +3,60 @@
 
   form {
     font-size: 14px;
+    color: #002C40;
 
     label {
       margin: 0 5px 0 0;
+      font-size: 14px;
+      font-weight: 700;
     }
+
     select {
       height: 25px;
       font-size: 14px;
+      color: #002C40;
       margin-right: 20px;
-      padding: 0;
+      background-color: transparent;
+      padding-left: 5px;
+      border: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url('~src/assets/images/expand_arrow_down.svg');
+      background-repeat: no-repeat, repeat;
+      background-position: right 5px top 50%, 0 0;
+      background-size: 15px auto, 100%;
+
+      &:hover, &:focus {
+        outline: none;
+      }
 
       option {
         font-size: 14px;
+        color: #002C40;
         padding: 0;
-        height: inherit;
-        min-height: 1em;
+        height: 20px;
+        min-height: 20px;
         width: inherit;
       }
+    }
 
-    }
     select[name="sortBy"] {
-      width: 200px;
+      width: 80px;
     }
+
     select[name="pageSize"] {
-      width: 100px;
+      width: 50px;
+    }
+
+    select {
+      cursor: pointer;
+
+      &:hover {
+        font-weight: 700;
+      }
     }
   }
-
 }
 
 .flex-row {
@@ -37,8 +64,4 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-}
-
-.material-icons{
-  font-size: 14px;
 }

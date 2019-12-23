@@ -1,10 +1,17 @@
-<div class="catalog-grid-container">
-  <!--<div class="home-catalog-grid">-->
-  <a *ngFor="let category of categories" [routerLink]="['/products/',category.name]">
-    <div class="catalog-grid-item">
-      <div class="opacity"></div>
-      <p class="home-catalog-title">{{category.uaName}}</p>
+<div id="home-catalog">
+  <div *ngFor="let categoryRow of categories" class="catalog-row">
+    <div *ngFor="let category of categoryRow" [routerLink]="['/products/',category.name]" class="catalog-row-item">
+      <!--<div class="opacity"></div>-->
+      <p class="home-catalog-title">{{category.uaName.toUpperCase()}}</p>
+      <button class="choose">
+        <span>обрати</span>
+        <img src="assets/images/arrow_right_long_white.svg">
+        </button>
       <img class="home-catalog-img" src='/api/category-image/{{category.imageName}}'>
     </div>
-  </a>
+  </div>
+  <div class="overlay" *ngIf="isLoading">
+    <app-spinner></app-spinner>
+  </div>
 </div>
+

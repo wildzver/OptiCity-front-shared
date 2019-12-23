@@ -9,24 +9,28 @@
     <div class="form-group">
       <div class="flex-row">
         <div>
-          <input class="form-control" type="text" name="modelNumber" placeholder="Артикул *"
+          <input class="form-control" type="text" name="modelNumber" placeholder="Артикул *" title="Лише цифри"
                  formControlName="modelNumber"
                  [ngClass]="checker('modelNumber')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productPrice')">Це поле є обов'язковим!</small>
+      <small class="form-text" *ngIf="products?.length && addProductForm.controls['modelNumber'].valid">Номер "{{products[0].productDetails.modelNumber}}" присутній у базі</small>
+      <small class="form-text" *ngIf="freeModelNumber">Наступний вільний номер: "{{freeModelNumber}}"</small>
+      <small class="warning-text" *ngIf="hasError('modelNumber', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('modelNumber', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('modelNumber', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
 
     <!--<div class="form-group">-->
     <!--<div class="flex-row">-->
-    <!--<app-file-uploader [progress]="progress" [ngClass]="checker('productImage')" formControlName="productImage"></app-file-uploader>-->
+    <!--<app-file-uploader [progressAddedImages]="progressAddedImages" [ngClass]="checker('productImage')" formControlName="productImage"></app-file-uploader>-->
     <!--&lt;!&ndash;<div>&ndash;&gt;-->
     <!--&lt;!&ndash;<input class="form-control" type="file" name="image.ts" value="Зображення *"&ndash;&gt;-->
     <!--&lt;!&ndash;formControlName="productImage"&ndash;&gt;-->
     <!--&lt;!&ndash;[ngClass]="checker('productImage')">&ndash;&gt;-->
     <!--&lt;!&ndash;</div>&ndash;&gt;-->
     <!--</div>-->
-    <!--<small class="form-text" *ngIf="isControlRequired('productImage')">Це поле є обов'язковим!</small>-->
+    <!--<small class="form-text" *ngIf="isControlRequired('productImage')">Обов'язкове поле!</small>-->
     <!--</div>-->
 
     <div formArrayName="productMainImages">
@@ -64,10 +68,11 @@
       </div>
     </div>
 
+
     <div class="form-group">
       <div class="flex-row">
         <div>
-          <select aria-label="13" class="form-control" name="category"
+          <select aria-label="13" class="form-control" name="category" [attr.disabled]="(products?.length && addProductForm.controls['modelNumber'].valid) ? '' : null"
                   formControlName="productCategory"
                   [ngClass]="checker('productCategory')">
             <option disabled value="">Категорія товару*</option>
@@ -75,7 +80,27 @@
           </select>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productCategory')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productCategory', 'required')">Обов'язкове поле!</small>
+    </div>
+
+    <div id="diopters" class="form-group">
+      <div class="select-box" (click)="toggleDioptersCheckboxes()">
+        <select class="form-control">
+          <option>Діоптрії</option>
+        </select>
+        <div class="over-select"></div>
+      </div>
+
+      <div id="diopter-checkboxes" class="form-group">
+        <div formArrayName="productDiopters"
+             *ngFor="let diopter of addProductForm.controls['productDiopters'].controls; let i = index">
+          <label>
+            <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked" type="checkbox" name="productDiopter"
+                   [formControlName]="i" (change)=changeDiopter(diopters[i].id)>
+            {{diopters[i].value}}
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
@@ -87,9 +112,25 @@
                  [ngClass]="checker('productPrice')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productPrice')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned('productPrice')">Введіть правильно ціну!</small>
+      <small class="warning-text" *ngIf="hasError('productPrice', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('productPrice', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('productPrice', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <select aria-label="13" class="form-control" name="price"
+                  formControlName="productSex"
+                  [ngClass]="checker('productSex')">
+            <option disabled value="">Стать *</option>
+            <option *ngFor="let sex of sexes" [value]="sex.id">{{sex.uaName}}</option>
+          </select>
+        </div>
+      </div>
+      <small class="warning-text" *ngIf="hasError('productCategory', 'required')">Обов'язкове поле!</small>
+    </div>
+
 
     <div class="form-group">
       <div class="flex-row">
@@ -98,11 +139,29 @@
                   formControlName="productLensColor"
                   [ngClass]="checker('productLensColor')">
             <option disabled value="">Колір лінзи *</option>
-            <option *ngFor="let lensColor of lensColors" [value]="lensColor.id">{{lensColor.uaName}}</option>
+            <option *ngFor="let lensColor of lensColors; let i = index"
+                    [disabled]="lensColors[i].enableOption === false"
+                    [value]="lensColor.id">{{lensColor.uaName}}</option>
           </select>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productLensColor')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productLensColor', 'required')">Обов'язкове поле!</small>
+    </div>
+
+    <div class="form-group">
+      <div class="flex-row">
+        <div>
+          <select aria-label="13" class="form-control" name="lensMaterial"
+                  formControlName="productLensMaterial"
+                  [ngClass]="checker('productLensMaterial')">
+            <option disabled value="">Матеріал лінзи *</option>
+            <option *ngFor="let lensMaterial of lensMaterials; let i = index"
+                    [disabled]="lensMaterials[i].enableOption === false"
+                    [value]="lensMaterial.id">{{lensMaterial.uaName}}</option>
+          </select>
+        </div>
+      </div>
+      <small class="warning-text" *ngIf="hasError('productLensMaterial', 'required')">Обов'язкове поле!</small>
     </div>
 
     <div class="form-group">
@@ -114,8 +173,9 @@
                  [ngClass]="checker('productLensWidth')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productLensWidth')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned('productLensWidth')">Введіть правильно довжину лінзи!</small>
+      <small class="warning-text" *ngIf="hasError('productLensWidth', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('productLensWidth', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('productLensWidth', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
 
     <div class="form-group">
@@ -127,22 +187,9 @@
                  [ngClass]="checker('productLensHeight')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productLensHeight')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned('productLensHeight')">Введіть правильно висоту лінзи!</small>
-    </div>
-
-    <div class="form-group">
-      <div class="flex-row">
-        <div>
-          <select aria-label="13" class="form-control" name="lensMaterial"
-                  formControlName="productLensMaterial"
-                  [ngClass]="checker('productLensMaterial')">
-            <option disabled value="">Матеріал лінзи *</option>
-            <option *ngFor="let lensMaterial of lensMaterials" [value]="lensMaterial">{{lensMaterial}}</option>
-          </select>
-        </div>
-      </div>
-      <small class="form-text" *ngIf="isControlRequired('productLensMaterial')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productLensHeight', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('productLensHeight', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('productLensHeight', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
 
     <div class="form-group">
@@ -154,9 +201,9 @@
                  [ngClass]="checker('productTotalWidth')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productTotalWidth')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned('productTotalWidth')">Введіть правильно загальну ширину!
-      </small>
+      <small class="warning-text" *ngIf="hasError('productTotalWidth', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('productTotalWidth', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('productTotalWidth', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
 
     <div class="form-group">
@@ -168,9 +215,19 @@
                  [ngClass]="checker('productBracketLength')">
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productBracketLength')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned('productBracketLength')">Введіть правильно довжину дужки!
-      </small>
+      <small class="warning-text" *ngIf="hasError('productBracketLength', 'required')">Обов'язкове поле!</small>
+      <small class="warning-text" *ngIf="hasError('productBracketLength', 'hasDigit')">Лише цілі додатні числа!</small>
+      <small class="warning-text" *ngIf="hasError('productBracketLength', 'intSrartsAtZero')">Неправильний формат!</small>
+    </div>
+
+    <div class="form-group">
+      <div>
+        <label>
+          <input #polarized type="checkbox" name="polarization"
+                 formControlName="productPolarization" [checked]="polarization" (change)=changePolarization() [value]="polarized.checked? true : false">
+          Поляризація
+        </label>
+      </div>
     </div>
 
     <div class="form-group">
@@ -180,11 +237,11 @@
                   formControlName="productFrameColor"
                   [ngClass]="checker('productFrameColor')">
             <option disabled value="">Колір оправи *</option>
-            <option *ngFor="let frameColor of frameColors" [value]="frameColor.id">{{frameColor.uaName}}</option>
+            <option *ngFor="let frameColor of frameColors, let i = index" [disabled]="frameColors[i].enableOption === false" [value]="frameColor.id">{{frameColor.uaName}}</option>
           </select>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productFrameColor')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productFrameColor', 'required')">Обов'язкове поле!</small>
     </div>
 
     <div class="form-group">
@@ -194,11 +251,13 @@
                   formControlName="productFrameMaterial"
                   [ngClass]="checker('productFrameMaterial')">
             <option disabled value="">Матеріал оправи *</option>
-            <option *ngFor="let frameMaterial of frameMaterials" [value]="frameMaterial">{{frameMaterial}}</option>
+            <option *ngFor="let frameMaterial of frameMaterials, let i = index"
+                    [disabled]="frameMaterials[i].enableOption === false"
+                    [value]="frameMaterial.id">{{frameMaterial.uaName}}</option>
           </select>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productFrameMaterial')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productFrameMaterial', 'required')">Обов'язкове поле!</small>
     </div>
 
     <div class="form-group">
@@ -209,16 +268,18 @@
                   [ngClass]="checker('productOrigin')">
             <option disabled value="">Країна походження *</option>
             <option *ngFor="let origin of origins"
-                    [value]="origin">{{origin}}</option>
+                    [value]="origin.id">{{origin.uaName}}</option>
           </select>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired('productOrigin')">Це поле є обов'язковим!</small>
+      <small class="warning-text" *ngIf="hasError('productOrigin', 'required')">Обов'язкове поле!</small>
     </div>
 
 
     <input type="submit" value="Додати продукт" [disabled]="addProductForm.invalid">
 
-
   </form>
+  <div *ngIf="isLoading" class="relative">
+    <app-spinner></app-spinner>
+  </div>
 </div>

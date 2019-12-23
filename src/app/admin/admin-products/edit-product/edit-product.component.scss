@@ -1,0 +1,216 @@
+$base-input-width: 230px;
+$base-blue-color: #002C40;
+
+#edit-product {
+  font-size: 14px;
+  color: $base-blue-color;
+  margin: 20px;
+
+  h5 {
+    margin-left: 40px;
+  }
+
+  .info-column {
+    padding-right: 40px;
+
+    #diopters {
+
+      .select-box {
+        position: relative;
+      }
+
+      .select-box select {
+        width: 100%;
+      }
+
+      .over-select {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+
+      #diopter-checkboxes {
+
+        input[type="checkbox"] {
+          margin: 6px 0px 6px 12px;
+        }
+
+        display: none;
+        border: 1px #dadada solid;
+        max-height: 50vh;
+        overflow-x: hidden;
+      }
+
+      #diopter-checkboxes label {
+        display: block;
+
+      }
+
+      #diopter-checkboxes label:hover {
+        background-color: #1e90ff;
+      }
+    }
+  }
+
+  .imgs-column {
+    padding-left: 40px;
+
+    .imgs-container {
+      width: 350px;
+      margin-bottom: 24px;
+
+      .images {
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+
+        & > div {
+          margin: 6px;
+          height: 100px;
+
+          .img-container {
+
+            margin: 4px 0;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+              height: auto;
+              min-height: 100%;
+              cursor: pointer;
+            }
+          }
+
+          .remove-img-btn {
+            position: relative;
+            right: -80px;
+            top: -115px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            margin: 0;
+            padding: 0;
+            height: 24px;
+            width: 24px;
+            background-color: red;
+
+            img {
+              height: 16px;
+            }
+          }
+        }
+      }
+    }
+
+    input[name=main-image], input[name=added-images] {
+      display: none;
+      visibility: hidden;
+    }
+  }
+
+  .info-column, .imgs-column {
+    width: 50%;
+    min-width: 400px;
+
+    .form-group {
+      margin-bottom: 8px;
+
+      label {
+        margin: 0;
+        white-space: nowrap;
+      }
+    }
+
+    .progress {
+      width: $base-input-width;
+    }
+
+    input[type=text], input[type=number], input[type=email], input[type=tel], input[type=password], input[type=submit], input[type=file], select, .select-box, .polarization-container {
+      width: $base-input-width;
+      font-size: 14px;
+      padding-top: 0;
+      padding-bottom: 0;
+      height: 28px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    span {
+      margin: 4px 8px 0 0;
+      font-size: 14px;
+    }
+
+    select.is-valid {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 1px;
+      text-overflow: '';
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+
+    .is-invalid {
+      border-left: solid 6px red;
+    }
+  }
+
+  small {
+    margin-left: 10px;
+
+    &.warning-text {
+      color: red;
+    }
+  }
+
+  .submit-btn {
+    align-self: center;
+    margin: 8px;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.jc-flex-end {
+  justify-content: flex-end;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}

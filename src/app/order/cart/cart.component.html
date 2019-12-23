@@ -1,35 +1,47 @@
-<div id="cart" class="col-md-6">
-  <h2> Список обраних товарів:</h2>
+<div *ngIf="cartService.cart.orderList?.length" id="cart" class="flex-column" [@fadeInOut]>
+  <h4> Обрані товари:</h4>
 
-  <table class="table table-striped table-hover">
+  <table class="">
     <thead>
     <tr>
+      <th style="width: 15%"></th>
+      <th style="width: 60%"></th>
+      <th style="width: 15%">Кількість</th>
+      <th style="width: 10%">Сума</th>
       <th></th>
-      <th>Назва</th>
-      <th>Кількість</th>
-      <th>Ціна</th>
-      <th>Сума</th>
-      <th>Видалити</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of items">
-      <td><img src="http://localhost:8080/api/product-image/{{item.product.images[0].imageName}}"></td>
-      <td>{{item.product.category.uaName}}<br>{{item.product.productNumber}}</td>
-      <td><input type="number" min="0" step="1" pattern="\d+" [(ngModel)]="item.quantity" (ngModelChange)=onChangeQuantity(item)></td>
-      <td>{{item.product.productDetails.price}}</td>
-      <td>{{item.product.productDetails.price*item.quantity}}</td>
+    <tr *ngFor="let item of cartService.cart?.orderList" [@fadeInOut]>
       <td>
-        <button class="btn btn-danger" (click)="removeItemByProductNumber(item.product.productNumber)"><i class="material-icons">delete</i></button>
+        <div class="img-container">
+          <img [src]="[imageUrl + item.product.images[0].imageName]">
+        </div>
+      </td>
+      <td class="info-td">
+        <p class="category">{{item.product.productDetails.category.uaName}}</p>
+        <p class="product-number">{{item.product.productNumber}}</p>
+        <p class="price">{{item.product.productDetails.price}}</p>
+      </td>
+      <td class="quantity-td">
+        <div class="quantity flex-row jc-flex-end align-items-center">
+          <button (click)="quantity.control.reset(quantity.value-1)">-</button>
+          <input #quantity='ngModel' type="number" min="0" step="1" pattern="\d+" [(ngModel)]="item.quantity" (ngModelChange)=onChangeQuantity(item)>
+          <button (click)="quantity.control.reset(quantity.value+1)">+</button>
+        </div>
+      </td>
+      <td class="subtotal-td">{{item.product.productDetails.price*item.quantity}}</td>
+      <td>
+        <img class="cancel-filter-button" src="assets/images/close_black.svg" (click)="cartService.removeItemByUUID(item.product.uuid)">
       </td>
     </tr>
     <tr>
-      <td></td>
-      <td>Разом:</td>
-      <td>{{staticQuantityTotal}} шт.</td>
-      <td></td>
-      <td>{{total}} грн</td>
-      <td></td>
+      <th></th>
+      <th>Разом:</th>
+      <th>{{cartService.cart.quantityTotal}} шт.</th>
+      <th>{{cartService.cart.total}} грн</th>
+      <th></th>
+
     </tr>
     </tbody>
   </table>

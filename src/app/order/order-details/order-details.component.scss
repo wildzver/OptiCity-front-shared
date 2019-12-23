@@ -1,27 +1,54 @@
-#buyerContacts {
-  margin: 20px auto 20px 320px;
+#buyer-contacts {
+  width: 100%;
+  color: #002C40;
+  margin: 20px auto 20px /* 320px*/
+;
 
-  form {
-    input[type=text], input[type=email], input[type=tel], input[type=password], input[type=submit], select, textarea, #adress {
-      width: 300px;
+  #buyer-info {
+    width: 400px;
+    margin-right: 16px;
 
-      &.is-invalid {
-        border-left: solid 6px red;
+    .name {
+      width: 400px;
+
+      .last-name {
+        margin-left: 20px;
       }
 
-      &.is-default {
-        //border: solid 1px blue;
+      input[name=firstName] {
+        width: 150px;
+      }
+
+      input[name=lastName] {
+        width: 230px;
       }
     }
+  }
 
-    #adress div {
+  #delivery-info {
+    margin-left: 16px;
+    min-width: 300px;
+
+    #adress > div {
+      margin: 0 0 8px 0;
+
+      input[name=adress] {
+        height: 14px;
+      }
+
+      input[name=settlement], input[name=branch] {
+        width: 100%;
+      }
 
       label {
-        margin: 0 0 0 5px;
-
-        span {
-          font-size: 12px;
+        //height: 24px;
+        p {
+          margin: 0 0 0 4px;
         }
+
+        //span {
+        //  font-size: 12px;
+        //}
 
         img {
           height: 50px;
@@ -30,21 +57,91 @@
     }
   }
 
+  form {
+
+    label {
+      font-size: 12px;
+      margin: 0;
+    }
+
+    input {
+      height: 32px;
+
+      &:focus {
+        border: 1px solid rgba(#002C40, .3);
+      }
+
+      &.is-valid {
+        //border: 1px solid rgba(#002C40, 1);
+
+      }
+
+      &.is-invalid {
+        //border-left: solid 6px red !important;
+      }
+
+      &.is-default {
+
+        //border: 1px solid rgba(#002C40, .3);
+      }
+    }
+
+    textarea {
+      //border: 1px solid rgba(#002C40, 1);
+    }
+
+    input, textarea {
+      font-size: 14px;
+      padding: 0 8px;
+      background: none;
+      border-radius: 4px;
+
+
+    }
+
+    input[name=email], input[name=phoneList], select, textarea {
+      width: 400px;
+
+
+    }
+
+  }
+
+  p {
+    font-size: 14px;
+  }
+
   small {
-    color: red;
-    margin-left: 10px;
+    color: rgba(#002C40, .7);
+    font-size: 12px;
+    margin: 0;
   }
 
-  .flex-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  .input-item {
+    margin-top: 8px;
   }
+}
 
-  .flex-column {
-    display: flex;
-    flex-direction: column;
-  }
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
 }
 
 

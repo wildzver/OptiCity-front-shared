@@ -10,7 +10,12 @@ export class Order {
   public comment?: string;
   public adress?: Adress;
 
-  constructor(user?: User, orderList?: CartItem[], quantityTotal?: number, total?: number, comment?: string, adress?: Adress) {
+  constructor(user?: User,
+              orderList?: CartItem[],
+              quantityTotal?: number,
+              total?: number,
+              comment?: string,
+              adress?: Adress) {
     this.user = user;
     this.orderList = orderList;
     this.quantityTotal = quantityTotal;

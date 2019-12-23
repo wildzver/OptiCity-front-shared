@@ -1,49 +1,68 @@
-import {AfterContentChecked, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from '../shared/models/user';
 import {OrderDetailsComponent} from './order-details/order-details.component';
 import {Order} from '../shared/models/order';
 import {CartItem} from '../shared/models/cart-item';
-import {OrderService} from '../shared/services/order.service';
-import {CartComponent} from './cart/cart.component';
+import {OrderService} from '../shared/app-services/order.service';
 import {Adress} from '../shared/models/adress';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomValidators} from '../signup/custom-validators';
+import {ErrorCode} from '@angular/compiler-cli/src/ngtsc/diagnostics';
+import {ERROR_TYPE} from '@angular/core/src/errors';
+import {LocalStorageService} from '../shared/app-services/local-storage.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {CartService} from '../shared/app-services/cart.service';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1000)),
+    ]),
+  ]
 })
-export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
+export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild(OrderDetailsComponent) buyerContactsComponent;
 
-  constructor(
-    private router: Router,
-    private orderService: OrderService,
-    private cartComponent: CartComponent
-  ) {
-  }
-
+  buyerContactsForm: FormGroup;
   buyerContacts: User;
   userComment: string;
   deliveryAdress: Adress;
   totalCartQuantity: number;
-  isBuyerContactsFormValid: boolean;
+  isBuyerContactsFormValid = false;
   isDeliveryAdressFormValid = false;
-  showOrderDetails: false;
+  showOrderDetails = false;
+  showSpinner = false;
 
+  constructor(
+    private router: Router,
+    private orderService: OrderService,
+    private cdRef: ChangeDetectorRef,
+    private localStorageService: LocalStorageService,
+    private cartService: CartService
+  ) {
+  }
 
   ngOnInit() {
   }
 
-  clearCart(): void {
-    localStorage.removeItem('_cart');
-    this.router.navigate(['/products']);
-  }
+  // clearCart(): void {
+  //   localStorage.removeItem('_cart');
+  //   this.router.navigate(['/products']);
+  // }
 
   order() {
+    this.showSpinner = true;
     console.log('this.buyerContacts EXIST3!!!', this.buyerContacts);
-    const cart: Order = JSON.parse(localStorage.getItem('_cart'));
+    const cart: Order = this.localStorageService.getCartLocalStorage();
 
     const order: Order = {
       user: {
@@ -53,8 +72,6 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked, 
         phone: this.buyerContacts.phone,
       },
       orderList: [],
-      // quantityTotal: cart.quantityTotal,
-      // total: cart.total,
       comment: this.userComment,
       adress: {
         settlement: this.deliveryAdress.settlement,
@@ -62,47 +79,91 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked, 
       }
     };
 
-    for (const cartItem of cart.orderList) {
+    for (const cartItem of CartService.cart.orderList) {
       const orderListItem: CartItem = {
-        product: {productNumber: cartItem.product.productNumber},
+        product: {uuid: cartItem.product.uuid},
         quantity: cartItem.quantity,
-        // subTotal: cartItem.subTotal
       };
       order.orderList.push(orderListItem);
     }
 
-    console.log('ORDER FOR ORDER!', order);
+    this.orderService.createOrder(order).subscribe(
+      (response: HttpResponse<{}>) => {
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status === 200) {
+          this.showSpinner = false;
+          console.log('MY SHOW SPINER STATUS', this.showSpinner);
+          console.log('MY STATUS 200');
+          setTimeout(() => {
+            alert('Замовлення здійснено успішно! Протягом доби з Вами зв`яжеться наш менеджер.');
+          });
+          const cart: Order = this.localStorageService.getCartLocalStorage();
+          cart.orderList = [];
+          this.localStorageService.setCartLocalStorage(cart);
+          CartService.cart.orderList = [];
+          this.showOrderDetails = false;
+        }
 
-    this.orderService.createOrder(order).subscribe((value) => {
-      console.log(value),
-        alert('Замовлення здійснено успішно! Протягом доби з Вами зв`яжеться менеджер.');
-    });
+        if (error.status === 400) {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.error('Backend returned code', error.status, 'body was: ', error.error);
+          Object.keys(error.error.errors).forEach(serverField => {
+            if (serverField === 'user.firstName') {
+              this.setErrorByServerField(error, serverField, 'userFirstName');
+            } else if (serverField === 'user.lastName') {
+              this.setErrorByServerField(error, serverField, 'userLastName');
+            } else if (serverField === 'user.email') {
+              this.setErrorByServerField(error, serverField, 'userEmail');
+            }
+          });
+        }
+        console.log('MY ERROR type of', typeof error.error.errors);
+        console.log('MY ERROR', error.error.errors);
+      });
+  }
+
+  private setErrorByServerField(error: HttpErrorResponse, serverField: string, ctrlName: string): void {
+    const ctrl = this.buyerContactsForm.get(ctrlName);
+    const validationError = {};
+    ctrl.markAsDirty();
+    const errorName: string = error.error.errors[serverField];
+    validationError[errorName] = true;
+    ctrl.setErrors(validationError);
+  }
+
+  private scrollToOrderDetails() {
+    this.cartService.syncProducts();
+    this.showOrderDetails = true;
+    setTimeout(() => {
+      const orderDetailsElem = document.getElementById('order-details');
+      const scrollTop = orderDetailsElem.offsetTop;
+      window.scrollTo({behavior: 'smooth', top: scrollTop - 60});
+    }, 200);
   }
 
   ngAfterViewInit(): void {
-    this.buyerContacts = this.buyerContactsComponent.buyerContacts;
-    console.log('this.buyerContacts EXIST1!!!', this.buyerContactsComponent.buyerContacts);
-    this.userComment = this.buyerContactsComponent.userComment;
-    console.log('this.userComment EXIST!!!', this.buyerContactsComponent.userComment);
-    this.deliveryAdress = this.buyerContactsComponent.deliveryAdress;
-    this.isBuyerContactsFormValid = this.buyerContactsComponent.isBuyerContactsFormValid;
-    this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
+    if (this.buyerContactsComponent) {
+      this.buyerContacts = this.buyerContactsComponent.buyerContacts;
+      this.buyerContactsForm = this.buyerContactsComponent.buyerContactsForm;
+      this.userComment = this.buyerContactsComponent.userComment;
+      this.isBuyerContactsFormValid = this.buyerContactsComponent.isBuyerContactsFormValid;
+      this.deliveryAdress = this.buyerContactsComponent.deliveryAdress;
+      this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
+    }
   }
 
   ngAfterViewChecked(): void {
-    this.buyerContacts = this.buyerContactsComponent.buyerContacts;
-    console.log('this.buyerContacts EXIST2!!!', this.buyerContactsComponent.buyerContacts);
-    this.userComment = this.buyerContactsComponent.userComment;
-    console.log('this.userComment EXIST!!!', this.buyerContactsComponent.userComment);
-    this.isBuyerContactsFormValid = this.buyerContactsComponent.isBuyerContactsFormValid;
-    this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
-    this.deliveryAdress = this.buyerContactsComponent.deliveryAdress;
-  }
-
-  ngAfterContentChecked(): void {
-    this.cartComponent.ngOnInit();
-    this.cartComponent.ngAfterContentChecked();
-    this.totalCartQuantity = CartComponent.quantityTotal;
-    this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
+    if (this.buyerContactsComponent) {
+      this.buyerContacts = this.buyerContactsComponent.buyerContacts;
+      this.buyerContactsForm = this.buyerContactsComponent.buyerContactsForm;
+      this.userComment = this.buyerContactsComponent.userComment;
+      this.isBuyerContactsFormValid = this.buyerContactsComponent.isBuyerContactsFormValid;
+      this.deliveryAdress = this.buyerContactsComponent.deliveryAdress;
+      this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
+    }
+    // this.totalCartQuantity = CartComponent.quantityTotal;
+    this.cdRef.detectChanges();
   }
 }

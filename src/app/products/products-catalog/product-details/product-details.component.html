@@ -1,0 +1,202 @@
+<!--<div class="wrapper">-->
+<!--<div class="overlay" *ngIf="showSpinner">-->
+<!--<div class="spinner-wrapper">-->
+<!--<app-spinner></app-spinner>-->
+<!--<p *ngIf="message">{{message}}</p>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div class="loaded-content" [class.blurred]="showSpinner">-->
+<!--<ng-content></ng-content>-->
+
+<app-spinner-overlay-wrapper [showSpinner]="showSpinner">
+  <div id="product-details">
+    <div class="flex-column jc-flex-start">
+      <div class="head flex-row align-items-center">
+        <app-breadcrumb-navigation></app-breadcrumb-navigation>
+        <!--<div class="forward">-->
+        <!--<a routerLink="#">Повернутися у Велоокуляри</a>-->
+        <!--</div>-->
+        <div id="title">
+          <h4>{{currentProduct?.productDetails.category.uaName}}</h4>
+          <p><i>артикул {{currentProduct?.productNumber}}</i></p>
+        </div>
+      </div>
+
+
+      <div class="description flex-row">
+
+        <div class="leftside flex-column">
+          <div class="img-placeholder flex-row jc-center align-items-center">
+            <img *ngIf="mainImageUrl != null" [src]=mainImageUrl alt="image-placeholder" (click)="openSlider()">
+          </div>
+          <div class="added-imgs-carousel flex-row align-items-center">
+            <button *ngIf="currentProductImages?.length > 1" class="arrow-previous flex-row jc-center align-items-center" (click)="fetchPreviousImage()"><img
+              src="assets/images/arrow_left_white.png" alt=""></button>
+            <div id="added-imgs-container" class="flex-row">
+              <div id="added-imgs" class="flex-row jc-flex-start align-items-center">
+                <div class="img-container flex-row jc-center align-items-center"
+                     [ngClass]="{active: image.imageName===mainImageName}" *ngFor="let image of currentProductImages">
+                  <!--<div>-->
+                  <img src='/api/product-image/{{image.imageName}}' alt="img" (click)="changeImage(image.imageName)">
+                  <!--</div>-->
+                </div>
+              </div>
+            </div>
+            <button *ngIf="currentProductImages?.length > 1" class="arrow-next  flex-row jc-center align-items-center" (click)="fetchNextImage()">
+              <img src="assets/images/arrow_right_white.png" alt=""></button>
+          </div>
+        </div>
+
+        <div class="right-side flex-column">
+          <div class="price flex-row jc-space-between align-items-center">
+            <h4>{{currentProduct?.productDetails.price}} грн</h4>
+            <div class="add-to-cart flex-row jc-space-between align-items-center"
+                 (click)="cartService.addItem(currentProduct.uuid, 1)">ДОДАТИ
+              <img src="assets/images/shopping-bag-white.svg" alt="cart-ico">
+            </div>
+          </div>
+
+          <div id="characteristics">
+            <hr>
+            <p class="table-title">
+              <b>Характеристики:</b>
+            </p>
+            <table>
+              <tr>
+                <th>Тип:</th>
+                <td>{{currentProduct?.productDetails.sex.uaName| lowercase}}</td>
+              </tr>
+              <tr>
+                <th>Колір лінзи:</th>
+                <td>{{currentProduct?.lensColor.uaName| lowercase}}
+                  <img *ngIf="currentProduct?.lensColor.imageName" class="color"
+                       [src]="lensColorUrl + currentProduct?.lensColor.imageName"
+                       alt="">
+                </td>
+              </tr>
+              <tr>
+                <th>Матеріал лінзи:</th>
+                <td>{{currentProduct?.productDetails.lensMaterial.uaName| lowercase}}</td>
+              </tr>
+              <tr>
+                <th>Колір оправи:</th>
+                <td>{{currentProduct?.frameColor.uaName| lowercase}}
+                  <img *ngIf="currentProduct?.frameColor.imageName" class="color"
+                       [src]="frameColorUrl + currentProduct?.frameColor.imageName"
+                       alt="">
+                </td>
+              </tr>
+              <tr>
+                <th>Матеріал оправи:</th>
+                <td>{{currentProduct?.productDetails.frameMaterial.uaName| lowercase}}</td>
+              </tr>
+              <tr>
+                <th>Поляризація:</th>
+                <td>{{currentProduct?.productDetails.polarization ? '+' : '-'}}</td>
+              </tr>
+              <tr *ngIf="currentProduct?.diopters.length">
+                <th>Діоптрії:</th>
+                <td>{{diopters}}</td>
+              </tr>
+            </table>
+
+            <hr>
+
+            <p class="table-title">
+              <b>Розміри:</b>
+            </p>
+            <table>
+              <tr>
+                <th>Ширина лінзи(мм):</th>
+                <td>{{currentProduct?.productDetails.lensWidth}}</td>
+              </tr>
+              <tr>
+                <th>Висота лінзи(мм):</th>
+                <td>{{currentProduct?.productDetails.lensHeight}}</td>
+              </tr>
+              <tr>
+                <th>Ширина загальна(мм):</th>
+                <td>{{currentProduct?.productDetails.totalWidth}}</td>
+              </tr>
+              <tr>
+                <th>Довжина дужки(мм):</th>
+                <td>{{currentProduct?.productDetails.bracketLength}}</td>
+              </tr>
+            </table>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!--<ngb-carousel *ngIf="images">-->
+      <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+      <!--<img [src]="images[0]" alt="Random first slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+      <!--<h3>First slide label</h3>-->
+      <!--<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+      <!--</div>-->
+      <!--</ng-template>-->
+      <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+      <!--<img [src]="images[1]" alt="Random second slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+      <!--<h3>Second slide label</h3>-->
+      <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+      <!--</div>-->
+      <!--</ng-template>-->
+      <!--<ng-template ngbSlide>-->
+      <!--<div class="picsum-img-wrapper">-->
+      <!--<img [src]="images[2]" alt="Random third slide">-->
+      <!--</div>-->
+      <!--<div class="carousel-caption">-->
+      <!--<h3>Third slide label</h3>-->
+      <!--<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>-->
+      <!--</div>-->
+      <!--</ng-template>-->
+      <!--</ngb-carousel>-->
+
+      <div class="auxiliary-products-container flex-column jc-flex-start align-items-center">
+
+        <p><b>Інші кольори цієї ж моделі:</b></p>
+        <div id="auxiliary-products" class="flex-row jc-center align-items-center">
+          <app-products-catalog-item *ngFor="let product of auxiliaryProducts"
+                                     [productInput]="product"
+                                     (click)="changeImage(currentProductImages[0].imageName)"></app-products-catalog-item>
+          <!--<div class="category-type-img" *ngFor="let product of auxiliaryProducts"-->
+          <!--[routerLink]="['../../', product.category.name, product.productNumber]">-->
+          <!--<img src="/api/product-image/{{findMainImage(product)}}">-->
+          <!--</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</app-spinner-overlay-wrapper>
+
+<div *ngIf="showSlider">
+  <div class="slider-background" (click)="closeSlider()"></div>
+  <div class="slider">
+    <div id="previousImage" (click)="fetchPreviousImage()">
+      <!--<button><i class="material-icons">arrow_back_ios</i></button>-->
+      <button><img src="assets/images/arrow-previous.png"></button>
+    </div>
+    <img class="image-slider" [src]="mainImageUrl" alt="">
+    <div id="nextImage" (click)="fetchNextImage()">
+      <!--<button><i class="material-icons">arrow_forward_ios</i></button>-->
+      <button><img src="assets/images/arrow-next.png"></button>
+    </div>
+    <!--<button class="close-button" (click)="closeSlider()">-->
+    <!--<i class="material-icons md-light close-button" (click)="closeSlider()">close</i>-->
+    <!--<button class="close-button">-->
+    <img class="close-button" src="assets/images/close_white.png" (click)="closeSlider()">
+    <!--</button>-->
+    <!--</button>-->
+  </div>
+</div>
+<!--</div>-->
+<!--</div>-->

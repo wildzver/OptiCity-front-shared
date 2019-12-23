@@ -1,7 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Product} from '../../../shared/models/product';
-import {ProductsService} from '../../../shared/services/products.service';
-import {CartComponent} from '../../../order/cart/cart.component';
+import {ProductsService} from '../../../shared/app-services/products.service';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
+import {Router} from '@angular/router';
+import {CartService} from '../../../shared/app-services/cart.service';
 
 @Component({
   selector: 'app-products-catalog-item',
@@ -12,25 +14,32 @@ export class ProductsCatalogItemComponent implements OnInit {
 
   @Input() productInput: Product;
   imageUrl: string;
-  showExtendedItem: boolean;
+  price: number;
 
-
-  constructor(private cartComponent: CartComponent) {
+  constructor(private cartService: CartService
+              ) {
   }
 
   ngOnInit() {
-    const mainImageIndex = this.productInput.images.findIndex(value => value.mainImage = true);
-    if (this.productInput.images.length === 0) {
-      this.imageUrl = `/api/product-image/5d1dc3e46d1bd680503848.jpg`;
+
+    if (this.productInput.imageName === undefined) {
+
+      const mainImageIndex = this.productInput.images.findIndex(value => value.mainImage = true);
+      if (this.productInput.images.length === 0) {
+        this.imageUrl = `/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
+      } else {
+        this.imageUrl = `/api/product-image/${this.productInput.images[mainImageIndex].imageName}`;
+      }
     } else {
-      this.imageUrl = `/api/product-image/${this.productInput.images[mainImageIndex].imageName}`;
+
+      if (this.productInput.imageName === null) {
+        this.imageUrl = `/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
+      } else {
+        this.imageUrl = `/api/product-image/${this.productInput.imageName}`;
+      }
+
     }
-    this.showExtendedItem = false;
+
   }
 
-  addToCart(productNumber: string) {
-    this.cartComponent.addItem(productNumber);
-    console.log('productAddedToCart!!!');
-    console.log('--->', productNumber);
-  }
 }

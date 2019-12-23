@@ -1,0 +1,44 @@
+<div id="sexes">
+  <h2> Lens Materials List</h2>
+  <table class="table table-hover">
+    <thead>
+    <tr class="">
+      <th class="">Id</th>
+      <th class="">Name</th>
+      <th class="">UA Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let lensMaterial of lensMaterials">
+      <ng-template [ngTemplateOutlet]="loadTemplate(lensMaterial)"
+                   [ngTemplateOutletContext]="{$implicit: lensMaterial}">
+      </ng-template>
+    </tr>
+    </tbody>
+  </table>
+
+  <input type="button" value="add_box" class="btn btn-info material-icons" (click)="addLensMaterial()"/>
+
+  <ng-template #readOnlyTemplate let-lensMaterial>
+    <td (click)="editLensMaterial(lensMaterial)">{{lensMaterial.id}}</td>
+    <td (click)="editLensMaterial(lensMaterial)">{{lensMaterial.name}}</td>
+    <td (click)="editLensMaterial(lensMaterial)">{{lensMaterial.uaName}}</td>
+    <td class="delete">
+      <input type="button" value="delete" class="btn btn-danger material-icons form-control"
+             (click)="deleteLensMaterial(lensMaterial)"/>
+    </td>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <td class="id">
+      <input type="text" [(ngModel)]="editedLensMaterial.id" readonly disabled class="form-control"/>
+    </td>
+    <td class="name">
+      <input type="text" [(ngModel)]="editedLensMaterial.name" class="form-control"/>
+    </td>
+    <td class="uaName">
+      <input type="text" [(ngModel)]="editedLensMaterial.uaName" class="form-control"/>
+    </td>
+  </ng-template>
+
+</div>

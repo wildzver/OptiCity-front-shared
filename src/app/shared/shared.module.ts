@@ -1,38 +1,37 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SortByDirective} from './directives/sortby.directive';
-import {FilterTextboxModule} from './filter-textbox/filter-textbox.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CapitalizePipe} from './pipes/capitalize.pipe';
 import {TrimPipe} from './pipes/trim.pipe';
-import {SearchComponent} from '../search/search.component';
+import {SearchPanelComponent} from '../header/search-panel/search-panel.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatFormField,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatOptionModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PaginationComponent} from './pagination/pagination.component';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { CustomCheckboxComponent } from './custom-checkbox/custom-checkbox.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { SpinnerOverlayWrapperComponent } from './spinner-overlay-wrapper/spinner-overlay-wrapper.component';
 
 @NgModule({
   declarations: [
-    SortByDirective,
     CapitalizePipe,
     TrimPipe,
-    SearchComponent,
-    PaginationComponent
+    SearchPanelComponent,
+    PaginationComponent,
+    CustomCheckboxComponent,
+    SpinnerComponent,
+    SpinnerOverlayWrapperComponent
   ],
   imports: [
     CommonModule,
-    FilterTextboxModule,
     FormsModule,
     ReactiveFormsModule,
-    // BrowserAnimationsModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -46,17 +45,17 @@ import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     CapitalizePipe,
     TrimPipe,
-    SortByDirective,
-    FilterTextboxModule,
-    SearchComponent,
-    // BrowserAnimationsModule,
+    SearchPanelComponent,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
-    PaginationComponent
+    PaginationComponent,
+    CustomCheckboxComponent,
+    SpinnerComponent,
+    SpinnerOverlayWrapperComponent
   ],
 })
 export class SharedModule {

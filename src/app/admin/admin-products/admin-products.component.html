@@ -16,11 +16,12 @@
     <tr *ngFor="let product of products">
       <td>{{product.id}}</td>
       <td>{{product.productNumber}}</td>
-      <td>{{product.category.uaName}}</td>
-      <td>{{product.productDetails.price}}</td>
-      <td>{{product.lensColor.uaName}}</td>
-      <td>{{product.frameColor.uaName}}</td>
-      <td><button class="btn btn-danger" (click)="deleteProduct(product)">Delete</button></td>
+      <td>{{product.categoryUaName}}</td>
+      <td>{{product.price}}</td>
+      <!--<td>{{product.lensColor.uaName}}</td>-->
+      <!--<td>{{product.frameColor.uaName}}</td>-->
+      <td><button class="btn btn-danger" (click)="deleteProduct(product)"><i class="material-icons">delete</i></button></td>
+      <td><button class="btn btn-info" [routerLink]="[product.id, 'edit']"><i class="material-icons">edit</i></button></td>
     </tr>
     </tbody>
   </table>

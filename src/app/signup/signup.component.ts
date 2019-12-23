@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, NgForm, NgModel, Validat
 import {CustomValidators} from './custom-validators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../shared/models/user';
-import {UserService} from '../shared/services/user.service';
+import {UserService} from '../shared/app-services/user.service';
 
 // export class User {
 //   constructor(

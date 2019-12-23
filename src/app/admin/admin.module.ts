@@ -6,28 +6,34 @@ import {AdminProductsComponent} from './admin-products/admin-products.component'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AddProductModule} from './admin-products/add-product/add-product.module';
 import {AdminUsersComponent} from './admin-users/admin-users.component';
-import {FileUploaderComponent} from '../shared/file-uploader/file-uploader.component';
-import {ProgressComponent} from '../shared/progress/progress.component';
-import {CategoriesComponent} from './admin-products/categories/categories.component';
-import {CategoryComponent} from './admin-products/category/category.component';
+import {CategoriesComponent} from './admin-products/category/categories.component';
 import {InlineEditComponent} from './inline-edit/inline-edit.component';
 import {FrameColorsComponent} from './admin-products/frame-colors/frame-colors.component';
 import {LensColorsComponent} from './admin-products/lens-colors/lens-colors.component';
 import {UploadProductsComponent} from './admin-products/upload-products/upload-products.component';
+import { LensMaterialsComponent } from './admin-products/lens-materials/lens-materials.component';
+import { FrameMaterialsComponent } from './admin-products/frame-materials/frame-materials.component';
+import { DioptersComponent } from './admin-products/diopters/diopters.component';
+import { OriginsComponent } from './admin-products/origins/origins.component';
+import { SexComponent } from './admin-products/sex/sex.component';
+import { EditProductComponent } from './admin-products/edit-product/edit-product.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     AdminProductsComponent,
     AdminUsersComponent,
-    FileUploaderComponent,
-    ProgressComponent,
     CategoriesComponent,
-    CategoryComponent,
     InlineEditComponent,
     FrameColorsComponent,
     LensColorsComponent,
-    UploadProductsComponent
+    UploadProductsComponent,
+    LensMaterialsComponent,
+    FrameMaterialsComponent,
+    DioptersComponent,
+    OriginsComponent,
+    SexComponent,
+    EditProductComponent
   ],
   imports: [
     CommonModule,

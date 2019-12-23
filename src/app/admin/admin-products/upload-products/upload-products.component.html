@@ -1,99 +1,100 @@
 <div id="upload-products">
-  <div>
-    <p>Новий продукт:</p>
-  </div>
+  <div id="upload-form">
+    <div>
+      <p>Новий продукт:</p>
+    </div>
 
-  <form [formGroup]="uploadProductsForm" novalidate
-        (ngSubmit)="uploadProducts()">
+    <form [formGroup]="uploadProductsForm" novalidate
+          (ngSubmit)="uploadProducts()">
 
 
-    <div formArrayName="excelProductsFiles">
-      <div class="form-group"
-           *ngFor="let excelProductsFile of uploadProductsForm.controls['excelProductsFiles'].controls; let i = index">
-        <div>
-          <label class="btn btn-default">
-            <input type="file" (change)="selectFile($event)" name="excelProductsFile" formControlName="{{i}}">
-          </label>
-          <div *ngIf="currentFileUpload" class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
-
-                 aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-              {{progress.percentage}}%
+      <div>
+        <div class="form-group">
+          <div>
+            <label class="btn btn-default">
+              <input type="file" (change)="selectFile($event)" name="excelProductsFile"
+                     formControlName="excelProductsFile">
+            </label>
+            <div *ngIf="currentFileUpload" class="progress">
+              <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                {{progress.percentage}}%
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <input type="submit" value="Завантажити файл" [disabled]="uploadProductsForm.invalid">
-  </form>
+      <input type="submit" value="Завантажити файл" [disabled]="uploadProductsForm.invalid">
+    </form>
 
-</div>
+  </div>
 
-<div>
-  <form [formGroup]="uploadImagesForm" novalidate>
-    <table class="table table-striped table-hover">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Product Number</th>
-        <th>Category</th>
-        <th>Price</th>
-        <th>Lens Color</th>
-        <th>Frame Color</th>
-        <th>Main image</th>
-        <th>Images</th>
-        <th></th>
-        <th></th>
+  <div id="products">
+    <form [formGroup]="uploadImagesForm" novalidate>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Product Number</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Lens Color</th>
+          <th>Frame Color</th>
+          <th>Main image</th>
+          <th>Images</th>
+          <th></th>
+          <th></th>
 
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let product of products let i = index">
-        <td>{{product.id}}</td>
-        <td>{{product.productNumber}}</td>
-        <td>{{product.category.uaName}}</td>
-        <td>{{product.productDetails.price}}</td>
-        <td>{{product.lensColor.uaName}}</td>
-        <td>{{product.frameColor.uaName}}</td>
-        <td>
-          <div formArrayName="mainImage">
-            <div class="form-group"
-                 *ngFor="let oneMainImage of uploadImagesForm.controls['mainImage'].controls; let i = index">
-              <div>
-                <label class="btn btn-default">
-                  <input type="file" (change)="selectMainImage($event)" name="mainImage" formControlName="{{i}}">
-                </label>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of products let i = index">
+          <td>{{product.id}}</td>
+          <td>{{product.productNumber}}</td>
+          <td>{{product.productDetails.category.uaName}}</td>
+          <td>{{product.productDetails.price}}</td>
+          <td>{{product.lensColor.uaName}}</td>
+          <td>{{product.frameColor.uaName}}</td>
+          <td>
+            <div formArrayName="mainImage">
+              <div class="form-group"
+                   *ngFor="let oneMainImage of uploadImagesForm.controls['mainImage'].controls; let i = index">
+                <div>
+                  <label class="btn btn-default">
+                    <input type="file" (change)="selectMainImage($event)" name="mainImage" formControlName="{{i}}">
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <div formArrayName="images">
-            <div class="form-group"
-                 *ngFor="let image of uploadImagesForm.controls['images'].controls; let i = index">
-              <div>
-                <label class="btn btn-default">
-                  <input type="file" (change)="selectImages($event)" name="image" formControlName="{{i}}" multiple>
-                </label>
+          </td>
+          <td>
+            <div formArrayName="images">
+              <div class="form-group"
+                   *ngFor="let image of uploadImagesForm.controls['images'].controls; let i = index">
+                <div>
+                  <label class="btn btn-default">
+                    <input type="file" (change)="selectImages($event)" name="image" formControlName="{{i}}" multiple>
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <button class="btn btn-info" (click)="uploadImages(product.productNumber, i)">Upload</button>
-          <div *ngIf="currentImageUpload" class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
-                 aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:imagesProgress.percentage+'%'}">
-              {{imagesProgress.percentage}}%
+          </td>
+          <td>
+            <button class="btn btn-info" (click)="uploadImages(product.id, i)" title="Upload"><i class="material-icons">cloud_upload</i></button>
+            <div *ngIf="currentImageUpload" class="progress">
+              <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:imagesProgress.percentage+'%'}">
+                {{imagesProgress.percentage}}%
+              </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <button class="btn btn-danger" (click)="deleteProduct(product)">Delete</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteProduct(product)" title="Delete"><i class="material-icons">delete</i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
 
+  </div>
 </div>

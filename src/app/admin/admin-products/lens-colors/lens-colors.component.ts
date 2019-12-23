@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ProductsService} from '../../../shared/services/products.service';
+import {ProductsService} from '../../../shared/app-services/products.service';
 import {Color} from '../../../shared/models/color';
 
 @Component({
@@ -16,6 +16,9 @@ export class LensColorsComponent implements OnInit {
   lensColors: Color[];
   isNewRecord: boolean;
   statusMessage: string;
+
+  selectedFiles: FileList;
+  currentFileUpload: File;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -64,8 +67,17 @@ export class LensColorsComponent implements OnInit {
   }
 
   saveLensColor() {
+    if (this.selectedFiles) {
+      this.currentFileUpload = this.selectedFiles.item(0);
+    }
+    const json = JSON.stringify(this.editedLensColor);
+    const blob = new Blob([json], {type: 'application/json'});
+    const formData = new FormData();
+    formData.append('lensColor', blob);
+    formData.append('lensColorImage', this.currentFileUpload);
+
     if (this.isNewRecord) {
-      this.productService.createLensColor(this.editedLensColor).subscribe(data => {
+      this.productService.createLensColor(formData).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadLensColors();
       });
@@ -73,7 +85,7 @@ export class LensColorsComponent implements OnInit {
       this.isNewRecord = false;
       this.editedLensColor = null;
     } else {
-      this.productService.updateLensColor(this.editedLensColor).subscribe(data => {
+      this.productService.updateLensColor(formData, this.editedLensColor).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadLensColors();
       });
@@ -94,5 +106,9 @@ export class LensColorsComponent implements OnInit {
       this.statusMessage = 'Data deleted successfully',
         this.loadLensColors();
     });
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 }

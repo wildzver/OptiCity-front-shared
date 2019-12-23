@@ -10,14 +10,17 @@ import {ProductsCatalogItemModule} from '../product-item/products-catalog-item.m
 import {RouterModule} from '@angular/router';
 import {SharedModule} from '../../../shared/shared.module';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import {ProductDetailsModule} from '../../../product-details/product-details.module';
+import {ProductDetailsModule} from '../product-details/product-details.module';
 import {SortPanelModule} from '../../../sort-panel/sort-panel.module';
+import {ProductsCategoryComponent} from './products-category.component';
+import {CatalogModule} from '../../catalog/catalog.module';
 
 @NgModule({
   declarations: [
     ProductsCatalogCategoryComponent,
     ProductsCatalogComponent,
     SidebarComponent,
+    // ProductsCategoryComponent,
     // ProductsCatalogItemComponent
 
   ],
@@ -29,12 +32,14 @@ import {SortPanelModule} from '../../../sort-panel/sort-panel.module';
     SharedModule,
     NgbPaginationModule,
     ProductDetailsModule,
-    SortPanelModule
+    SortPanelModule,
+    CatalogModule
 
   ],
   exports: [
     ProductsCatalogComponent,
     SidebarComponent,
+    ProductsCatalogCategoryComponent
     // ProductsCatalogItemComponent
   ]
 })

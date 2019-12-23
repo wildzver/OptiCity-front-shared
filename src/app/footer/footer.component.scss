@@ -1,39 +1,88 @@
 #footer {
-  height: 160px;
-  background-color: #002C40;
-  justify-content: flex-start;
-  padding: 0 20px;
+  height: 200px;
+  width: 100%;
+  background-color: rgba(#002C40, 0.9);
+  align-items: center;
+  justify-content: center;
+  //padding: 0 20px;
   color: #E4E4E4;
   font-size: 14px;
-  padding: 10px 20px;
+  padding: 10px 40px;
+  overflow: hidden;
+  //position: absolute;
+  //left: 0;
+  //right: 0;
+  //bottom: 0;
 
   #footer-nav {
-    width: 60%;
-    height: 100%;
+    width: 80%;
+    height: 90%;
     justify-content: space-between;
+    align-items: center;
 
-    div {
-      margin-right: 40px;
+
+    & div {
+      margin: 20px 0;
     }
 
     #footer-products {
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 0 10px;
 
-      ul {
-        padding-left: 20px;
+
+    }
+
+    ul {
+      padding-left: 5px;
+      list-style-type: none;
+      margin: 0;
+
+
+    }
+
+
+    .logo-column {
+      margin: 0;
+      align-items: center;
+      justify-content: space-between;
+      height: auto;
+      padding: 0 10px;
+
+
+      #footer-info {
+        justify-content: center;
+        align-items: flex-start;
+
       }
     }
-  }
-  #footer-contacts {
-    margin-left: auto;
-    height: 100%;
 
-  }
+    #footer-contacts {
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 0 10px;
 
+
+      //height: auto;
+
+    }
+
+    .logo {
+
+    }
+  }
 }
+
+a {
+  color: #E4E4E4;
+  text-decoration: none;
+}
+
+;
 
 .flex-row {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   flex-direction: row;
 
@@ -41,8 +90,8 @@
 
 .flex-column {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  //justify-content: flex-start;
+  //align-items: flex-start;
   flex-direction: column;
 
 }
@@ -50,6 +99,7 @@
 .phone, .email {
   display: inline;
   text-align: center;
+
   i {
     position: relative;
     top: 5px;
@@ -63,8 +113,16 @@
   //outline: 0px !important;
 }
 
-.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
 
 p {
   margin-bottom: 8px;
+}
+
+@media screen and (max-width: 960px) {
+  #footer {
+    padding: 0;
+  }
 }

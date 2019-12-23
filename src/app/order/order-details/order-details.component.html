@@ -1,138 +1,169 @@
-<div id="buyerContacts">
-  <div>
-    <h3>Дані отримувача:</h3>
-  </div>
+<div id="buyer-contacts" class="flex-row jc-space-between">
+  <div id="buyer-info">
+    <!--<div>-->
+    <h4>Особисті дані:</h4>
+    <!--</div>-->
 
-  <form [formGroup]="buyerContactsForm" novalidate (change)="makeOrder()">
+    <form [formGroup]="buyerContactsForm" novalidate (change)="makeOrder()">
 
-    <div class="form-group">
-      <div class="flex-row">
-        <div>
-          <input class="form-control" type="text" name="firstName" placeholder="Ім'я отримувача *"
-                 formControlName="userFirstName"
-                 title="лише літери латинниці та кирилиці"
-                 [ngClass]="checker(buyerContactsForm, 'userFirstName')">
+      <div class="name input-item flex-row jc-space-between">
+        <div class="first-name">
+          <label>
+            <span>Ім'я*</span>
+            <input class="" type="text" name="firstName"
+                   formControlName="userFirstName"
+                   title="лише літери латинниці та кирилиці"
+                   [ngClass]="checker(buyerContactsForm, 'userFirstName')">
+          </label>
+          <!--<br>-->
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userFirstName', 'required')">
+            Обов'язкове поле!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userFirstName', 'pattern')">
+            Лише літери кирилиці та латинниці!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userFirstName', 'size')">
+            Від 2 до 30 знаків включно!
+          </small>
+        </div>
+
+        <div class="last-name">
+          <label>
+            <span>Прізвище*</span>
+            <input class="" type="text" name="lastName"
+                   formControlName="userLastName"
+                   title="лише літери латинниці та кирилиці"
+                   [ngClass]="checker(buyerContactsForm, 'userLastName')">
+          </label>
+          <br>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userLastName', 'required')">Обов'язкове поле!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userLastName', 'pattern')">Лише літери кирилиці
+            та
+            латинниці!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userLastName', 'size')">Від 2 до 30 знаків
+            включно!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userLastName', 'minlength')">Мінімум 2 знаки!
+          </small>
+          <small class="" *ngIf="hasError(buyerContactsForm, 'userLastName', 'maxlength')">Максимум 30 знаків!
+          </small>
         </div>
       </div>
-      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userFirstName')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned(buyerContactsForm, 'userFirstName')">Введіть правильне імя!</small>
-    </div>
 
-    <div class="form-group">
-      <div class="flex-row">
-        <div>
-          <input class="form-control" type="text" name="lastName" placeholder="Прізвище отримувача *"
-                 formControlName="userLastName"
-                 title="лише літери латинниці та кирилиці"
-                 [ngClass]="checker(buyerContactsForm, 'userLastName')">
-        </div>
-      </div>
-      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userLastName')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="isControlPatterned(buyerContactsForm, 'userLastName')">Введіть правильне прізвище!</small>
-    </div>
-
-    <div class="form-group">
-      <div class="flex-row">
-        <div>
-          <input class="form-control" type="text" name="email"
-                 placeholder="Email *"
+      <div class="input-item">
+        <label>
+          <span>E-Mail*</span>
+          <input class="" type="text" name="email"
                  formControlName="userEmail"
                  [ngClass]="checker(buyerContactsForm, 'userEmail')">
-        </div>
+        </label>
+        <br>
+        <small class="" *ngIf="hasError(buyerContactsForm, 'userEmail', 'required')">Обов'язкове поле!</small>
+        <small class="" *ngIf="hasError(buyerContactsForm, 'userEmail', 'email')">Введіть активний email!
+        </small>
       </div>
-      <small class="form-text" *ngIf="isControlRequired(buyerContactsForm, 'userEmail')">Це поле є обов'язковим!</small>
-      <small class="form-text" *ngIf="buyerContactsForm.controls['userEmail'].hasError('email')">Введіть активний email!
-      </small>
-    </div>
 
-    <div formArrayName="userPhones">
-      <div class="form-group"
-           *ngFor="let userPhone of buyerContactsForm.controls['userPhones'].controls; let i = index">
-        <div class="flex-row">
-          <div>
-            <input class="form-control" type="tel" name="phoneList"
-                   placeholder="Номер мобільного *"
+      <div formArrayName="userPhones" class="input-item">
+        <div *ngFor="let userPhone of buyerContactsForm.controls['userPhones'].controls; let i = index">
+          <label>
+            <span>
+              Телефон*
+            </span>
+            <input class="" type="tel" name="phoneList"
                    formControlName="{{i}}"
                    [ngClass]="checker(buyerContactsForm, 'userPhones')">
-          </div>
-        </div>
-        <small class="form-text"
-               *ngIf="userPhone.touched && userPhone.hasError('required')">
-          Це поле є обов'язковим!
-        </small>
-        <small class="form-text"
-               *ngIf="userPhone.touched && userPhone.hasError('pattern')">
-          Введіть активний номер мобільного
-        </small>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="flex-row">
-        <div>
-          <textarea class="form-control" maxLength="100" rows="3" type="text" name="comment" placeholder="Коментар *"
-                    formControlName="userComment"
-                    title="коментар"></textarea>
+          </label>
+          <br>
+          <small class="" *ngIf="userPhone.touched && userPhone.hasError('required')">
+            Обов'язкове поле!
+          </small>
+          <small class=""
+                 *ngIf="userPhone.touched && userPhone.hasError('pattern')">
+            Введіть активний номер мобільного
+          </small>
         </div>
       </div>
-    </div>
 
-  </form>
-
-  <form [formGroup]="deliveryAdressForm" novalidate (change)="makeOrder()">
-
-    <div class="form-group">
-      <div class="flex-row">
-        <div id="adress" class="flex-column">
-          <div class="flex-row">
-            <input id="store" class="custom-radio" type="radio" name="adress"
-                   formControlName="adress"
-                   value="store" checked>
-            <label for="store" class="flex-column">
-              Заберу сам
-              <span>просп. В. Чорновола, 67а, ринок "Старий лицар"</span>
+      <div class="input-item">
+            <label>
+              <span>Коментар</span>
+              <textarea class="" maxLength="500" rows="3" type="text" name="comment" placeholder="макс. 500 символів"
+                        formControlName="userComment"
+                        title="коментар"></textarea>
             </label>
-          </div>
-          <div class="flex-row">
-            <input #np id="novaPoshta" type="radio" name="adress"
-                   formControlName="adress"
-                   value="novaPoshta">
-            <label for="novaPoshta" class="flex-column">
-              <img src="assets/images/order/logo-np.png" alt="Nova Poshta">
-            </label>
-          </div>
-        </div>
       </div>
-    </div>
 
-    <div *ngIf="np.checked">
-      <div class="form-group">
+    </form>
+  </div>
+
+  <div id="delivery-info">
+    <h4>Доставка:</h4>
+    <form [formGroup]="deliveryAdressForm" novalidate (change)="makeOrder()">
+
+      <div class="">
         <div class="flex-row">
-          <div>
-            <input class="form-control" type="text" name="settlement" placeholder="Населений пункт *"
-                   formControlName="settlement"
-                   title=""
-                   [ngClass]="checker(deliveryAdressForm, 'settlement')">
+          <div id="adress" class="flex-column">
+            <div class="flex-column">
+              <div class="flex-row align-items-center">
+                <input id="store" class="custom-radio" type="radio" name="adress"
+                       formControlName="adress"
+                       value="store" checked>
+                <label for="store">
+                  <p>Самовивіз</p>
+                </label>
+              </div>
+              <small>просп. В. Чорновола, 67а, ринок "Старий лицар"</small>
+            </div>
+            <div class="flex-column">
+
+              <div class="flex-row align-items-center">
+                <input #np id="novaPoshta" type="radio" name="adress"
+                       formControlName="adress"
+                       value="novaPoshta">
+                <label for="novaPoshta" class="flex-column">
+                  <p>Нова Пошта</p>
+                  <!--<img src="assets/images/order/logo-np.png" alt="Nova Poshta">-->
+                </label>
+              </div>
+              <div *ngIf="np.checked" class="flex-column" [@fadeInOut]>
+                <div class="">
+                  <label class="full-width">
+                    <span>Населений пункт*</span><br>
+                    <input class="" type="text" name="settlement"
+                           formControlName="settlement"
+                           title=""
+                           [ngClass]="checker(deliveryAdressForm, 'settlement')">
+                  </label>
+                  <br>
+                  <small class="" *ngIf="hasError(deliveryAdressForm, 'settlement', 'required')">Обов'язкове поле!
+                  </small>
+                  <small class="" *ngIf="hasError(deliveryAdressForm, 'settlement', 'minlength')">Мінімум 2 знаки!
+                  </small>
+                </div>
+
+                <!--<div class="flex-row">-->
+                <div>
+                  <label class="full-width">
+                    <span>Номер відділення*</span><br>
+                    <input class="" type="text" name="branch"
+                           formControlName="branch" [required]="np.checked"
+                           title=""
+                           [ngClass]="checker(deliveryAdressForm, 'branch')">
+                  </label>
+                  <br>
+                  <small class="" *ngIf="hasError(deliveryAdressForm, 'branch', 'required')">Обов'язкове поле!</small>
+                </div>
+                <!--</div>-->
+
+              </div>
+            </div>
           </div>
         </div>
-        <small class="form-text" *ngIf="isControlRequired(deliveryAdressForm, 'settlement')">Це поле є обов'язковим!</small>
-        <small class="form-text" *ngIf="isControlPatterned(deliveryAdressForm, 'settlement')">Введіть правильне імя!</small>
       </div>
 
-      <div class="form-group">
-        <div class="flex-row">
-          <div>
-            <input class="form-control" type="text" name="branch" placeholder="Номер відділення *"
-                   formControlName="branch" [required]="np.checked"
-                   title=""
-                   [ngClass]="checker(deliveryAdressForm, 'branch')">
-          </div>
-        </div>
-        <small class="form-text" *ngIf="isControlRequired(deliveryAdressForm, 'branch')">Це поле є обов'язковим!</small>
-        <small class="form-text" *ngIf="isControlPatterned(deliveryAdressForm, 'branch')">Введіть правильне імя!</small>
-      </div>
 
-    </div>
-
-  </form>
+    </form>
+  </div>
 </div>

@@ -1,57 +1,46 @@
 import {AfterContentChecked, Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CartComponent} from '../order/cart/cart.component';
-import {CartItem} from '../shared/models/cart-item';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute, NavigationEnd, Router, UrlSegment} from '@angular/router';
+import {CartService} from '../shared/app-services/cart.service';
+import {Order} from '../shared/models/order';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1000)),
+    ]),
+  ]
 })
-export class HeaderComponent implements OnInit, AfterContentChecked {
+export class HeaderComponent implements OnInit {
 
-  private service;
-  totalCartQuantity: number;
-
-  constructor(private cartComponent: CartComponent) {
-    // this.cartComponent.currentQuantityTotal.subscribe((x: number) => {
-    //   this.totalCartQuantiry = x;
-    //   console.log('123', x);
-    // });
-    // console.log('QuantityTOTAL!!!', this.totalCartQuantiry);
-    // this.totalCartQuantity = CartComponent.quantityTotal;
-    // this.totalCartQuantity = this.cartComponent.staticQuantityTotal;
+  showNav = false;
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private cartService: CartService) {
   }
 
   ngOnInit(): void {
-    // this.totalCartQuantity = this.cartComponent.staticQuantityTotal;
-
-    // this.totalCartQuantiry = JSON.parse(localStorage.getItem('_cart_size'));
-
-    // this.cartComponent.example().subscribe((x: number) => {
-    //   this.totalCartQuantiry = x;
-    //   console.log('123', x);
+    // this.router.events.subscribe(event => {
+    //   if (event instanceof NavigationEnd) {
+    //
+    //     if (event.url === '/') {
+    //       console.log('MY ROUTE SUBSCRIPTION!', event);
+    //     }
+    //   }
     // });
-    // this.cartComponent.readQT();
     //
-    // console.log('QuantityTOTAL!!!', this.cartComponent.readQT());
+    // this.router.url === '' ? console.log('THIS IS ROOT ROUTE', this.router.url) : console.log('THIS IS NOT ROOT ROUTE');
+
   }
 
-  ngAfterContentChecked(): void {
+  toggleShowNav() {
 
-
-    this.cartComponent.ngOnInit();
-
-    this.cartComponent.ngAfterContentChecked();
-    this.totalCartQuantity = CartComponent.quantityTotal;
-
-    // if (JSON.parse(localStorage.getItem('_cart')) === null) {
-    //   localStorage.removeItem('_cart_size');
-    // }
-    //
-    // this.totalCartQuantiry = JSON.parse(localStorage.getItem('_cart_size'));
-    // this.readMsg();
   }
-
-
 }

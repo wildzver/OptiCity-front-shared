@@ -5,71 +5,103 @@ import {
   Component, DoCheck,
   EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
 import {Product} from '../models/product';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PagerService} from '../services/pager.service';
-import {Subscription} from 'rxjs';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {PagerService} from '../app-services/pager.service';
+import {Observable, Subscription} from 'rxjs';
 import {SortPanelComponent} from '../../sort-panel/sort-panel.component';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnDestroy {
   pager: any = {};
   pageNumber;
   pageSize;
-
-  private _totalItems;
-
-  get totalItems() {
-    return this._totalItems;
-  }
-
   @Input()
-  set totalItems(value: any) {
-    console.log('previous totalItems', this._totalItems);
-    console.log('currently selected totalItems', this._totalItems, value);
-    this._totalItems = value;
+  // navigateToInput: any[];
+  totalItems: number;
 
-    console.log('PAGENUMBER', this.pageNumber);
-    // this.doPageQuery();
+  pagenNumberSubscription: Subscription;
+  pageSizeSubscription: Subscription;
+  totalItemsSubscription: Subscription;
 
-    this.querySubscription = this.route.queryParams.subscribe(
-      (queryParam: any) => {
-        if (queryParam.pagenumber !== undefined) {
-          this.pageNumber = parseInt(queryParam.pagenumber, 10);
-          this.pageSize = queryParam.pagesize;
-        }
-        console.log('queryParam.pagenumber', queryParam.pagenumber);
-        console.log('queryParam.pagesize', queryParam.pagesize);
-      }
-    );
-    // if (this.querySubscription) {
-    //   this.setPage(this.pageNumber);
-    //   console.log('querySubscription');
-    // } else {
-    //   this.setPage(1);
-    //   console.log('querySubscription-');
+  // get _totalItems() {
+  //   return this._totalItems;
+  // }
+  //
+  // @Input()
+  // set _totalItems(value: any) {
+  //   console.log('previous totalItems', this._totalItems);
+  //   console.log('currently selected totalItems', this._totalItems, value);
+  //   this._totalItems = value;
+  //
+  //   console.log('PAGENUMBER', this.pageNumber);
+  //   // this.doPageQuery();
+  //
+  //   this.querySubscription = this.route.queryParams.subscribe(
+  //     (queryParam: any) => {
+  //       if (queryParam.pagenumber !== undefined) {
+  //         this.pageNumber = parseInt(queryParam.pagenumber, 10);
+  //         this.pageSize = queryParam.pagesize;
+  //       }
+  //       console.log('queryParam.pagenumber', queryParam.pagenumber);
+  //       console.log('queryParam.pagesize', queryParam.pagesize);
+  //     }
+  //   );
+  //   // if (this.querySubscription) {
+  //   //   this.setPage(this.pageNumber);
+  //   //   console.log('querySubscription');
+  //   // } else {
+  //   //   this.setPage(1);
+  //   //   console.log('querySubscription-');
+  //
+  //   // }
+  //   // if (this.pageNumber === undefined) {
+  //   //   this.pageNumber = 1;
+  //   //
+  //   // }
+  //   this.setPage(this.pageNumber);
+  //
+  //   // this.doPageQuery();
+  // }
 
-    // }
-    // if (this.pageNumber === undefined) {
-    //   this.pageNumber = 1;
-    //
-    // }
-    this.setPage(this.pageNumber);
 
-    // this.doPageQuery();
-  }
-
-
-  private querySubscription: Subscription;
+  // querySubscription = new Subscription();
+  //
+  // pagenNumberSubscription = this.pagerService.currentPageNumber.subscribe(
+  //   pageNumber => {
+  //     this.pageNumber = pageNumber;
+  //     console.log('PAGINATION PAGE NUMBER', this.pageNumber);
+  //     this.pager = this.pagerService.getPager(pageNumber, this.pageSize, this.totalItems);
+  //     this.doPageQuery();
+  //   });
+  //
+  // pageSizeSubscription = this.pagerService.currentPageSize.subscribe(
+  //   pageSize => {
+  //     this.pageSize = pageSize;
+  //     console.log('PAGINATION - SORT PANEL PAGE SIZE', this.pageSize);
+  //     this.pager = this.pagerService.getPager(this.pageNumber, pageSize, this.totalItems);
+  //     this.doPageQuery();
+  //   }
+  // );
+  //
+  // totalItemsSubscription = this.pagerService.currentTotalItems.subscribe(
+  //   totalItems => {
+  //     this.totalItems = totalItems;
+  //     this.pager = this.pagerService.getPager(this.pageNumber, this.pageSize, totalItems);
+  //     // this.setPage(this.pageNumber);
+  //     // this.doPageQuery();
+  //   }
+  // );
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -78,25 +110,91 @@ export class PaginationComponent implements OnInit {
 
   }
 
+  ngOnInit() {
+
+    // this.querySubscription
+    //   .add(this.pagenNumberSubscription)
+    //   .add(this.pageSizeSubscription)
+    //   .add(this.totalItemsSubscription);
+
+    this.loadCurrentPageNumber();
+    this.loadCurrentPageSize();
+    this.loadCurrentTotalItems();
+    // this.pagerService.getPager(1, 16, 100);
+    // this.querySubscription = this.route.queryParams.subscribe(
+    //   (queryParam: any) => {
+    //     if (queryParam.pagenumber !== undefined) {
+    //       this.pageNumber = parseInt(queryParam.pagenumber, 10);
+    //       this.pagerService.changePageSize(queryParam.pagesize);
+    //       // this.pageSize = queryParam.pagesize;
+    //     }
+    //     console.log('queryParam.pagenumber', queryParam.pagenumber);
+    //     console.log('queryParam.pagesize', queryParam.pagesize);
+    //   }
+    // );
+
+
+    // this.querySubscription = this.route.queryParams.subscribe(
+    //   (queryParam: any) => {
+    //     if (queryParam.pagenumber !== undefined) {
+    //       this.pageNumber = parseInt(queryParam.pagenumber, 10);
+    //       this.pageSize = queryParam.pagesize;
+    //     }
+    //     console.log('queryParam.pagenumber', queryParam.pagenumber);
+    //     console.log('queryParam.pagesize', queryParam.pagesize);
+    //   }
+    // );
+    //
+    // this.setPage(this.pageNumber);
+    // this.router.events.pipe(
+    //   filter((event) => event instanceof NavigationEnd),
+    //   // distinctUntilChanged(),
+    // ).subscribe(() => {
+    //   this.querySubscription
+    //     .add(this.pagenNumberSubscription)
+    //     .add(this.pageSizeSubscription)
+    //     .add(this.totalItemsSubscription);
+    //   // this.loadCurrentPageNumber();
+    //   // this.loadCurrentPageSize();
+    //   // this.loadCurrentTotalItems();
+    //
+    //   // this.doPageQuery();
+    // });
+    // this.doPageQuery();
+
+  }
+
+
+  ngOnDestroy(): void {
+    // this.pagenNumberSubscription.unsubscribe();
+    // this.pageSizeSubscription.unsubscribe();
+    // this.totalItemsSubscription.unsubscribe();
+    // this.querySubscription.unsubscribe();
+  }
+
+
+
   setPage(currentPage: number) {
     // get pager object from service
+    this.pagerService.changePageNumber(currentPage);
     // this.pageNumber = currentPage;
-    this.pager = this.pagerService.getPager(currentPage, this._totalItems, this.pageSize);
-    this.pageNumber = this.pager.currentPage;
+    // this.pager = this.pagerService.getPager(currentPage, this.pageSize, this.totalItems);
+    // this.pageNumber = this.pager.currentPage;
     console.log('PAGER!', this.pager);
-    console.log('TOTAL ITEMS!', this._totalItems);
-    this.doPageQuery();
-    // get current page of items
+    console.log('TOTAL ITEMS!', this.totalItems);
+    // this.doPageQuery();
+    // get current page of cartItems
     // this.pagedProducts = this.products.slice(this.pager.startIndex, this.pager.endIndex + 1);
     // console.log('ITEMS IN PAGE' + this.pagedProducts);
   }
 
-
   doPageQuery() {
     this.router.navigate(['.'], {
       relativeTo: this.route,
-      queryParams: {pagenumber: this.pageNumber, pagesize: this.pageSize},
-      queryParamsHandling: 'merge'
+      queryParams: {pagenumber: this.pager.currentPage, pagesize: this.pager.pageSize},
+      queryParamsHandling: 'merge',
+      // skipLocationChange: true
+      // replaceUrl: true
     });
   }
 
@@ -112,28 +210,39 @@ export class PaginationComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    // this.querySubscription = this.route.queryParams.subscribe(
-    //   (queryParam: any) => {
-    //     if (queryParam.pagenumber !== undefined) {
-    //       this.pageNumber = parseInt(queryParam.pagenumber, 10);
-    //       this.pagerService.changePageSize(queryParam.pagesize);
-    //       // this.pageSize = queryParam.pagesize;
-    //     }
-    //     console.log('queryParam.pagenumber', queryParam.pagenumber);
-    //     console.log('queryParam.pagesize', queryParam.pagesize);
-    //   }
-    // );
 
-    this.loadCurrentPageSize();
+  private loadCurrentTotalItems() {
+    this.totalItemsSubscription = this.pagerService.currentTotalItems.subscribe(
+      totalItems => {
+        this.totalItems = totalItems;
+        // this.pager = this.pagerService.getPager(this.pageNumber, this.pageSize, totalItems);
+        this.pager = this.pagerService.getPager();
+        // this.setPage(this.pageNumber);
+        // this.doPageQuery();
+      }
+    );
   }
 
   private loadCurrentPageSize() {
-    this.pagerService.currentPageSize.subscribe(
+    this.pageSizeSubscription = this.pagerService.currentPageSize.subscribe(
       pageSize => {
         this.pageSize = pageSize;
         console.log('PAGINATION - SORT PANEL PAGE SIZE', this.pageSize);
-        this.setPage(this.pageNumber);
+        // this.pager = this.pagerService.getPager(this.pageNumber, pageSize, this.totalItems);
+        this.pager = this.pagerService.getPager();
+        this.doPageQuery();
+      }
+    );
+  }
+
+  private loadCurrentPageNumber() {
+    this.pagenNumberSubscription = this.pagerService.currentPageNumber.subscribe(
+      pageNumber => {
+        this.pageNumber = pageNumber;
+        console.log('PAGINATION PAGE NUMBER', this.pageNumber);
+        // this.pager = this.pagerService.getPager(pageNumber, this.pageSize, this.totalItems);
+        this.pager = this.pagerService.getPager();
+        this.doPageQuery();
       }
     );
   }

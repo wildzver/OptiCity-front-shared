@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ProductsService} from '../../../shared/services/products.service';
 import {Color} from '../../../shared/models/color';
+import {ProductsService} from '../../../shared/app-services/products.service';
 
 @Component({
   selector: 'app-frame-colors',
@@ -16,6 +16,9 @@ export class FrameColorsComponent implements OnInit {
   frameColors: Color[];
   isNewRecord: boolean;
   statusMessage: string;
+
+  selectedFiles: FileList;
+  currentFileUpload: File;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -64,8 +67,17 @@ export class FrameColorsComponent implements OnInit {
   }
 
   saveFrameColor() {
+    if (this.selectedFiles) {
+      this.currentFileUpload = this.selectedFiles.item(0);
+    }
+    const json = JSON.stringify(this.editedFrameColor);
+    const blob = new Blob([json], {type: 'application/json'});
+    const formData = new FormData();
+    formData.append('frameColor', blob);
+    formData.append('frameColorImage', this.currentFileUpload);
     if (this.isNewRecord) {
-      this.productService.createFrameColor(this.editedFrameColor).subscribe(data => {
+
+      this.productService.createFrameColor(formData).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadFrameColors();
       });
@@ -73,7 +85,7 @@ export class FrameColorsComponent implements OnInit {
       this.isNewRecord = false;
       this.editedFrameColor = null;
     } else {
-      this.productService.updateFrameColor(this.editedFrameColor).subscribe(data => {
+      this.productService.updateFrameColor(formData, this.editedFrameColor).subscribe(data => {
         this.statusMessage = 'Data updated successfully',
           this.loadFrameColors();
       });
@@ -94,5 +106,9 @@ export class FrameColorsComponent implements OnInit {
       this.statusMessage = 'Data deleted successfully',
         this.loadFrameColors();
     });
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 }

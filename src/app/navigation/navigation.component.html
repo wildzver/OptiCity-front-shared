@@ -1,8 +1,0 @@
-<ul class="clearfix breadcrumb">
-<li class="breadcrumb-item" routerLink="">
-  <i class="material-icons">home</i>
-</li>
-  <li class="breadcrumb-item" *ngFor="let link of links; let i = index">
-    <a [routerLink]="[links[i].url]" [ngClass]="{linkDisabled: links[links.length-1].path===link.path}" replaceUrl>{{link.itemName}}</a>
-  </li>
-</ul>

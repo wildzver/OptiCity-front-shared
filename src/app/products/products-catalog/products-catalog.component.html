@@ -1,18 +1,22 @@
-<div class="flex-row">
-  <app-breadcrumb-navigation></app-breadcrumb-navigation>
+<div class="flex-row jc-space-between align-items-end wrap">
+  <div class="flex-row jc-flex-start align-items-end wrap">
+    <app-breadcrumb-navigation></app-breadcrumb-navigation>
+    <h4 [hidden]="!products?.length" class="total-items">
+      Знайдено {{totalItems}} {{totalItems.toString().match('[1]$') ? "товар" :
+      (totalItems.toString().match('[234]$') ? "товари" : "товарів")}}</h4>
+  </div>
   <app-sort-panel></app-sort-panel>
 </div>
-<div class="page-row">
-  <app-sidebar></app-sidebar>
-  <div class="page-column">
-    <div class="all-products">
-      <app-products-catalog-item *ngFor="let product of products"
-                                 [productInput]="product"></app-products-catalog-item>
+<div class="flex-row">
+  <app-sidebar [filterForm]="filterForm"></app-sidebar>
+  <div class="flex-column jc-space-between align-items-start">
+    <div *ngIf="isLoading" class="overlay">
+      <app-spinner></app-spinner>
     </div>
-    <div>
-      <app-pagination [totalItems]="totalItems"></app-pagination>
-      <p>TOTAL ITEMS {{totalItems}}</p>
-    </div>
+    <app-catalog [productsInput]="products"></app-catalog>
+
+    <app-pagination [hidden]="!products?.length"></app-pagination>
   </div>
 </div>
-<router-outlet></router-outlet>
+<!--<ng-template #spinner>-->
+<!--</ng-template>-->
