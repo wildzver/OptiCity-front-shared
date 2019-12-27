@@ -1,10 +1,11 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Product} from '../../../shared/models/product';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductsService} from '../../../shared/app-services/products.service';
 import {Subscription} from 'rxjs';
 import {Image} from '../../../shared/models/image';
 import {CartService} from '../../../shared/app-services/cart.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -15,7 +16,15 @@ export enum KEY_CODE {
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+  styleUrls: ['./product-details.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1000)),
+    ]),
+  ]
 })
 export class ProductDetailsComponent implements OnInit {
 
@@ -40,7 +49,6 @@ export class ProductDetailsComponent implements OnInit {
     this.subscription = route.params.subscribe(params => {
       this.category = params.category;
       this.productNumber = params.productNumber;
-      console.log('PARAMS!!!', params.category, params.productNumber);
     });
   }
 
@@ -63,25 +71,18 @@ export class ProductDetailsComponent implements OnInit {
   ngOnInit() {
     this.showSpinner = true;
     this.route.params.subscribe(queryParams => {
-      // this.category = queryParams.category;
       this.getProductDetails(queryParams.category, queryParams.productNumber);
     });
-    // this.productNumber = queryParams.productNumber;
-    // console.log('THIS IS PRODUCT!', this.product);
   }
-
 
   private getProductDetails(category, productNumber) {
     this.productService.getProductsByModelNumberThroughProductNumber(category, productNumber).subscribe(data => {
       this.currentProduct = data.find(value => value.productNumber === this.productNumber);
       this.currentProductImages = data.find(value => value.productNumber === this.productNumber).images;
       this.auxiliaryProducts = data.filter(value => value.productNumber !== this.productNumber);
-      console.log('This is auxiliaryProducts!!!', this.auxiliaryProducts);
       this.getDiopterValues();
-
       this.navigate();
       this.mainImageUrl = `/api/product-image/${this.findMainImage(this.currentProduct)}`;
-      console.log('THIS IS DATA!', data);
       this.showSpinner = false;
     });
   }
@@ -89,8 +90,6 @@ export class ProductDetailsComponent implements OnInit {
   private findMainImage(product: Product) {
     const mainImage = product.images.find(image => image.mainImage === true);
     return mainImage ? mainImage.imageName : product.images[0].imageName;
-    // return product.images[mainImageIndex].imageName;
-
   }
 
   private getDiopterValues() {
@@ -98,19 +97,15 @@ export class ProductDetailsComponent implements OnInit {
       .map(diopter => {
         return diopter.value;
       }).toString().split(',').join(', ');
-    console.log('MY DIOPTERS', this.diopters);
   }
 
   private navigate() {
     this.router.navigateByUrl(this.router.url.replace(this.category, this.currentProduct.productDetails.category.name));
   }
 
-
   private changeImage(imageName: string) {
     this.mainImageUrl = `/api/product-image/${imageName}`;
     this.mainImageName = imageName;
-    console.log('currentImgs', this.currentProductImages);
-    console.log('mainImageName', this.mainImageName);
     this.changeAddedImgsContainerLocation();
   }
 
@@ -135,9 +130,7 @@ export class ProductDetailsComponent implements OnInit {
       previousImageName = this.currentProductImages[this.currentImagePosition() - 1].imageName;
     }
     this.changeImage(previousImageName);
-    console.log('MY CURRENT IMAGE POSITION', this.currentImagePosition());
   }
-
 
   private fetchNextImage() {
     let nextImageName: string;
@@ -148,7 +141,6 @@ export class ProductDetailsComponent implements OnInit {
       nextImageName = this.currentProductImages[this.currentImagePosition() + 1].imageName;
     }
     this.changeImage(nextImageName);
-    console.log('MY CURRENT IMAGE POSITION', this.currentImagePosition());
   }
 
   private changeAddedImgsContainerLocation() {
@@ -164,6 +156,4 @@ export class ProductDetailsComponent implements OnInit {
     }
     addedImgsElem.style.left = leftValue;
   }
-
 }
-

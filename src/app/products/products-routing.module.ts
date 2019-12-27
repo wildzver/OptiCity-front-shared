@@ -2,14 +2,14 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {ProductsCatalogComponent} from './products-catalog/products-catalog.component';
-import {ProductsCatalogCategoryComponent} from './products-catalog/products-catalog-category/products-catalog-category.component';
 
 const productsRotes: Routes = [
   {path: '', component: ProductsCatalogComponent},
-  {path: ':category',
+  {
+    path: ':category',
     loadChildren: './products-catalog/products-catalog-category/products-catalog-category.module#ProductsCatalogCategoryModule',
-    data: {breadcrumb: ''}},
-
+    data: {breadcrumb: ''}
+  }
 ];
 
 @NgModule({
@@ -23,5 +23,6 @@ const productsRotes: Routes = [
     RouterModule
   ]
 })
+
 export class ProductsRoutingModule {
 }

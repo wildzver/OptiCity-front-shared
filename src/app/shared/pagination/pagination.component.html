@@ -1,17 +1,17 @@
 <ul *ngIf="pager.pages && pager.pages.length && pager.totalPages" class="pagination">
   <li [ngClass]="{disabled:pager.currentPage === 1}">
-    <a (click)="setPage(1)"><img src="assets/images/arrow-begin.png"></a>
+    <a (click)="setPage(1)" title="Перша сторінка"><img src="assets/images/arrow-begin.png"></a>
   </li>
   <li [ngClass]="{disabled:pager.currentPage === 1}">
-    <a (click)="setPage(pager.currentPage - 1)"><img src="assets/images/arrow-previous.png"></a>
+    <a (click)="setPage(pager.currentPage - 1)" title="Попередня сторінка"><img src="assets/images/arrow-previous.png"></a>
   </li>
   <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
     <a (click)="setPage(page)">{{page}}</a>
   </li>
   <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-    <a (click)="setPage(pager.currentPage + 1)"><img src="assets/images/arrow-next.png"></a>
+    <a (click)="setPage(pager.currentPage + 1)" title="Наступна сторінка"><img src="assets/images/arrow-next.png"></a>
   </li>
   <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-    <a (click)="setPage(pager.totalPages)"><img src="assets/images/arrow-end.png"></a>
+    <a (click)="setPage(pager.totalPages)" title="Остання сторінка"><img src="assets/images/arrow-end.png"></a>
   </li>
 </ul>

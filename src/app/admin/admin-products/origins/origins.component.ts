@@ -1,5 +1,4 @@
 import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Material} from '../../../shared/models/material';
 import {ProductsService} from '../../../shared/app-services/products.service';
 import {Origin} from '../../../shared/models/origin';
 
@@ -40,7 +39,6 @@ export class OriginsComponent implements OnInit {
   private loadOrigins() {
     this.productService.getOrigins().subscribe((origins: Origin[]) => {
       this.origins = origins;
-      console.log(this.origins);
     });
   }
 
@@ -51,9 +49,7 @@ export class OriginsComponent implements OnInit {
   }
 
   editOrigin(origin: Origin) {
-    console.log(origin);
     this.editedOrigin = new Origin(origin.id, origin.name, origin.uaName);
-    console.log(origin.id);
   }
 
   loadTemplate(origin: Origin) {
@@ -70,7 +66,6 @@ export class OriginsComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadOrigins();
       });
-      console.log(this.editedOrigin);
       this.isNewRecord = false;
       this.editedOrigin = null;
     } else {

@@ -42,7 +42,6 @@ export class LensColorsComponent implements OnInit {
   private loadLensColors() {
     this.productService.getLensColors().subscribe((data: Color[]) => {
       this.lensColors = data;
-      console.log(this.lensColors);
     });
   }
 
@@ -53,9 +52,7 @@ export class LensColorsComponent implements OnInit {
   }
 
   editLensColor(lensColor: Color) {
-    console.log(lensColor);
     this.editedLensColor = new Color(lensColor.id, lensColor.name, lensColor.uaName);
-    console.log(lensColor.id);
   }
 
   loadTemplate(lensColor: Color) {
@@ -81,7 +78,6 @@ export class LensColorsComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadLensColors();
       });
-      console.log(this.editedLensColor);
       this.isNewRecord = false;
       this.editedLensColor = null;
     } else {

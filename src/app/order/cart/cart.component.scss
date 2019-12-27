@@ -2,20 +2,19 @@
   color: #002C40;
   width: 100%;
 
+  a {
+    color: #002C40;
+  }
   table {
     width: 100%;
     align-self: center;
 
     tr {
       height: 10px;
-      //border-top: 1px solid rgba(#002C40, 0.1);
-      //border-bottom: 1px solid rgba(#002C40, 0.1);
 
       th, td {
-
         vertical-align: middle;
         padding: 16px 16px 16px 0;
-
       }
 
       th {
@@ -31,20 +30,7 @@
           border: none;
         }
 
-        .info-td {
-
-        }
-
-        .quantity-td {
-
-        }
-
-        &.subtotal-td {
-        }
-
         .img-container {
-
-          //margin: 0 2px;
           width: 100px;
           height: 100px;
           overflow: hidden;
@@ -52,7 +38,6 @@
           img {
             width: 100%;
             height: auto;
-            //min-width: 100px;
             min-height: 100%;
             cursor: pointer;
           }
@@ -73,26 +58,16 @@
           height: 24px;
           background-color: transparent;
           border: none;
-          //position: relative;
-          //top: 0px;
-          //left: 100%;
           cursor: pointer;
 
           &:hover {
             opacity: 1;
           }
         }
-
       }
 
-
       &:first-child {
-        //td {
-
         align-content: center;
-        //}
-        //font-weight: bold;
-        //border: none;
       }
     }
   }
@@ -109,7 +84,6 @@ input {
 .flex-row {
   display: flex;
   flex-direction: row;
-  //align-cartItems: center;
 }
 
 .jc-flex-start {
@@ -137,7 +111,6 @@ input {
   flex-direction: column;
 }
 
-
 .quantity {
   width: 60px;
 
@@ -153,7 +126,6 @@ input {
   }
 
   input[type=number] {
-    //position: relative;
     border: none;
     outline: none;
     width: 30px;
@@ -170,58 +142,3 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
-//.quantity input {
-//  width: 45px;
-//  height: 42px;
-//  line-height: 1.65;
-//  float: left;
-//  display: block;
-//  padding: 0;
-//  margin: 0;
-//  padding-left: 20px;
-//  border: 1px solid #eee;
-//}
-//
-//.quantity input:focus {
-//  outline: 0;
-//}
-//
-//.quantity-nav {
-//  float: left;
-//  position: relative;
-//  height: 42px;
-//}
-//
-//.quantity-button {
-//  position: relative;
-//  cursor: pointer;
-//  border-left: 1px solid #eee;
-//  width: 20px;
-//  text-align: center;
-//  color: #333;
-//  font-size: 13px;
-//  font-family: "Trebuchet MS", Helvetica, sans-serif !important;
-//  line-height: 1.7;
-//  -webkit-transform: translateX(-100%);
-//  transform: translateX(-100%);
-//  -webkit-user-select: none;
-//  -moz-user-select: none;
-//  -ms-user-select: none;
-//  -o-user-select: none;
-//  user-select: none;
-//}
-//
-//.quantity-button.quantity-up {
-//  position: relative;
-//  height: 50%;
-//  //left: -20px;
-//  top: 0;
-//  border-bottom: 1px solid #eee;
-//}
-//
-//.quantity-button.quantity-down {
-//  position: absolute;
-//  bottom: -1px;
-//  height: 50%;
-//}

@@ -172,7 +172,8 @@
           <label class="flex-row">
             <span>Загальна ширина*</span>
             <div class="flex-column">
-              <input class="form-control" type="number" min="0" step="1" name="totalWidth" placeholder="Загальна ширина *"
+              <input class="form-control" type="number" min="0" step="1" name="totalWidth"
+                     placeholder="Загальна ширина *"
                      formControlName="productTotalWidth"
                      title="лише цифри"
                      [ngClass]="checker('productTotalWidth')">
@@ -189,7 +190,8 @@
           <label class="flex-row">
             <span>Довжина дужки*</span>
             <div class="flex-column">
-              <input class="form-control" type="number" min="0" step="1" name="bracketLength" placeholder="Довжина дужки *"
+              <input class="form-control" type="number" min="0" step="1" name="bracketLength"
+                     placeholder="Довжина дужки *"
                      formControlName="productBracketLength"
                      title="лише цифри"
                      [ngClass]="checker('productBracketLength')">
@@ -292,10 +294,8 @@
                 </div>
                 <input #mainImageInput id="main-image" type="file" (change)="selectMainImage($event)"
                        name="main-image" formControlName="{{i}}">
-                <!--<label for="main-image">-->
                 <button type="button" class="submit-btn"
                         (click)="mainImageInput.click()">{{mainImage ? "змінити головне зображення" : "додати головне зображення"}}</button>
-                <!--</label>-->
               </div>
             </div>
           </div>

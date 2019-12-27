@@ -9,27 +9,16 @@ import {FilterService} from '../../shared/app-services/filter.service';
 import {PagerService} from '../../shared/app-services/pager.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
-import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-products-catalog',
   templateUrl: './products-catalog.component.html',
-  styleUrls: ['./products-catalog.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0
-      })),
-      transition('void <=> *', animate(2000)),
-    ]),
-  ]
+  styleUrls: ['./products-catalog.component.scss']
 })
 export class ProductsCatalogComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   @ViewChild(SidebarComponent) sidebarComponent;
   products: Product[];
-  // navigateTo = ['/products'];
-  // search: string[];
   searchedSexes = new Array<number>();
   minPrice: number;
   maxPrice: number;
@@ -44,36 +33,30 @@ export class ProductsCatalogComponent implements OnInit, OnDestroy, AfterViewIni
   totalItems: any;
   sortBy: string;
   sortDirection: string;
-
   isLoading = false;
-
-  // private querySubscription: Subscription;
   productsSubscription: Subscription;
   filterSubscription = new Subscription();
   pagerSubscription = new Subscription();
-
 
   sexesSubscription = this.filterService.currentSearchedSexes.subscribe(sex => {
     this.searchedSexes = sex;
   });
   minPriceSubscription = this.filterService.currentMinPrice.subscribe(minPrice => {
     this.minPrice = minPrice;
-    console.log('MIN PRICE CHANGING IN CATALOG', this.minPrice);
   });
   maxPriceSubscription = this.filterService.currentMaxPrice.subscribe(maxPrice => this.maxPrice = maxPrice);
   lensColorsSubscription = this.filterService.currentSearchedLensColors.subscribe(searchedLensColors => {
     this.searchedLensColors = searchedLensColors;
-    console.log('SEARCHED LENS COLORS CHANGING IN CATALOG', this.searchedLensColors);
   });
   frameColorsSubscription = this.filterService.currentSearchedFrameColors.subscribe(searchedFrameColors => {
     this.searchedFrameColors = searchedFrameColors;
   });
   frameMateialSubscription = this.filterService.currentSearchedFrameMaterials.subscribe(frameMaterial => {
-      this.searchedFrameMaterials = frameMaterial;
-    });
+    this.searchedFrameMaterials = frameMaterial;
+  });
   dioptersSubscription = this.filterService.currentSearchedDiopters.subscribe(diopter => {
-      this.searchedDiopters = diopter;
-    });
+    this.searchedDiopters = diopter;
+  });
   polarizationSubscription = this.filterService.currentPolarization.subscribe(polarization => {
     this.polarization = polarization;
   });
@@ -128,7 +111,6 @@ export class ProductsCatalogComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnDestroy(): void {
     this.pagerSubscription.unsubscribe();
-    // this.querySubscription.unsubscribe();
     this.productsSubscription.unsubscribe();
   }
 
@@ -151,14 +133,11 @@ export class ProductsCatalogComponent implements OnInit, OnDestroy, AfterViewIni
 
   private loadProducts() {
     this.isLoading = true;
-    console.log('LAUNCH LOAD PRODUCTS!');
 
     this.productsService.getFilteredProducts(this.getFilterParameters())
-      // .pipe(takeWhile(() => !this.productsSubscription.closed))
       .pipe(delay(200))
       .subscribe(products => {
           this.products = products.content;
-          console.log('<<<MY PRODUCTS', products.content);
           this.pagerService.changeTotalItems(products.totalElements);
           this.isLoading = false;
         },

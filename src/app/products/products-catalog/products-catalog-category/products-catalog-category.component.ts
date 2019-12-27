@@ -2,11 +2,10 @@ import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, On
 import {Product} from '../../../shared/models/product';
 import {ProductsService} from '../../../shared/app-services/products.service';
 import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {delay, filter, switchMap, takeWhile} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {delay, filter} from 'rxjs/operators';
 import {FilterService} from '../../../shared/app-services/filter.service';
 import {PagerService} from '../../../shared/app-services/pager.service';
-import {PaginationComponent} from '../../../shared/pagination/pagination.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SidebarComponent} from '../../sidebar/sidebar.component';
 import {FormGroup} from '@angular/forms';
@@ -15,15 +14,11 @@ import {FormGroup} from '@angular/forms';
   selector: 'app-products-catalog-category',
   templateUrl: '../products-catalog.component.html',
   styleUrls: ['../products-catalog.component.scss']
-  // templateUrl: './products-catalog-categories.component.html',
-  // styleUrls: ['./products-catalog-categories.component.scss']
 })
 export class ProductsCatalogCategoryComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   @ViewChild(SidebarComponent) sidebarComponent;
   products: Product[];
-  // navigateTo: any[];
-  // search: string[];
   searchedSexes = new Array<any>();
   minPrice: number;
   maxPrice: number;
@@ -39,15 +34,11 @@ export class ProductsCatalogCategoryComponent implements OnInit, OnDestroy, Afte
   category: string;
   sortBy: string;
   sortDirection: string;
-
   isLoading = false;
-
-  // private querySubscription: Subscription;
   productsSubscription: Subscription;
   filterSubscription = new Subscription();
   pagerSubscription = new Subscription();
   routeCategorySubscription = new Subscription();
-
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -63,12 +54,10 @@ export class ProductsCatalogCategoryComponent implements OnInit, OnDestroy, Afte
   });
   minPriceSubscription = this.filterService.currentMinPrice.subscribe(minPrice => {
     this.minPrice = minPrice;
-    console.log('MIN PRICE CHANGING IN CATALOG', this.minPrice);
   });
   maxPriceSubscription = this.filterService.currentMaxPrice.subscribe(maxPrice => this.maxPrice = maxPrice);
   lensColorsSubscription = this.filterService.currentSearchedLensColors.subscribe(searchedLensColors => {
     this.searchedLensColors = searchedLensColors;
-    console.log('SEARCHED LENS COLORS CHANGING IN CATALOG', this.searchedLensColors);
   });
   frameColorsSubscription = this.filterService.currentSearchedFrameColors.subscribe(searchedFrameColors => {
     this.searchedFrameColors = searchedFrameColors;
@@ -96,8 +85,6 @@ export class ProductsCatalogCategoryComponent implements OnInit, OnDestroy, Afte
   ngOnInit() {
     this.routeCategorySubscription = this.activatedRoute.paramMap.subscribe(params => {
       this.category = params.get('category');
-      // this.navigateTo = [`/products/${this.category}`];
-      console.log('PARAMS CATEGORY!!!', params.get('category'));
     });
 
     this.filterSubscription
@@ -154,15 +141,10 @@ export class ProductsCatalogCategoryComponent implements OnInit, OnDestroy, Afte
 
   private loadProducts() {
     this.isLoading = true;
-    console.log('LAUNCH LOAD PRODUCTS!');
-
-    console.log('PARAM CATEGORY2!!!', this.category);
     this.productsService.getProductsByCategory(this.category, this.getFilterParameters())
-      // .pipe(takeWhile(() => !this.productsSubscription.closed))
       .pipe(delay(200))
       .subscribe(productsByCategory => {
           this.products = productsByCategory.content;
-          console.log('PRODUCTS BY CATEGORY CONTENT IN CATALOG', productsByCategory.content);
           this.pagerService.changeTotalItems(productsByCategory.totalElements);
           this.isLoading = false;
         },

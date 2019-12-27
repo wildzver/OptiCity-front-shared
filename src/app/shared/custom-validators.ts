@@ -1,6 +1,5 @@
-import {AbstractControl, AsyncValidator, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,16 +30,6 @@ export class CustomValidators {
     };
   }
 
-  // static sizeValid(minlength: number, maxlength: number, error: ValidationErrors): AsyncValidatorFn {
-  //   return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-  //     if (!control.value) {
-  //       return null;
-  //     }
-  //     const invalid = (control.value.toString().length < minlength || control.value.toString().length > maxlength);
-  //     return invalid ? error : null;
-  //   }
-  // }
-
   static intSrartsAtZeroValidator(error: ValidationErrors): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
       if (!control.value) {
@@ -60,6 +49,4 @@ export class CustomValidators {
       control.get('userCheckPassword').setErrors({noPassswordMatch: true});
     }
   }
-
-
 }

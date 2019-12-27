@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {max} from 'rxjs/operators';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {PagerService} from './pager.service';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {ProductsService} from './products.service';
 
 @Injectable({
@@ -35,11 +33,9 @@ export class FilterService {
   ) {
     productsService.getMaxPrice().subscribe(maxPrice => {
       this.serverMaxPrice = maxPrice;
-      console.log('maxPrice&&', maxPrice);
     });
     productsService.getMinPrice().subscribe(minPrice => {
       this.serverMinPrice = minPrice;
-      console.log('minPrice&&', minPrice);
     });
     const queryParamMap: ParamMap = activatedRoute.snapshot.queryParamMap;
 
@@ -73,47 +69,37 @@ export class FilterService {
     this.searchedPolarizationSource.next(
       queryParamMap.has('polarization') ? JSON.parse((queryParamMap.get('polarization')).toLowerCase()) : false
     );
-
   }
 
   changeSearchedSexes(searchedSexes: number[]) {
     this.searchedSexesSource.next(searchedSexes);
-    console.log('MY NEW SEARCHED SEXES IN FILTER SERVICE', searchedSexes);
   }
 
   changeMinPrice(minPrice: number) {
     this.minPriceSource.next(minPrice);
-    console.log('MY NEW MIN PRICE IN FILTER SERVICE', minPrice);
   }
 
   changeMaxPrice(maxPrice: number) {
     this.maxPriceSource.next(maxPrice);
-    console.log('MY NEW MAX PRICE IN FILTER SERVICE', maxPrice);
   }
 
   changeSearchedLensColors(searchedLensColors: number[]) {
     this.searchedLensColorsSource.next(searchedLensColors);
-    console.log('MY NEW SEARCHED LENS COLORS IN FILTER SERVICE', searchedLensColors);
   }
 
   changeSearchedFrameColors(searchedFrameColors: number[]) {
     this.searchedFrameColorsSource.next(searchedFrameColors);
-    console.log('MY NEW SEARCHED FRAME COLORS IN FILTER SERVICE', searchedFrameColors);
   }
 
   changeSearchedFrameMaterials(searchedFrameMaterials: number[]) {
     this.searchedFrameMaterialsSource.next(searchedFrameMaterials);
-    console.log('MY NEW SEARCHED FRAME MATERIALS IN FILTER SERVICE', searchedFrameMaterials);
   }
 
   changeSearchedDiopters(searchedDiopters: number[]) {
     this.searchedDioptersSource.next(searchedDiopters);
-    console.log('MY NEW SEARCHED DIOPTERS IN FILTER SERVICE', searchedDiopters);
   }
 
   changeSearchedPolarization(searchedPolarization: boolean) {
     this.searchedPolarizationSource.next(searchedPolarization);
-    console.log('MY NEW SEARCHED POLARIZATION IN FILTER SERVICE', searchedPolarization);
   }
-
 }

@@ -8,8 +8,8 @@
       <th>Product Number</th>
       <th>Category</th>
       <th>Price</th>
-      <th>Lens Color</th>
-      <th>Frame Color</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -18,10 +18,8 @@
       <td>{{product.productNumber}}</td>
       <td>{{product.categoryUaName}}</td>
       <td>{{product.price}}</td>
-      <!--<td>{{product.lensColor.uaName}}</td>-->
-      <!--<td>{{product.frameColor.uaName}}</td>-->
-      <td><button class="btn btn-danger" (click)="deleteProduct(product)"><i class="material-icons">delete</i></button></td>
       <td><button class="btn btn-info" [routerLink]="[product.id, 'edit']"><i class="material-icons">edit</i></button></td>
+      <td><button class="btn btn-danger" (click)="deleteProduct(product)"><i class="material-icons">delete</i></button></td>
     </tr>
     </tbody>
   </table>

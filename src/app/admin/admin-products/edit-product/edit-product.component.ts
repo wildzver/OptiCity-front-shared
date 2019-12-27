@@ -1,7 +1,6 @@
-import {ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductsService} from '../../../shared/app-services/products.service';
-import {UploadFileService} from '../../../shared/app-services/upload-file.service';
 import {Category} from '../../../shared/models/category';
 import {Color} from '../../../shared/models/color';
 import {Material} from '../../../shared/models/material';
@@ -10,13 +9,13 @@ import {Diopter} from '../../../shared/models/diopter';
 import {Origin} from '../../../shared/models/origin';
 import {Sex} from '../../../shared/models/sex';
 import {Subscription} from 'rxjs';
-import {CustomValidators} from '../../../signup/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators';
 import * as _ from 'lodash';
-import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {KEY_CODE} from '../add-product/add-product.component';
 import {ActivatedRoute} from '@angular/router';
 import {Image} from '../../../shared/models/image';
-import {debounce, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-product',
@@ -28,7 +27,6 @@ export class EditProductComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productsService: ProductsService,
-    private uploadService: UploadFileService,
     private route: ActivatedRoute
   ) {
   }
@@ -44,27 +42,11 @@ export class EditProductComponent implements OnInit {
   productImagesUrl = '/api/product-image/';
   mainImage: Image;
   addedImages: Image[] = new Array();
-  // frameColors = [
-  //   {id: 0, color: 'Білий'},
-  //   {id: 1, color: 'Чорний'},
-  //   {id: 2, color: 'Синій'},
-  //   {id: 3, color: 'Червоний'},
-  //   {id: 4, color: 'Жовтий'},
-  //   {id: 5, color: 'Срібний'},
-  //   {id: 6, color: 'Золотистий'},
-  //   {id: 7, color: 'Коричневий'},
-  //   {id: 8, color: 'Хамелеон'},
-  //   {id: 10, color: 'Прозорий'},
-  //   {id: 13, color: 'Чорно-червоний'},
-  //   {id: 14, color: 'Чорно-жовтий'}
-  // ];
   diopters: Diopter[];
   origins: Origin[];
   sexes: Sex[];
   polarization: boolean;
-
   expanded = false;
-
   freeModelNumber: number;
   selectedMainImages: FileList;
   currentMainImageUpload: File;
@@ -101,7 +83,6 @@ export class EditProductComponent implements OnInit {
   private getProductById(id) {
     this.productsService.getProductById(id).subscribe(product => {
       this.product = product;
-      console.log('//MY PRODUCT', product);
       if (product) {
         this.editProductForm.controls.modelNumber.setValue(product.productDetails.modelNumber);
         this.editProductForm.controls.productCategory.setValue(product.productDetails.category.id);
@@ -141,16 +122,6 @@ export class EditProductComponent implements OnInit {
 
   private findAddedImages(images: Image[]) {
     this.addedImages = images.filter(image => image.mainImage === false);
-
-    // addedImgs.map(addImg => {
-    //   const imageUrl = `/api/product-image/${addImg.imageName}`;
-    //   console.log('imageUrl', imageUrl);
-    //   this.addedImages.push(imageUrl);
-    // });
-    console.log('Imgs', images);
-    // console.log('addedImgs', addedImgs);
-    console.log('addedImgsUrls', this.addedImages);
-    // return product.images[0].imageName;
   }
 
   private removeImage(imageId) {
@@ -158,16 +129,12 @@ export class EditProductComponent implements OnInit {
       images => {
         this.findMainImage(images);
         this.findAddedImages(images);
-      }
-    );
-    // this.getProductById(this.product.id);
+      });
   }
 
   @HostListener('document:click', ['$event.target'])
   clickOutsideDiopters(targetElement) {
     if (!document.getElementById('diopters').contains(targetElement)) {
-      console.log('OUTSIDE WORKS!');
-      // this.hideDioptersCheckBoxes();
     }
   }
 
@@ -175,7 +142,6 @@ export class EditProductComponent implements OnInit {
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.ESCAPE) {
       this.hideDioptersCheckBoxes();
-      console.log('EVENT KEY BOARD WORKS!');
     }
   }
 
@@ -217,76 +183,61 @@ export class EditProductComponent implements OnInit {
         lensColor.enableOption = true;
         return lensColor;
       });
-      console.log('MY LENSCOLORS2!!!', this.lensColors);
-
     });
   }
 
   private loadFrameColors() {
     this.productsService.getFrameColors().subscribe((frameColors: Color[]) => {
-
       this.frameColors = frameColors.map(frameColor => {
         frameColor.enableOption = true;
         return frameColor;
       });
-      console.log('MY FRAMECOLORS2!!!', this.frameColors);
     });
   }
 
   private loadLensMaterials() {
     this.productsService.getLensMaterials().subscribe((lensMaterials: Material[]) => {
-
       this.lensMaterials = lensMaterials.map(lensMaterial => {
         lensMaterial.enableOption = true;
         return lensMaterial;
       });
-      console.log('MY LENS MATERIALS!!!', this.lensMaterials);
     });
   }
 
   private loadFrameMaterials() {
     this.productsService.getFrameMaterials().subscribe((frameMaterials: Material[]) => {
-
       this.frameMaterials = frameMaterials.map(frameMaterial => {
         frameMaterial.enableOption = true;
         return frameMaterial;
       });
-      console.log('MY FRAME MATERIALS!!!', this.frameMaterials);
     });
   }
 
   private loadOrigins() {
     this.productsService.getOrigins().subscribe((origins: Origin[]) => {
-
       this.origins = origins.map(origin => {
         origin.enableOption = true;
         return origin;
       });
-      console.log('MY ORIGINS!!!', this.origins);
     });
   }
 
   private loadSexes() {
     this.productsService.getSexes().subscribe((sexes: Sex[]) => {
-
       this.sexes = sexes.map(sex => {
         sex.enableOption = true;
         return sex;
       });
-      console.log('MY SEXES!!!', this.sexes);
     });
   }
 
   private loadDiopters() {
     this.productsService.getDiopters().subscribe((diopters: Diopter[]) => {
-
       this.diopters = diopters.map(diopter => {
         diopter.checked = false;
         return diopter;
       });
-
       this.addDiopterCheckboxes();
-      console.log('MY DIOPTERS!!!', this.diopters);
     });
   }
 
@@ -296,15 +247,9 @@ export class EditProductComponent implements OnInit {
         Validators.required,
         CustomValidators.patternValidator(/^[0-9]+$/, {hasDigit: true}),
         CustomValidators.intSrartsAtZeroValidator({intSrartsAtZero: true})
-        // CustomValidators.patternValidator(/^[0-9]+$/, {pattern: true}),
-        // CustomValidators.patternValidator(/^(0|[1-9][0-9]*)$/, {pattern: true})
       ]),
-      productMainImages: new FormArray([new FormControl(null, [
-        // Validators.required
-      ])]),
-      productImages: new FormArray([new FormControl(null, [
-        // Validators.required
-      ])]),
+      productMainImages: new FormArray([new FormControl(null, [])]),
+      productImages: new FormArray([new FormControl(null, [])]),
       productCategory: new FormControl('', [
         Validators.required
       ]),
@@ -313,7 +258,6 @@ export class EditProductComponent implements OnInit {
         Validators.required,
         CustomValidators.patternValidator(/^[0-9]+$/, {hasDigit: true}),
         CustomValidators.intSrartsAtZeroValidator({intSrartsAtZero: true})
-        // Validators.pattern('^[ 0-9]+$')
       ]),
       productSex: new FormControl('', [
         Validators.required
@@ -362,24 +306,15 @@ export class EditProductComponent implements OnInit {
         if (this.editProductForm.controls.modelNumber.valid) {
           this.getProductsByModelNumber(modelNumber);
         }
-        // setTimeout(() => {
         this.initEnableOption();
-        // }, 300
-        // );
       });
 
     this.lensColorValueChanges = this.editProductForm.controls.productLensColor.valueChanges.subscribe(() => {
-      // setTimeout(() => {
       this.initEnableOption();
-      // }, 300
-      // );
     });
 
     this.frameColorValueChanges = this.editProductForm.controls.productFrameColor.valueChanges.subscribe(() => {
-      // setTimeout(() => {
       this.initEnableOption();
-      //   }, 300
-      // );
     });
 
   }
@@ -395,52 +330,21 @@ export class EditProductComponent implements OnInit {
     this.productsService.getProductsByModelNumber(modelNumber).subscribe(
       (productList: Product[]) => {
         this.products = productList;
-        // if (productList.length) {
-        //   this.editProductForm.controls.productCategory.setValue(productList[0].category.id);
-        //   this.editProductForm.controls.productPrice.setValue(productList[0].productDetails.price);
-        //   this.editProductForm.controls.productSex.setValue(productList[0].productDetails.sex.id);
-        //   this.editProductForm.controls.productLensWidth.setValue(productList[0].productDetails.lensWidth);
-        //   this.editProductForm.controls.productLensHeight.setValue(productList[0].productDetails.lensHeight);
-        //   this.editProductForm.controls.productPolarization.setValue(productList[0].productDetails.polarization);
-        //   this.editProductForm.controls.productLensMaterial.setValue(productList[0].productDetails.lensMaterial.id);
-        //   this.editProductForm.controls.productTotalWidth.setValue(productList[0].productDetails.totalWidth);
-        //   this.editProductForm.controls.productBracketLength.setValue(productList[0].productDetails.bracketLength);
-        //   this.editProductForm.controls.productFrameMaterial.setValue(productList[0].productDetails.frameMaterial.id);
-        //   this.editProductForm.controls.productOrigin.setValue(productList[0].productDetails.origin.id);
-        // }
-
         this.initEnableOption();
         this.loadFreeModelNumber();
-
-      }
-    );
+      });
   }
 
-
   private initEnableOption() {
-
     if (_.isUndefined(this.products)) {
       return null;
     } else {
-
       const lensFrameColorCoupleArray: string[][] = [];
       this.products.forEach((product: Product) => {
         const lensFrameColorCouple = product.productNumber.split('_');
         lensFrameColorCouple.shift();
         lensFrameColorCoupleArray.push(lensFrameColorCouple);
-
       });
-
-      // for (let i = 0; i < this.products.length; i++) {
-      //   const lensFrameColorCouple = this.products[i].productNumber.split('_');
-      //   //   .map(color => {
-      //   //   return parseInt(color, 10);
-      //   // });
-      //   lensFrameColorCouple.shift();
-      //   lensFrameColorCoupleArray[i] = lensFrameColorCouple;
-      //
-      // }
-
 
       if ((Array.isArray(this.lensColors) && (this.lensColors.length || !_.isUndefined(this.lensColors))) &&
         (Array.isArray(this.frameColors) && (this.frameColors.length || !_.isUndefined(this.frameColors)))) {
@@ -448,11 +352,8 @@ export class EditProductComponent implements OnInit {
           && _.isEmpty(this.editProductForm.controls.productFrameColor.value)) {
           this.lensColors.forEach(lensColor => {
             const matches = lensFrameColorCoupleArray.filter(couple => parseInt(couple[0], 10) == lensColor.id);
-
             const numberMatches = matches.length;
-
             if (numberMatches == this.frameColors.length) {
-
               lensColor.enableOption = false;
             }
           });
@@ -474,34 +375,24 @@ export class EditProductComponent implements OnInit {
             const frameColorMatches = lensColorMatches.find(match => frameColor.id == parseInt(match[1], 10)
             );
             frameColor.enableOption = _.isUndefined(frameColorMatches) ? true : false;
-
           });
         }
 
         if (!_.isEmpty(this.editProductForm.controls.productFrameColor.value)) {
-          const frameColorMatches = lensFrameColorCoupleArray.filter((couple => {
+          const frameColorMatches = lensFrameColorCoupleArray.filter(couple => {
             const equal = parseInt(couple[1], 10) == this.editProductForm.controls.productFrameColor.value;
             return equal;
-          }));
+          });
 
           this.lensColors.forEach(lensColor => {
             const lensColorMatches = frameColorMatches.find(match => lensColor.id == parseInt(match[0], 10)
             );
             lensColor.enableOption = _.isUndefined(lensColorMatches) ? true : false;
-
           });
         }
       }
     }
   }
-
-  // selectImages(event) {
-  //   this.selectedImages = event.target.files;
-  // }
-
-  // selectMainImage(event) {
-  //   this.selectedMainImages = event.target.files;
-  // }
 
   private selectMainImage(event) {
     this.selectedMainImages = event.target.files;
@@ -543,10 +434,8 @@ export class EditProductComponent implements OnInit {
         }
       }
     }
-
     this.uploadProductImages();
   }
-
 
   get mainImageArray() {
     return (this.editProductForm.get('productMainImages') as FormArray);
@@ -559,56 +448,44 @@ export class EditProductComponent implements OnInit {
   private uploadProductImages() {
     this.progressMainImages.percentage = 0;
     this.progressAddedImages.percentage = 0;
-    // const json = JSON.stringify(productId);
-    // const blob = new Blob([json], {type: 'application/json'});
 
     const formData = new FormData();
     if (this.selectedMainImages) {
-      // formData.append('productNumber', productId);
-      console.log('mainImage in CTRL', this.editProductForm.controls.productMainImages.value);
-      console.log('mainImage in CTRL1', this.editProductForm.get('productMainImages').value);
       formData.append('mainImage', this.currentMainImageUpload);
     }
 
     if (this.selectedImages) {
-      console.log('Images in CTRL', this.editProductForm.controls.productImages.value);
-      console.log('Images in CTRL1', this.editProductForm.get('productImages').value);
       for (let i = 0; i < this.selectedImages.length; i++) {
         formData.append('image', this.selectedImages.item(i));
-        console.log(this.selectedImages.item(i));
       }
     }
     this.productsService.uploadProductImages(this.product.id, formData)
       .subscribe((event: any) => {
-          console.log('THIS IS MY IMAGE BODY!!!', event.body);
-          if (event.type === HttpEventType.UploadProgress) {
-            this.launchProgressBar(event);
-            // this.progressMainImages.percentage = Math.round(100 * event.loaded / event.total);
+        if (event.type === HttpEventType.UploadProgress) {
+          this.launchProgressBar(event);
 
-          } else if (event instanceof HttpResponse) {
-            this.mainImage = null;
-            this.productsService.getProductImages(this.product.id).subscribe(images => {
-              if (this.selectedMainImages) {
-                setTimeout(() => {
-                  this.selectedMainImages = undefined;
-                  this.mainImageArray.at(0).setValue('');
-                }, 2000);
-              }
+        } else if (event instanceof HttpResponse) {
+          this.mainImage = null;
+          this.productsService.getProductImages(this.product.id).subscribe(images => {
+            if (this.selectedMainImages) {
+              setTimeout(() => {
+                this.selectedMainImages = undefined;
+                this.mainImageArray.at(0).setValue('');
+              }, 2000);
+            }
 
-              if (this.selectedImages) {
-                setTimeout(() => {
-                  this.selectedImages = undefined;
-                  this.imagesArray.controls.forEach(control => control.setValue(''));
-                }, 2000);
-              }
-              this.findMainImage(images);
-              this.findAddedImages(images);
-            });
-          }
+            if (this.selectedImages) {
+              setTimeout(() => {
+                this.selectedImages = undefined;
+                this.imagesArray.controls.forEach(control => control.setValue(''));
+              }, 2000);
+            }
+            this.findMainImage(images);
+            this.findAddedImages(images);
+          });
         }
-      );
+      });
   }
-
 
   checker(controlName: string): string {
     if (this.editProductForm.controls[controlName].valid) {
@@ -626,45 +503,15 @@ export class EditProductComponent implements OnInit {
     return (control.touched || control.dirty) && control.hasError(error);
   }
 
-  // isControlRequired(controlName: string, error: string): boolean {
-  //   const control = this.editProductForm.get(controlName);
-  //
-  //   const result = (control.touched || control.dirty) && control.hasError(error);
-  //
-  //   return result;
-  // }
-  //
-  // isControlPatterned(controlName: string): boolean {
-  //   const control = this.editProductForm.controls[controlName];
-  //
-  //   const result = (control.touched || control.dirty) && control.hasError('pattern');
-  //
-  //   return result;
-  // }
-  //
-  // private onChange(control) {
-  //
-  // }
-  //
-  // isControlEmpty(controlName: string): boolean {
-  //   const control = this.editProductForm.controls[controlName];
-  //
-  //   const result = control.value === '';
-  //
-  //   return result;
-  // }
-
   changeDiopter(diopterId) {
     const diopter = this.diopters.find(value => value.id === diopterId);
     if (this.diopters) {
       diopter.checked = !diopter.checked;
     }
-    console.log('MY DIOOOPTERS', this.diopters);
   }
 
   changePolarization() {
     this.polarization = !this.polarization;
-    console.log('MY NEW POLARIZATION', this.polarization);
   }
 
   private getCheckedDioptersIds(): Diopter[] {
@@ -678,8 +525,6 @@ export class EditProductComponent implements OnInit {
   updateProduct() {
     this.progressAddedImages.percentage = 0;
     this.progressMainImages.percentage = 0;
-
-
     const product: Product = {
       productDetails: {
         modelNumber: this.editProductForm.controls.modelNumber.value,
@@ -698,10 +543,7 @@ export class EditProductComponent implements OnInit {
       diopters: this.getCheckedDioptersIds(),
       lensColor: {id: parseInt(this.editProductForm.controls.productLensColor.value, 10)},
       frameColor: {id: parseInt(this.editProductForm.controls.productFrameColor.value, 10)},
-      // image.ts: this.currentImageUpload
     };
-    // console.log('productImage.value', this.currentImageUpload, this.currentMainImageUpload.name);
-    // console.log(this.editProductForm.controls.productImages.value[0]);
 
     const json = JSON.stringify(product);
     const blob = new Blob([json], {type: 'application/json'});
@@ -709,44 +551,13 @@ export class EditProductComponent implements OnInit {
 
     formData.append('product', blob);
 
-    // if (this.selectedMainImages) {
-    //   this.currentMainImageUpload = this.selectedMainImages.item(0);
-    //   formData.append('mainImage', this.currentMainImageUpload);
-    // }
-    //
-    // if (this.selectedImages) {
-    //   // this.currentImageUpload = this.selectedImages.item(0);
-    //   for (let i = 0; i < this.selectedImages.length; i++) {
-    //     formData.append('image', this.selectedImages.item(i));
-    //     console.log(this.selectedImages.item(i));
-    //   }
-    // }
-
-
     this.productsService.updateProduct(this.product.id, formData)
       .subscribe((event) => {
           if (event.type === HttpEventType.UploadProgress) {
-            // this.launchProgressBar(event);
-            // if (this.currentMainImageUpload) {
-            //   const mainFileSize = this.currentMainImageUpload.size;
-            //   this.progressAddedImages.percentage = Math.round(100 * (event.loaded - mainFileSize) / (event.total - mainFileSize));
-            // }
-            //
-            // if (this.currentImageUpload) {
-            //   const filesSize = this.currentImageUpload.size;
-            //   this.progressMainImages.percentage = Math.round(100 * (event.loaded - filesSize) / (event.total - filesSize));
-            // }
-
           } else if (event instanceof HttpResponse) {
-            console.log('File is completely uploaded!');
           }
-
-
           this.getProductsByModelNumber(this.editProductForm.controls.modelNumber.value);
-        }
-      );
-    // this.selectedImages = undefined;
-    // this.selectedMainImages = undefined;
+        });
   }
 
   private launchProgressBar(event) {
@@ -760,30 +571,4 @@ export class EditProductComponent implements OnInit {
       this.progressMainImages.percentage = Math.round(100 * (event.loaded - filesSize) / (event.total - filesSize));
     }
   }
-
-  // buildFormData(formData, data, parentKey?) {
-  //   if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-  //     Object.keys(data).forEach(key => {
-  //       this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-  //     });
-  //   } else {
-  //     const value = data == null ? '' : data;
-  //
-  //     formData.append(parentKey, value);
-  //   }
-  // }
-  //
-  // jsonToFormData(data) {
-  //   const formData = new FormData();
-  //
-  //   this.buildFormData(formData, data);
-  //
-  //   return formData;
-  // }
-
-  // addImage(): void {
-  //   (this.editProductForm.controls.productImages as FormArray).push(new FormControl('', [
-  //     Validators.required]));
-  // }
-
 }

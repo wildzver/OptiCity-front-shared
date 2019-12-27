@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {LocalStorageService} from './local-storage.service';
+import {CartLocalStorageService} from './cart-local-storage.service';
 import {Order} from '../models/order';
 import {CartItem} from '../models/cart-item';
 import {ProductsService} from './products.service';
@@ -22,7 +22,7 @@ export class CartService {
   currentCart = this.cartSource.asObservable();
 
   constructor(
-    private localStorageService: LocalStorageService,
+    private localStorageService: CartLocalStorageService,
     private productsService: ProductsService
   ) {
     this.cartSource.next(
@@ -30,9 +30,6 @@ export class CartService {
     );
 
     this.currentCart.subscribe(cart => {
-      console.log('my CART LOC STOR!!!???', localStorageService.getCartLocalStorage());
-      console.log('my CART!!!???', cart);
-
       CartService.cart = cart;
     });
   }
@@ -80,24 +77,11 @@ export class CartService {
     }
   }
 
-  getProductByUUID(uuid) {
-    console.log('123');
-    let cartItem: CartItem = null;
-    this.productsService.getProductByUUID(uuid).subscribe(product => {
-      cartItem = this.initCartItem(product, 1);
-    });
-    return cartItem;
-  }
-
   addItem(uuid: string, quantity: number) {
-    console.log('cart.getValue>>', CartService.cart);
     if (CartService.cart === null) {
       CartService.cart = this.createEmptyCart();
-      // const item = this.getProductByUUID(uuid);
       this.productsService.getProductByUUID(uuid).subscribe(product => {
         const cartItem: CartItem = this.initCartItem(product, quantity);
-        console.log('cartItem??', cartItem);
-
         CartService.cart.orderList.push(cartItem);
         this.initCart();
         this.changeCart(CartService.cart);
@@ -105,7 +89,6 @@ export class CartService {
     } else {
       let index = -1;
       for (let i = 0; i < CartService.cart.orderList.length; i++) {
-        // const item: CartItem = this.cartItems[i];
         if (CartService.cart.orderList[i].product.uuid === uuid) {
           index = i;
           break;
@@ -114,7 +97,6 @@ export class CartService {
       if (index === -1) {
         this.productsService.getProductByUUID(uuid).subscribe(product => {
           const cartItem: CartItem = this.initCartItem(product, quantity);
-          console.log('cartItem??', cartItem);
           CartService.cart.orderList.push(cartItem);
           this.initCart();
           this.changeCart(CartService.cart);
@@ -150,22 +132,15 @@ export class CartService {
     formData.append('uuidList', blob);
 
     this.productsService.getProductByUUIDList(formData).subscribe((products: HttpResponse<{}>) => {
-      // let productsInput: Product[];
-      // productsInput = products.body;
       if (products.body) {
         const productsInput = products.body as Product[];
-        console.log('productsInput??>>', productsInput);
         for (let i = 0; i < CartService.cart.orderList.length; i++) {
-          // .forEach(cartItem => {
           const pI = productsInput.find(productInput => productInput.uuid === CartService.cart.orderList[i].product.uuid);
           if (pI) {
             CartService.cart.orderList[i] = this.initCartItem(pI, CartService.cart.orderList[i].quantity);
-            console.log('this.initCartItem(pI)', this.initCartItem(pI, CartService.cart.orderList[i].quantity));
           }
-          // });
           this.initCart();
           this.changeCart(CartService.cart);
-          console.log('CartService.cart>>>', CartService.cart.orderList);
         }
       }
     });

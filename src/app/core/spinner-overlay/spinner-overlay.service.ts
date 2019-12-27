@@ -9,7 +9,8 @@ import {SpinnerOverlayComponent} from './spinner-overlay.component';
 export class SpinnerOverlayService {
   private overlayRef: OverlayRef = null;
 
-  constructor(private overlay: Overlay) {}
+  constructor(private overlay: Overlay) {
+  }
 
   public show(message = '') {
     // Returns an OverlayRef (which is a PortalHost)

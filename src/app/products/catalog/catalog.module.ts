@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {CatalogComponent} from './catalog.component';
 import {RouterModule} from '@angular/router';
 import {ProductsCatalogItemModule} from '../products-catalog/product-item/products-catalog-item.module';
@@ -13,4 +13,5 @@ import {ProductsCatalogItemModule} from '../products-catalog/product-item/produc
   ],
   exports: [CatalogComponent]
 })
-export class CatalogModule { }
+export class CatalogModule {
+}

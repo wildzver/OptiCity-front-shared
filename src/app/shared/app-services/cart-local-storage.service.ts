@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Order} from '../models/order';
-import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class LocalStorageService {
+export class CartLocalStorageService {
   constructor() {
   }
 

@@ -40,7 +40,6 @@ export class FrameMaterialsComponent implements OnInit {
   private loadFrameMaterials() {
     this.productService.getFrameMaterials().subscribe((frameMaterials: Material[]) => {
       this.frameMaterials = frameMaterials;
-      console.log(this.frameMaterials);
     });
   }
 
@@ -51,9 +50,7 @@ export class FrameMaterialsComponent implements OnInit {
   }
 
   editFrameMaterial(frameMaterial: Material) {
-    console.log(frameMaterial);
     this.editedFrameMaterial = new Material(frameMaterial.id, frameMaterial.name, frameMaterial.uaName);
-    console.log(frameMaterial.id);
   }
 
   loadTemplate(frameMaterial: Material) {
@@ -70,7 +67,6 @@ export class FrameMaterialsComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadFrameMaterials();
       });
-      console.log(this.editedFrameMaterial);
       this.isNewRecord = false;
       this.editedFrameMaterial = null;
     } else {

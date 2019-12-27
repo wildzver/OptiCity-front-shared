@@ -1,8 +1,6 @@
 <div id="buyer-contacts" class="flex-row jc-space-between">
   <div id="buyer-info">
-    <!--<div>-->
     <h4>Особисті дані:</h4>
-    <!--</div>-->
 
     <form [formGroup]="buyerContactsForm" novalidate (change)="makeOrder()">
 
@@ -15,7 +13,6 @@
                    title="лише літери латинниці та кирилиці"
                    [ngClass]="checker(buyerContactsForm, 'userFirstName')">
           </label>
-          <!--<br>-->
           <small class="" *ngIf="hasError(buyerContactsForm, 'userFirstName', 'required')">
             Обов'язкове поле!
           </small>
@@ -87,12 +84,12 @@
       </div>
 
       <div class="input-item">
-            <label>
-              <span>Коментар</span>
-              <textarea class="" maxLength="500" rows="3" type="text" name="comment" placeholder="макс. 500 символів"
-                        formControlName="userComment"
-                        title="коментар"></textarea>
-            </label>
+        <label>
+          <span>Коментар</span>
+          <textarea class="" maxLength="500" rows="3" type="text" name="comment" placeholder="макс. 500 символів"
+                    formControlName="userComment"
+                    title="коментар"></textarea>
+        </label>
       </div>
 
     </form>
@@ -124,7 +121,6 @@
                        value="novaPoshta">
                 <label for="novaPoshta" class="flex-column">
                   <p>Нова Пошта</p>
-                  <!--<img src="assets/images/order/logo-np.png" alt="Nova Poshta">-->
                 </label>
               </div>
               <div *ngIf="np.checked" class="flex-column" [@fadeInOut]>
@@ -143,7 +139,6 @@
                   </small>
                 </div>
 
-                <!--<div class="flex-row">-->
                 <div>
                   <label class="full-width">
                     <span>Номер відділення*</span><br>
@@ -155,14 +150,12 @@
                   <br>
                   <small class="" *ngIf="hasError(deliveryAdressForm, 'branch', 'required')">Обов'язкове поле!</small>
                 </div>
-                <!--</div>-->
 
               </div>
             </div>
           </div>
         </div>
       </div>
-
 
     </form>
   </div>

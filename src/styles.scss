@@ -1,38 +1,22 @@
 @import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
 @import "styles/spinner";
 
-//@import url('https://fonts.googleapis.com/css?family=Istok+Web&display=swap');
-@font-face {
-  font-family: 'Adonis';
-  src: url('assets/fonts/AdonisC.ttf') format("ttf");
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
-@font-face {
-  font-family: Ambassadore;
-  src: url('assets/fonts/AmbassadoreType.ttf') format("ttf");
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
-@font-face {
-  font-family: AvantGardeC;
-  src: url('assets/fonts/AvantGardeC.otf') format("otf");
-}
-
-@font-face {
-  font-family: BalticaC;
-  src: url('assets/fonts/BalticaC.otf') format("otf");
-}
-
-@font-face {
-  font-family: 'UkrainianPragmatica';
-  src: url(/assets/fonts/UkrainianPragmatica_Regular.TTF) format("truetype");
+.jc-center {
+  justify-content: center;
 }
 
 .material-icons.md-light {
   color: rgba(255, 255, 255, 1);
-}
-
-.material-icons.md-light:hover {
-  color: hotpink;
 }
 
 .material-icons.md-dark {

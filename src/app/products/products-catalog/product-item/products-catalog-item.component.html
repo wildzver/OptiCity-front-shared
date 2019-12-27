@@ -1,22 +1,18 @@
 <div class="product flex-column jc-space-between align-items-center">
   <a class="product-img-container flex-row jc-center align-items-center"
-     [routerLink]="['/products', productInput.category ? productInput.category.name : productInput.categoryName, productInput.productNumber]">
+     [routerLink]="['/products', productInput.productDetails?.category ? productInput.productDetails?.category.name : productInput.categoryName, productInput.productNumber]">
     <img class="product-image" [src]=imageUrl alt="product main image">
   </a>
   <div class="flex-column jc-flex-start align-items-center product-info">
-    <!--<div class="pn-price flex-column jc-flex-start align-items-center">-->
-    <!--<div class="flex-column align-items-start">-->
     <a
-      [routerLink]="['/products', productInput.category ? productInput.category.name : productInput.categoryName, productInput.productNumber]">
+      [routerLink]="['/products', productInput.productDetails?.category ? productInput.productDetails?.category.name : productInput.categoryName, productInput.productNumber]">
       <p class="category">
         <i>арт. {{productInput.productNumber}}</i>
       </p>
     </a>
-    <!--</div>-->
-    <!--</div>-->
     <div class="flex-row jc-space-between align-items-center">
       <p class="price">{{productInput.productDetails ? productInput.productDetails.price : productInput.price}} грн</p>
-      <a class="cart" (click)="cartService.addItem(productInput.uuid, 1)">
+      <a class="cart" (click)="cartService.addItem(productInput.uuid, 1)" title="Додати">
         <img src="assets/images/shopping-bag-blue.svg">
       </a>
     </div>

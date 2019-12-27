@@ -5,9 +5,6 @@
     width: 100%;
     min-height: 100vh;
     min-width: 100%;
-    //display: flex;
-    //flex-direction: column;
-    //align-items: center;
 
     .title-home-img {
       position: absolute;
@@ -19,7 +16,6 @@
 
     #home-arrow-down {
       position: relative;
-      //left: 50%;
       width: 20%;
       bottom: 6em;
       z-index: 2;
@@ -33,23 +29,7 @@
         transform: scaleY(1.3);
         animation-direction: alternate;
       }
-      //animation: skew 3s infinite;
-      //transform: skew(20deg);
-      //animation-direction: alternate;
-
-      //&:hover {
-      //  transform: scale(1.1);
-      //}
     }
-    //@keyframes skew {
-    //  0% {
-    //    transform: skewX(20deg);
-    //  }
-    //  100% {
-    //    transform: skewX(-20deg);
-    //  }
-    //}
-
 
     @keyframes skew {
       0% {
@@ -60,8 +40,6 @@
       }
     }
   }
-
-
 
 }
 .flex-column {

@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule } from '@angular/core';
+import {CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminComponent} from './admin.component';
 import {AdminProductsComponent} from './admin-products/admin-products.component';
 import {AddProductComponent} from './admin-products/add-product/add-product.component';
-import {AdminUsersComponent} from './admin-users/admin-users.component';
-// import {CategoriesComponent} from './admin-products/categories/categories.component';
 import {CategoriesComponent} from './admin-products/category/categories.component';
 import {FrameColorsComponent} from './admin-products/frame-colors/frame-colors.component';
 import {LensColorsComponent} from './admin-products/lens-colors/lens-colors.component';
@@ -33,7 +31,7 @@ const adminRoutes: Routes = [
       {path: 'products/diopters', component: DioptersComponent},
       {path: 'products/origins', component: OriginsComponent},
       {path: 'products/sexes', component: SexComponent},
-      {path: 'users', component: AdminUsersComponent},
+      // {path: 'users', component: AdminUsersComponent},
       ]},
 ];
 

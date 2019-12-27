@@ -1,0 +1,43 @@
+#contacts {
+  padding: 0 40px 16px;
+  color: #002C40;
+  width: 60%;
+  min-width: 500px;
+  margin: 0 auto;
+
+  & > div {
+    margin-bottom: 8px;
+  }
+
+  h4 {
+    margin-bottom: 16px;
+  }
+
+  h6 {
+    font-weight: 600;
+  }
+  p, a {
+    margin-bottom: 8px;
+  }
+
+  a {
+    display: inline-block;
+    color: rgba(#002C40, .8);
+
+    p {
+      margin: 0 0 8px 0;
+    }
+  }
+  p, table, a {
+    font-size: 14px;
+  }
+
+  table tr {
+    th {
+      min-width: 60px;
+    }
+    th, td {
+      padding: 4px 1px;
+    }
+  }
+}

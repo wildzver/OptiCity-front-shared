@@ -4,7 +4,6 @@
   }
 
   .is-default {
-    //border: solid 1px blue;
   }
 
   margin: 20px;
@@ -52,14 +51,12 @@
         text-decoration: none;
       }
     }
-
   }
 }
 
 .flex-row {
   display: flex;
   flex-direction: row;
-  //align-cartItems: center;
   justify-content: center;
 }
 

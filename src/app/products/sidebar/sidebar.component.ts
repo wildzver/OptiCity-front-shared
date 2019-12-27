@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Category} from '../../shared/models/category';
 import {ProductsService} from '../../shared/app-services/products.service';
 import {Subscription} from 'rxjs';
@@ -16,7 +16,7 @@ import {debounceTime, distinctUntilChanged, min} from 'rxjs/operators';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, AfterViewChecked {
 
   categories = Category[''];
   sexes: Sex[];
@@ -47,80 +47,50 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Input()
   filterForm: FormGroup;
 
-  queryParamsSubscription: Subscription;
   querySubscription = new Subscription();
 
   minPriceSubscription = this.filterService.currentMinPrice.subscribe(
     minPrice => {
-
       this.minPrice = minPrice;
-      // if (this.minPrice) {
       this.minPriceMaxRange = this.minPrice;
-      console.log('<<<minPriceMaxRange', this.minPriceMaxRange);
-      console.log('<<<maxPrice', this.maxPrice);
       if (this.minPriceMaxRange > this.maxPrice) {
         this.maxPrice = this.minPriceMaxRange;
-        console.log('ALARM!!!');
       }
-      // }
     });
 
   maxPriceSubscription = this.filterService.currentMaxPrice.subscribe(
     maxPrice => {
-      // document.getElementById('max-price').parentNode.focus();
-
       this.maxPrice = maxPrice;
-      if (maxPrice) {
-        console.log('<<<maxPrice', maxPrice);
-      } else {
-        // this.maxPrice = 1050;
-        // this.filterForm.controls.maxPrice.setValue(1050);
-      }
       if (this.maxPrice) {
         this.maxPriceMinRange = this.maxPrice;
-        console.log('maxPriceMinRange', this.maxPriceMinRange);
       }
-
     });
 
   sexesSubscription = this.filterService.currentSearchedSexes.subscribe(
-    sex => {
-      this.searchedSexes = sex;
-      console.log('SEXES FOR CHECKING', sex);
-    });
+    sex => this.searchedSexes = sex);
 
   lensColorsSubscription = this.filterService.currentSearchedLensColors.subscribe(
-    lensColors => this.searchedLensColors = lensColors
-  );
+    lensColors => this.searchedLensColors = lensColors);
 
   frameColorsSubscription = this.filterService.currentSearchedFrameColors.subscribe(
-    frameColors => {
-      this.searchedFrameColors = frameColors;
-      console.log('FRAME COLORS FOR CHECKING', frameColors);
-    });
+    frameColors => this.searchedFrameColors = frameColors);
 
   frameMaterialsSubscription = this.filterService.currentSearchedFrameMaterials.subscribe(
-    frameMaterial => {
-      this.searchedFrameMaterials = frameMaterial;
-      console.log('FRAME MATERIALS FOR CHECKING', frameMaterial);
-    });
+    frameMaterial => this.searchedFrameMaterials = frameMaterial);
 
   dioptersSubscription = this.filterService.currentSearchedDiopters.subscribe(
-    diopter => {
-      this.searchedDiopters = diopter;
-      console.log('DIOPTERS FOR CHECKING', diopter);
-    });
+    diopter => this.searchedDiopters = diopter);
 
   polarizationSubscription = this.filterService.currentPolarization.subscribe(
-    polarization => this.polarization = polarization
-  );
-
+    polarization => this.polarization = polarization);
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private productsService: ProductsService,
               private filterService: FilterService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private cdRef: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit() {
@@ -138,13 +108,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.loadFrameColors();
     this.loadFrameMaterials();
     this.loadDiopters();
-
-
     this.routeSubscription = this.activatedRoute.params.subscribe(params => this.category = params.category);
-
     this.loadCategories();
     this.initFilterForm();
-    // this.initFloatLabel();
     this.filterForm.controls.minPrice.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((minPrice) => {
@@ -152,11 +118,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.getServerMinPrice();
         }
         this.doPriceFilter();
-
         this.setRangeWidth();
-
-
-        // document.getElementById('');
       });
     this.filterForm.controls.maxPrice.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
@@ -166,24 +128,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
         this.doPriceFilter();
         this.setRangeWidth();
-        // this.maxPriceMinRange = value;
-        // // if (this.filterForm.controls.minPrice.value > value) {
-        // //   this.filterForm.controls.minPice.setValue(2);
-        // // }
-        // const minRangeElem = document.getElementById('min-range');
-        // const maxRangeElem = document.getElementById('max-range');
-        // console.log('maxRangeElemWidth', maxRangeElem.offsetWidth);
-        // console.log('value', value);
-        // const newMinRangeWidth: number = maxRangeElem.offsetWidth * value / (this.maxPriceMaxRange - this.minPriceMaxRange);
-        // console.log('newMinRangeWidth', newMinRangeWidth);
-        // console.log('newMinRangeWidth', newMinRangeWidth.toString().concat('px'));
-        // minRangeElem.style.width = newMinRangeWidth.toString().concat('px');
-        // console.log('minRangeElemWidth', minRangeElem.offsetWidth);
-        // const maxRangePosition = value / this.maxPriceMaxRange;
-        // console.log('maxRangePosition', maxRangePosition);
-        // const pixelMaxRangePosition = maxRangePosition * maxRangeElem.offsetWidth;
-        // console.log('pixelMaxRangePosition', pixelMaxRangePosition);
-        // console.log('minRangePositionRIGHT', minRangeElem.offsetLeft + minRangeElem.offsetWidth);
       });
 
     this.productsService.getMinPrice().subscribe(minPrice => {
@@ -198,60 +142,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.serverMaxPrice = maxPrice;
       if (!this.maxPrice) {
         this.maxPriceMinRange = maxPrice;
-
       }
       this.maxPriceMaxRange = maxPrice;
       this.setRangeWidth();
-
     });
-
-    // function getVals() {
-    //   // Get slider values
-    //   const parent = this.parentNode;
-    //   const slides = parent.getElementsByTagName('input');
-    //   let slide1 = parseFloat(slides[0].value);
-    //   let slide2 = parseFloat(slides[1].value);
-    //
-    //   // Neither slider will clip the other, so make sure we determine which is larger
-    //   if (slide1 > slide2) {
-    //     const tmp = slide2;
-    //     slide2 = slide1;
-    //     slide1 = tmp;
-    //   }
-    //
-    //   const displayElement = parent.getElementsByClassName('rangeValues')[0];
-    //   displayElement.innerHTML = slide1 + ' - ' + slide2;
-    // }
-    //
-    // window.onload = () => {
-    //   // Initialize Sliders
-    //   const sliderSections = document.getElementsByClassName('range-slider');
-    //   for (let x = 0; x < sliderSections.length; x++) {
-    //     const sliders = sliderSections[x].getElementsByTagName('input');
-    //     for (let y = 0; y < sliders.length; y++) {
-    //       if (sliders[y].type === 'range') {
-    //         sliders[y].oninput = getVals;
-    //         // Manually trigger event first time to display values
-    //         sliders[y].oninput();
-    //       }
-    //     }
-    //   }
-    // };
-
-
   }
 
   private setRangeWidth() {
     const totalSlideWidth = document.getElementById('min-range').parentElement.offsetWidth;
-    console.log('parentElem width', totalSlideWidth);
     const priceLength = this.maxPriceMaxRange - this.minPriceMinRange;
-    console.log('priceLength', priceLength);
     const pixelPrice = 185 / priceLength;
-    console.log('pixelPrice', pixelPrice);
-    console.log('minPriceMinRange//', this.minPriceMinRange);
-    console.log('maxPriceMinRange//', this.maxPriceMinRange);
-    console.log('minPriceMaxRange//', this.minPriceMaxRange);
-    console.log('maxPriceMaxRange//', this.maxPriceMaxRange);
     let newMinRangeWidth = (this.maxPriceMinRange - this.minPriceMinRange) * pixelPrice;
     let newMaxRangeWidth = (this.maxPriceMaxRange - this.minPriceMaxRange) * pixelPrice;
     if (newMinRangeWidth > 0 && newMinRangeWidth < 200) {
@@ -261,7 +161,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
       newMinRangeWidth = 15;
       newMaxRangeWidth = 177.5;
     }
-    console.log('newMinRangeWidth', newMinRangeWidth);
     if (newMaxRangeWidth > 0 && newMaxRangeWidth < 200) {
       newMaxRangeWidth = newMaxRangeWidth + 7.5;
     }
@@ -269,12 +168,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
       newMaxRangeWidth = 15;
       newMinRangeWidth = 185;
     }
-    console.log('newMaxRangeWidth', newMaxRangeWidth);
     const minRangeElem = document.getElementById('min-range');
     minRangeElem.style.width = newMinRangeWidth.toString().concat('px');
     const maxRangeElem = document.getElementById('max-range');
     maxRangeElem.style.width = newMaxRangeWidth.toString().concat('px');
-
   }
 
   private getServerMinPrice() {
@@ -285,87 +182,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.productsService.getMaxPrice().subscribe(max => this.filterForm.controls.maxPrice.setValue(max));
   }
 
-  private initFloatLabel() {
-    const FloatLabel = (() => {
-
-      // add active class
-      const handleFocus = (e) => {
-        const target = e.target;
-        target.parentNode.classList.add('active');
-        target.setAttribute('placeholder', target.getAttribute('data-placeholder'));
-      };
-
-      // remove active class
-      const handleBlur = (e) => {
-        const target = e.target;
-        if (!target.value) {
-          target.parentNode.classList.remove('active');
-        }
-        target.removeAttribute('placeholder');
-      };
-
-      // register events
-      const bindEvents = (element) => {
-        const floatField = element.querySelector('input');
-        floatField.addEventListener('focus', handleFocus);
-        floatField.addEventListener('blur', handleBlur);
-        document.getElementById('min-range').addEventListener('change', handleFocus);
-      };
-
-      // get DOM elements
-      const init = () => {
-        const floatContainers = document.querySelectorAll('.float-container');
-
-        floatContainers.forEach((element) => {
-          setTimeout(() => {
-            if (element.querySelector('input').value) {
-              element.classList.add('active');
-            }
-          }, 50);
-
-          bindEvents(element);
-        });
-      };
-
-      return {
-        init
-      };
-    })();
-
-    FloatLabel.init();
-  }
-
-  ngOnDestroy(): void {
-    // this.querySubscription.unsubscribe();
-
-  }
-
-
   private initFilterForm() {
     const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
 
     this.filterForm = this.fb.group({
-        sexes: new FormArray([]),
-        minPrice: new FormControl(
-          // this.minPrice,
-          queryParamMap.has('minprice') || (!queryParamMap.has('minprice') && this.minPrice !== 0) ? this.minPrice : null,
-          [
-            // Validators.required,
-            // Validators.pattern('^[0-9]+$')
-          ]),
-        maxPrice: new FormControl(
-          queryParamMap.has('maxprice') || (!queryParamMap.has('maxprice') && this.maxPrice !== 0) ? this.maxPrice : null,
-          [
-            // Validators.required,
-            // Validators.pattern('^[0-9]+$')
-          ]),
-        lensColors: new FormArray([]),
-        frameColors: new FormArray([]),
-        frameMaterials: new FormArray([]),
-        diopters: new FormArray([]),
-        polarization: new FormControl('')
-      }
-    );
+      sexes: new FormArray([]),
+      minPrice: new FormControl(
+        queryParamMap.has('minprice') || (!queryParamMap.has('minprice') && this.minPrice !== 0) ? this.minPrice : null),
+      maxPrice: new FormControl(
+        queryParamMap.has('maxprice') || (!queryParamMap.has('maxprice') && this.maxPrice !== 0) ? this.maxPrice : null),
+      lensColors: new FormArray([]),
+      frameColors: new FormArray([]),
+      frameMaterials: new FormArray([]),
+      diopters: new FormArray([]),
+      polarization: new FormControl('')
+    });
   }
 
   private loadCategories() {
@@ -381,9 +212,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           item.checked = true;
         }
         return item;
-        console.log('SEX FOR CHECK2', sexes);
       });
-      console.log('SEXES FOR CHECK2', this.sexes);
       this.addSexesCheckboxes();
     });
   }
@@ -421,9 +250,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           item.checked = true;
         }
         return item;
-        console.log('FRAME COLORS FOR CHECK2', data);
       });
-      console.log('FRAME COLORS FOR CHECK2', this.frameColors);
       this.addFrameColorsCheckboxes();
     });
   }
@@ -442,9 +269,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           item.checked = true;
         }
         return item;
-        console.log('FRAME MATERIAL FOR CHECK2', frameMaterial);
       });
-      console.log('FRAME MATERIALS FOR CHECK2', this.frameMaterials);
       this.addFrameMaterialsCheckboxes();
     });
   }
@@ -462,12 +287,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
         if (this.searchedDiopters !== undefined && this.searchedDiopters.toString().includes(item.id.toString())) {
           item.checked = true;
         }
-
-
         return item;
-        console.log('DIOPTERS FOR CHECK2', diopters);
       });
-      console.log('DIOPTERS FOR CHECK2', this.diopters);
       this.addDioptersCheckboxes();
     });
   }
@@ -483,7 +304,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const minPrice = this.filterForm.controls.minPrice.valid ? this.filterForm.controls.minPrice.value : undefined;
     const maxPrice = this.filterForm.controls.maxPrice.value ? this.filterForm.controls.maxPrice.value : undefined;
     this.doPriceQuery(minPrice, maxPrice);
-
   }
 
   private doPriceQuery(minPrice, maxPrice) {
@@ -496,7 +316,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         queryParams: priceQueryParams,
         queryParamsHandling: 'merge'
       });
-    console.log('NULLIFY PRICES2', minPrice, maxPrice);
     this.filterService.changeMinPrice(minPrice);
     this.filterService.changeMaxPrice(maxPrice);
   }
@@ -507,20 +326,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private doSexesFilter(sexId) {
-    console.log('SEXID FOR CHECK <--->', sexId);
     const sex = this.sexes.find(value => value.id === sexId);
     if (this.sexes) {
       sex.checked = !sex.checked;
     }
-    console.log('SEX FOR CHECK <--->', sex);
-
     const sexes = this.sexes.filter(item => {
       return item.checked === true;
     }).map(item => item.id);
-    console.log('SEXES FOR CHECK <--->', sexes);
-
     this.doSexQuery(sexes);
-
   }
 
   private doSexQuery(sexes) {
@@ -548,8 +361,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const lensColors = this.lensColors.filter(item => {
       return item.checked === true;
     }).map(item => item.id);
-    console.log('LENS COLORS FOR CHECK <--->', lensColors);
-
     this.doLensColorsQuery(lensColors);
   }
 
@@ -656,11 +467,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.doDioptersQuery(diopters);
   }
 
-
-  doPolarizationFilter() {
+  private doPolarizationFilter() {
     this.polarization = !this.polarization;
-    console.log('MY POLARIZATION IN FILTER<>', this.polarization);
-
     this.doPolarizationQuery();
   }
 
@@ -678,5 +486,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private nullifyPolarizationFilter() {
     this.polarization = false;
     this.doPolarizationQuery();
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdRef.detectChanges();
   }
 }

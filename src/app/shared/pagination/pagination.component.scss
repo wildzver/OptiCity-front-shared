@@ -1,12 +1,9 @@
 .pagination {
   display: flex;
   align-items: center;
-  //width: 300px;
   margin: 0 0 16px;
 
   li {
-    //height: 35px;
-    //width: min-content;
     padding: 0 6px;
     display: flex;
     justify-content: center;
@@ -28,6 +25,11 @@
           opacity: 1;
         }
       }
+    }
+
+    &.disabled {
+      pointer-events: none;
+      cursor: not-allowed;
     }
 
     &.active {

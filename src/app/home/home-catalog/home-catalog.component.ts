@@ -8,7 +8,6 @@ import {Category} from '../../shared/models/category';
   styleUrls: ['./home-catalog.component.scss']
 })
 export class HomeCatalogComponent implements OnInit {
-  // categories: Category[];
 categories = new Array();
 
 isLoading = false;
@@ -22,7 +21,6 @@ isLoading = false;
   private loadCategories() {
     this.isLoading = true;
     this.productsService.getCategories().subscribe((data: Category[]) => {
-      // this.categories = data;
       const sunglassesFrames: Category[] = new Array(2);
       sunglassesFrames[0] = data.find(item => item.name === 'sunglasses');
       sunglassesFrames[1] = data.find(item => item.name === 'frames');
@@ -31,11 +29,7 @@ isLoading = false;
       veloSkiglasses[0] = data.find(item => item.name === 'veloglasses');
       veloSkiglasses[1] = data.find(item => item.name === 'skiglasses');
       this.categories.push(veloSkiglasses);
-      console.log(this.categories);
       this.isLoading = false;
     });
   }
-
-
-
 }

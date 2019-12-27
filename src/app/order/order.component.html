@@ -1,3 +1,4 @@
+<app-breadcrumb-navigation></app-breadcrumb-navigation>
 <div id="order" class="flex-column align-items-center">
   <div class="flex-column">
     <app-cart></app-cart>
@@ -15,7 +16,10 @@
   </div>
 
   <ng-template #chooseProducts>
-    <button *ngIf="cartService.cart?.orderList.length == 0" class="" routerLink="/products" [hidden]="totalCartQuantity > 0" title="Оберіть товар">КАТАЛОГ</button>
+    <div *ngIf="cartService.cart?.orderList.length == 0" class="" routerLink="/products" [hidden]="totalCartQuantity > 0">
+      <h4>Корзина пуста :(</h4>
+      <button title="Оберіть товар">КАТАЛОГ</button>
+    </div>
   </ng-template>
 </div>
 

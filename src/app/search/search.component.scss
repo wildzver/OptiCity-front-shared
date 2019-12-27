@@ -23,34 +23,14 @@
   flex-wrap: wrap;
 }
 
-//.all-products {
-//  margin: 10px 20px;
-//  display: flex;
-//  align-content: flex-start;
-//  flex-direction: row;
-//  flex-wrap: wrap;
-//  align-self: flex-start;
-//}
-//
-//a {
-//  cursor: pointer;
-//}
-
 .container {
-  //position: relative;
   width: auto;
   bottom: 100vw;
-  //align-self: center;
-  //right: 25%;
-  //left: 50%;
-  //margin-left: -150px;
 }
 
 .flex-column {
   display: flex;
   flex-direction: column;
-  //justify-content: space-between;
-  //align-items: flex-start;
   width: 100%;
 }
 
@@ -61,5 +41,25 @@ app-pagination {
 .total-items {
   position: relative;
   margin: 0 0 10px 40px;
-  //left: 300px;
 }
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  align-self: center;
+  transform: scale(.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+app-breadcrumb-navigation {
+  min-width: 260px;
+}
+
+h5 {
+  margin: 10px 0;
+}
+

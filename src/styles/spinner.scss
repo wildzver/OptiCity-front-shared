@@ -1,13 +1,3 @@
-//#loader {
-//  bottom: 0;
-//  height: 175px;
-//  left: 0;
-//  margin: auto;
-//  position: absolute;
-//  right: 0;
-//  top: 0;
-//  width: 175px;
-//}
 .spinner-background {
   position: fixed;
   width: 100%;
@@ -18,7 +8,7 @@
   top: 0;
   left: 0;
   background-color: rgba(#002C40, .9);
-  z-index: 998;
+  z-index: 450;
 }
 
 .container2 {
@@ -69,7 +59,6 @@
 
 #loader .dot:nth-child(7n+1)::before {
   animation: 0.8s linear 0.1s normal none infinite running load;
-  //background: #00ff80 none repeat scroll 0 0;
   background: #002C40 none repeat scroll 0 0;
 }
 
@@ -166,17 +155,29 @@
 }
 
 .logo-rotate {
-  //background: #002C40;
   img {
     height: 150px;
     width: 150px;
-    -webkit-animation:spin 4s linear infinite;
-    -moz-animation:spin 4s linear infinite;
-    animation:spin 4s linear infinite;
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite;
   }
 
-  @-moz-keyframes spin { 100% { -moz-transform: rotateY(360deg); } }
-  @-webkit-keyframes spin { 100% { -webkit-transform: rotateY(360deg); } }
-  @keyframes spin { 100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); } }
+  @-moz-keyframes spin {
+    100% {
+      -moz-transform: rotateY(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    100% {
+      -webkit-transform: rotateY(360deg);
+    }
+  }
+  @keyframes spin {
+    100% {
+      -webkit-transform: rotateY(360deg);
+      transform: rotateY(360deg);
+    }
+  }
 }
 

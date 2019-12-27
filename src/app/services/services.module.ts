@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ServicesComponent} from './services.component';
 import {BreadcrumbNavigationModule} from '../breadcrumb-navigation/breadcrumb-navigation.module';
 
@@ -13,4 +13,5 @@ import {BreadcrumbNavigationModule} from '../breadcrumb-navigation/breadcrumb-na
     ServicesComponent,
   ]
 })
-export class ServicesModule { }
+export class ServicesModule {
+}

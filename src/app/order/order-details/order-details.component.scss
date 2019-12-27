@@ -1,8 +1,7 @@
 #buyer-contacts {
   width: 100%;
   color: #002C40;
-  margin: 20px auto 20px /* 320px*/
-;
+  margin: 20px auto 20px;
 
   #buyer-info {
     width: 400px;
@@ -41,14 +40,9 @@
       }
 
       label {
-        //height: 24px;
         p {
           margin: 0 0 0 4px;
         }
-
-        //span {
-        //  font-size: 12px;
-        //}
 
         img {
           height: 50px;
@@ -70,24 +64,6 @@
       &:focus {
         border: 1px solid rgba(#002C40, .3);
       }
-
-      &.is-valid {
-        //border: 1px solid rgba(#002C40, 1);
-
-      }
-
-      &.is-invalid {
-        //border-left: solid 6px red !important;
-      }
-
-      &.is-default {
-
-        //border: 1px solid rgba(#002C40, .3);
-      }
-    }
-
-    textarea {
-      //border: 1px solid rgba(#002C40, 1);
     }
 
     input, textarea {
@@ -95,16 +71,11 @@
       padding: 0 8px;
       background: none;
       border-radius: 4px;
-
-
     }
 
     input[name=email], input[name=phoneList], select, textarea {
       width: 400px;
-
-
     }
-
   }
 
   p {
@@ -143,5 +114,3 @@
 .full-width {
   width: 100%;
 }
-
-

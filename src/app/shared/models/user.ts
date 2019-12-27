@@ -1,5 +1,3 @@
-import {Order} from './order';
-
 export class User {
   id?: any;
   firstName?: string;
@@ -7,7 +5,5 @@ export class User {
   email?: string;
   phone?: string;
   password?: string;
-  checkPassword?: string;
   source?: string;
-  comment?: string;
 }

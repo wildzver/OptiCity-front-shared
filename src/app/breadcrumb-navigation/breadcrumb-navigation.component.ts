@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Params, Router, UrlSegment} from '@angular/router';
-import {distinctUntilChanged, filter, map} from 'rxjs/operators';
+import {ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {ProductsService} from '../shared/app-services/products.service';
-
 
 interface IBreadCrumb {
   label?: string;
@@ -16,7 +15,6 @@ interface IBreadCrumb {
   templateUrl: './breadcrumb-navigation.component.html',
   styleUrls: ['./breadcrumb-navigation.component.scss']
 })
-
 
 export class BreadcrumbNavigationComponent implements OnInit {
 
@@ -62,15 +60,9 @@ export class BreadcrumbNavigationComponent implements OnInit {
   private buildBreadCrumb(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadCrumb[] = []): IBreadCrumb[] {
     let label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data.breadcrumb : '';
     let path = route.routeConfig && route.routeConfig.data ? route.routeConfig.path : '';
-    // const lastRoutePart = path.split('/').pop();
     this.lastRoutePart = path.split('/').pop();
     const isDynamicCategoryRoute = this.lastRoutePart.startsWith(':category');
     const isDynamicProductNumberRoute = this.lastRoutePart.startsWith(':productNumber');
-    // if (isDynamicCategoryRoute && !!route.snapshot) {
-    //   const paramName = lastRoutePart.split(':')[1];
-    //   path = path.replace(lastRoutePart, route.snapshot.params[paramName]);
-    //   label = route.snapshot.params[paramName];
-    // }
 
     if ((isDynamicCategoryRoute || isDynamicProductNumberRoute) && !!route.snapshot) {
       const segments = path.split('/');
@@ -101,11 +93,8 @@ export class BreadcrumbNavigationComponent implements OnInit {
     const newBreadcrumbs = breadcrumb.label ? [...breadcrumbs, breadcrumb] : [...breadcrumbs];
 
     if (route.firstChild) {
-      // If we are not on our current path yet,
-      // there will be more children to look after, to build our breadcumb
       return this.buildBreadCrumb(route.firstChild, nextUrl, newBreadcrumbs);
     }
     return newBreadcrumbs;
   }
-
 }

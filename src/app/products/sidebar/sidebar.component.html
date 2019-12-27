@@ -1,13 +1,13 @@
 <div id="sidebar" class="flex-column jc-flex-start">
   <div class="filter-container">
     <p class="filter-panel-title">Категорія</p>
-    <div class="filter-items">
+    <div class="filter-items" style="width: 240px">
       <div *ngFor="let categoryItem of categories" style="'width': 240px"
            class="filter-container-item flex-row jc-space-between align-items-center">
         <a [routerLink]="['/products/', categoryItem.name]" queryParamsHandling="merge"
            class="filter-item"
            [ngClass]="{'router-active' : category === categoryItem.name}">{{categoryItem.uaName}}</a>
-        <img *ngIf="category===categoryItem.name" [routerLink]="['/products']"
+        <img *ngIf="category===categoryItem.name" [routerLink]="['/products']" title="видалити фільтр"
              src="assets/images/close_black.svg" class="cancel-filter-button">
       </div>
     </div>
@@ -15,210 +15,175 @@
 
   <hr>
 
-  <!--<label>-->
-  <!--asd-->
-  <!--<input type="checkbox" class="custom-checkbox">-->
-  <!--<span class="checkmark"></span>-->
-  <!--</label>-->
-
-  <!--<input class="inp-cbx" id="cbx" type="checkbox" style="display: none;"/>-->
-  <!--<label class="cbx" for="cbx"><span>-->
-  <!--<svg width="12px" height="10px" viewbox="0 0 12 10">-->
-  <!--<polyline points="1.5 6 4.5 9 10.5 1"></polyline>-->
-  <!--</svg></span><span>CodePenChallenge</span></label>-->
-  <!--<input class="inp-cbx" id="cbx" type="checkbox">-->
-  <!--<label class="cbx" for="cbx"><span>-->
-  <!--<svg viewbox="0 0 12 10">-->
-  <!--<polyline points="1.5 6 4.5 9 10.5 1"></polyline>-->
-  <!--</svg></span><span>CodePenChallenge</span></label>-->
-
-
   <form class="filter-container flex-column" [formGroup]="filterForm" novalidate>
 
     <div class="filter-container">
       <div class="flex-row jc-space-between align-items-center">
         <p class="filter-panel-title">Тип:</p>
-        <!--<i class="material-icons"-->
-           <!--(click)="hidenContainer.classList.contains('hide-container')?hidenContainer.classList.remove('hide-container'):hidenContainer.classList.add('hide-container')">expand_more</i>-->
+        <img *ngIf="searchedSexes?.length" src="assets/images/close_black.svg" title="видалити фільтр"
+             class="cancel-filter-button" (click)="nullifySexFilter()">
       </div>
-      <div class="flex-row jc-space-between align-items-center">
-        <!--<div class="filter-items hide-container" #hidenContainer>-->
-        <div class="filter-items">
-          <div formArrayName="sexes" *ngFor="let sex of filterForm.controls['sexes'].controls; let i = index"
-               class="filter-container-item flex-row align-items-center">
-            <!--<label [ngClass]="{'router-active' : sexes[i].checked}" class="custom-checkbox flex-row jc-flex-start align-items-center">-->
-            <input id="sex{{sexes[i].id}}" [checked]="sexes[i].checked" type="checkbox" name="sex"
-                   (change)="doSexesFilter(sexes[i].id)" [formControlName]="i" class="inp-cbx">
-            <!--{{sexes[i].uaName}}-->
-            <!--</label>-->
-            <label class="cbx" for="sex{{sexes[i].id}}"><span>
-    <!--<svg viewbox="0 0 12 10">-->
-              <!--<polyline points="1.5 6 4.5 9 10.5 1"></polyline>-->
-              <!--</svg>-->
+      <div class="filter-items">
+        <div formArrayName="sexes" *ngFor="let sex of filterForm.controls['sexes'].controls; let i = index"
+             class="filter-container-item flex-row align-items-center">
+          <input id="sex{{sexes[i].id}}" [checked]="sexes[i].checked" type="checkbox" name="sex"
+                 (change)="doSexesFilter(sexes[i].id)" [formControlName]="i" class="inp-cbx">
+          <label class="cbx" for="sex{{sexes[i].id}}"><span>
               <app-custom-checkbox [checked]="sexes[i].checked"></app-custom-checkbox>
             </span><span>{{sexes[i].uaName}}</span></label>
-          </div>
         </div>
-        <img *ngIf="searchedSexes?.length" src="assets/images/close_black.svg"
-             class="cancel-filter-button" (click)="nullifySexFilter()">
       </div>
     </div>
 
     <hr>
 
     <div class="filter-container price-filter">
-      <p class="filter-panel-title">Ціна:</p>
       <div class="flex-row jc-space-between align-items-center">
-        <div class="filter-items">
-          <div class="flex-row jc-flex-start">
-            <span>від </span>
-            <div class="float-container">
-              <!--<label for="min-price">мін.</label>-->
-              <input #minPrice id="min-price" type="number" min="0" step="1" maxLength="5" name="min-price" data-placeholder=""
-                     [value]="filterForm.controls['minPrice'].value"
-                     formControlName="minPrice">
-            </div>
-            <span> до </span>
-            <div class="float-container">
-              <!--<label for="max-price">макс.</label>-->
-              <input #maxPrice id="max-price" type="number" min="0" step="1" maxLength="5" name="max-price" data-placeholder=""
-                     [value]="filterForm.controls['maxPrice'].value" formControlName="maxPrice">
-            </div>
-            <span> грн </span>
-          </div>
-          <div class="slidecontainer">
-            <section class="range-slider">
-              <span class="rangeValues"></span>
-              <input id="min-range" step="1" type="range" [min]="minPriceMinRange"
-                     [max]="maxPriceMinRange"
-                     [value]="filterForm.controls['minPrice'].value ? filterForm.controls['minPrice'].value : serverMinPrice"
-                     class="slider" formControlName="minPrice">
-              <input id="max-range" step="1" type="range" [min]="minPriceMaxRange"
-                     [max]="maxPriceMaxRange ? maxPriceMaxRange : 2000"
-                     [value]="filterForm.controls['maxPrice'].value ? filterForm.controls['maxPrice'].value : serverMaxPrice"
-                     class="slider" formControlName="maxPrice">
-            </section>
-          </div>
-        </div>
-        <img *ngIf="minPrice.value || maxPrice.value" (click)="nullifyPriceFilter()"
+        <p class="filter-panel-title">Ціна:</p>
+        <img *ngIf="minPrice.value || maxPrice.value" (click)="nullifyPriceFilter()" title="видалити фільтр"
              src="assets/images/close_black.svg" class="cancel-filter-button">
+      </div>
+      <div class="filter-items">
+        <div class="flex-row jc-flex-start">
+          <span>від </span>
+          <div class="float-container">
+            <input #minPrice id="min-price" type="number" min="0" step="1" maxLength="5" name="min-price"
+                   data-placeholder=""
+                   [value]="filterForm.controls['minPrice'].value"
+                   formControlName="minPrice">
+          </div>
+          <span> до </span>
+          <div class="float-container">
+            <input #maxPrice id="max-price" type="number" min="0" step="1" maxLength="5" name="max-price"
+                   data-placeholder=""
+                   [value]="filterForm.controls['maxPrice'].value" formControlName="maxPrice">
+          </div>
+          <span> грн </span>
+        </div>
+        <div class="slide-container">
+          <section class="range-slider">
+            <span class="rangeValues"></span>
+            <input id="min-range" step="1" type="range" [min]="minPriceMinRange"
+                   [max]="maxPriceMinRange"
+                   [value]="filterForm.controls['minPrice'].value ? filterForm.controls['minPrice'].value : serverMinPrice"
+                   class="slider" formControlName="minPrice">
+            <input id="max-range" step="1" type="range" [min]="minPriceMaxRange"
+                   [max]="maxPriceMaxRange ? maxPriceMaxRange : 2000"
+                   [value]="filterForm.controls['maxPrice'].value ? filterForm.controls['maxPrice'].value : serverMaxPrice"
+                   class="slider" formControlName="maxPrice">
+          </section>
+        </div>
       </div>
     </div>
 
     <hr>
 
     <div class="filter-container">
-      <p class="filter-panel-title">Колір лінзи:</p>
       <div class="flex-row jc-space-between align-items-center">
-        <div class="filter-items">
-          <div formArrayName="lensColors" class="filter-container-item flex-row jc-space-between align-items-center"
-               *ngFor="let lensColor of filterForm.controls['lensColors'].controls; let i = index">
-            <div class="flex-row jc-flex-start align-items-center">
-              <input id="lensColor{{lensColors[i].id}}" [checked]="lensColors[i].checked" class="inp-cbx"
-                     type="checkbox" name="lensColor"
-                     (change)="doLensColorsFilter(lensColors[i].id)" [formControlName]="i">
-              <label for="lensColor{{lensColors[i].id}}" class="cbx">
+        <p class="filter-panel-title">Колір лінзи:</p>
+        <img *ngIf="searchedLensColors?.length" src="assets/images/close_black.svg" title="видалити фільтр"
+             class="cancel-filter-button" (click)="nullifyLensColorFilter(undefined)">
+      </div>
+      <div class="filter-items">
+        <div formArrayName="lensColors" class="filter-container-item flex-row jc-space-between align-items-center"
+             *ngFor="let lensColor of filterForm.controls['lensColors'].controls; let i = index">
+          <div class="flex-row jc-flex-start align-items-center">
+            <input id="lensColor{{lensColors[i].id}}" [checked]="lensColors[i].checked" class="inp-cbx"
+                   type="checkbox" name="lensColor"
+                   (change)="doLensColorsFilter(lensColors[i].id)" [formControlName]="i">
+            <label for="lensColor{{lensColors[i].id}}" class="cbx">
                 <span>
                   <app-custom-checkbox [checked]="lensColors[i].checked"></app-custom-checkbox>
                 </span>
-                <span>{{lensColors[i].uaName}}</span>
-              </label>
-            </div>
-            <label for="lensColor{{lensColors[i].id}}">
-              <img class="color-selector" [ngClass]="{'color-selector-checked': lensColors[i].checked}"
-                   [title]="lensColors[i].uaName"
-                   [src]="lensColorUrl + lensColors[i].imageName" [alt]="lensColors[i].imageName">
+              <span>{{lensColors[i].uaName}}</span>
             </label>
           </div>
+          <label for="lensColor{{lensColors[i].id}}">
+            <img class="color-selector" [ngClass]="{'color-selector-checked': lensColors[i].checked}"
+                 [title]="lensColors[i].uaName"
+                 [src]="lensColorUrl + lensColors[i].imageName" [alt]="lensColors[i].imageName">
+          </label>
         </div>
-        <img *ngIf="searchedLensColors?.length" src="assets/images/close_black.svg"
-             class="cancel-filter-button" (click)="nullifyLensColorFilter(undefined)">
       </div>
     </div>
 
     <hr>
 
     <div class="filter-container">
-      <p class="filter-panel-title">Колір оправи:</p>
       <div class="flex-row jc-space-between align-items-center">
-        <div class="filter-items">
-          <div formArrayName="frameColors" class="filter-container-item flex-row jc-space-between align-items-center"
-               *ngFor="let frameColor of filterForm.controls['frameColors'].controls; let i = index">
-            <div class="flex-row jc-flex-start align-items-center">
-              <input id="frameColor{{frameColors[i].id}}" [checked]="frameColors[i].checked" class="inp-cbx"
-                     type="checkbox" name="frameColor"
-                     (change)="doFrameColorsFilter(frameColors[i].id)" [formControlName]="i">
-              <label for="frameColor{{frameColors[i].id}}" class="cbx">
-                <span>
-                  <app-custom-checkbox [checked]="frameColors[i].checked"></app-custom-checkbox>
-                </span>
-                <span>{{frameColors[i].uaName}}</span>
-              </label>
-            </div>
-            <label for="frameColor{{frameColors[i].id}}">
-              <img class="color-selector" [ngClass]="{'color-selector-checked': frameColors[i].checked}"
-                   [title]="frameColors[i].uaName"
-                   [src]="frameColorUrl + frameColors[i].imageName" [alt]="frameColors[i].imageName">
-            </label>
-          </div>
-        </div>
-        <img *ngIf="searchedFrameColors?.length" src="assets/images/close_black.svg"
+        <p class="filter-panel-title">Колір оправи:</p>
+        <img *ngIf="searchedFrameColors?.length" src="assets/images/close_black.svg" title="видалити фільтр"
              class="cancel-filter-button" (click)="nullifyFrameColorFilter(undefined)">
       </div>
-    </div>
-
-    <hr>
-
-    <div class="filter-container">
-      <p class="filter-panel-title">Матеріал оправи:</p>
-      <div class="flex-row jc-space-between align-items-center">
-        <div class="filter-items">
-          <div formArrayName="frameMaterials" class="filter-container-item flex-row align-items-center"
-               *ngFor="let frameMaterial of filterForm.controls['frameMaterials'].controls; let i = index">
-            <!--<label [ngClass]="{'router-active' : frameMaterials[i].checked}"-->
-            <!--class="flex-row jc-flex-start align-items-center">-->
-            <input id="frameMaterial{{frameMaterials[i].id}}" [checked]="frameMaterials[i].checked"
-                   class="inp-cbx" type="checkbox" name="frameMaterial"
-                   (change)="doFrameMaterialsFilter(frameMaterials[i].id)" [formControlName]="i">
-            <label for="frameMaterial{{frameMaterials[i].id}}" class="cbx">
-                <span>
-                  <app-custom-checkbox [checked]="frameMaterials[i].checked"></app-custom-checkbox>
+      <div class="filter-items">
+        <div formArrayName="frameColors" class="filter-container-item flex-row jc-space-between align-items-center"
+             *ngFor="let frameColor of filterForm.controls['frameColors'].controls; let i = index">
+          <div class="flex-row jc-flex-start align-items-center">
+            <input id="frameColor{{frameColors[i].id}}" [checked]="frameColors[i].checked" class="inp-cbx"
+                   type="checkbox" name="frameColor"
+                   (change)="doFrameColorsFilter(frameColors[i].id)" [formControlName]="i">
+            <label for="frameColor{{frameColors[i].id}}" class="cbx">
+                  <span>
+                  <app-custom-checkbox [checked]="frameColors[i].checked"></app-custom-checkbox>
                 </span>
-              <span>{{frameMaterials[i].uaName}}</span>
+              <span>{{frameColors[i].uaName}}</span>
             </label>
-            <!--</label>-->
           </div>
+          <label for="frameColor{{frameColors[i].id}}">
+            <img class="color-selector" [ngClass]="{'color-selector-checked': frameColors[i].checked}"
+                 [title]="frameColors[i].uaName"
+                 [src]="frameColorUrl + frameColors[i].imageName" [alt]="frameColors[i].imageName">
+          </label>
         </div>
-        <img *ngIf="searchedFrameMaterials?.length" src="assets/images/close_black.svg"
-             class="cancel-filter-button" (click)="nullifyFrameMaterialFilter(undefined)">
       </div>
     </div>
 
     <hr>
 
     <div class="filter-container">
-      <p class="filter-panel-title">Діоптрії:</p>
       <div class="flex-row jc-space-between align-items-center">
-        <div class="filter-items">
+        <p class="filter-panel-title">Матеріал оправи:</p>
+        <img *ngIf="searchedFrameMaterials?.length" src="assets/images/close_black.svg" title="видалити фільтр"
+             class="cancel-filter-button" (click)="nullifyFrameMaterialFilter(undefined)">
+      </div>
+      <div class="filter-items">
+        <div formArrayName="frameMaterials" class="filter-container-item flex-row align-items-center"
+             *ngFor="let frameMaterial of filterForm.controls['frameMaterials'].controls; let i = index">
+          <input id="frameMaterial{{frameMaterials[i].id}}" [checked]="frameMaterials[i].checked"
+                 class="inp-cbx" type="checkbox" name="frameMaterial"
+                 (change)="doFrameMaterialsFilter(frameMaterials[i].id)" [formControlName]="i">
+          <label for="frameMaterial{{frameMaterials[i].id}}" class="cbx">
+              <span>
+                  <app-custom-checkbox [checked]="frameMaterials[i].checked"></app-custom-checkbox>
+                </span>
+            <span>{{frameMaterials[i].uaName}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="filter-container">
+      <div class="flex-row jc-space-between align-items-center">
+        <p class="filter-panel-title">Діоптрії:</p>
+        <img *ngIf="searchedDiopters?.length" src="assets/images/close_black.svg" title="видалити фільтр"
+             class="cancel-filter-button" (click)="nullifyDiopterFilter(undefined)">
+      </div>
+      <div class="filter-items">
           <div formArrayName="diopters" class="filter-container-item flex-row align-items-center"
                *ngFor="let diopter of filterForm.controls['diopters'].controls; let i = index">
-            <!--<label [ngClass]="{'router-active' : diopters[i].checked}"-->
-            <!--class="flex-row jc-flex-start align-items-center">-->
             <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked"
                    class="inp-cbx" type="checkbox" name="diopter"
                    (change)="doDioptersFilter(diopters[i].id)" [formControlName]="i">
             <label for="diopter{{diopters[i].id}}" class="cbx">
-                <span>
+              <span>
                   <app-custom-checkbox [checked]="diopters[i].checked"></app-custom-checkbox>
                 </span>
               <span>{{diopters[i].value}}</span>
             </label>
-            <!--</label>-->
           </div>
         </div>
-        <img *ngIf="searchedDiopters?.length" src="assets/images/close_black.svg"
-             class="cancel-filter-button" (click)="nullifyDiopterFilter(undefined)">
-      </div>
     </div>
 
     <hr>
@@ -236,7 +201,7 @@
                    for="polarization-switcher" class="filter-item">Поляризація</label>
           </div>
         </div>
-        <img *ngIf="polarization" src="assets/images/close_black.svg"
+        <img *ngIf="polarization" src="assets/images/close_black.svg" title="видалити фільтр"
              class="cancel-filter-button" (click)="nullifyPolarizationFilter()">
       </div>
     </div>

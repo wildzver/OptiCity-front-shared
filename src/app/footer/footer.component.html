@@ -1,37 +1,42 @@
 <div id="footer" class="flex-column">
 
-    <div id="footer-nav" class="flex-row">
-      <div id="footer-products" class="flex-column">
-        <p routerLink="products">КАТАЛОГ</p>
-        <ul>
-          <li *ngFor="let category of categories">
-            <a [routerLink]="['/products/',category.name]">{{category.uaName.toLowerCase()}}</a>
-          </li>
-        </ul>
-      </div>
+  <div id="footer-nav" class="flex-row jc-space-between ai-center">
+    <div id="footer-products" class="flex-column">
+      <p routerLink="products">КАТАЛОГ</p>
+      <ul>
+        <li *ngFor="let category of categories">
+          <a [routerLink]="['/products/',category.name]">{{category.uaName.toLowerCase()}}</a>
+        </li>
+      </ul>
+    </div>
 
-      <div class="logo-column flex-column">
-        <a class="logo" routerLink="" title="Головна"><img src="assets/images/logo-white.svg" alt="logo" height="40"></a>
-        <div id="footer-info" class="flex-column">
-          <p>ІНФОРМАЦІЯ</p>
-          <ul>
-            <li>
-              <a [routerLink]="['/app-services']">послуги</a>
-            </li>
-            <li>
-              <a [routerLink]="['/howorder']">доставка</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div id="footer-contacts" class="flex-column">
-        <p routerLink="contacts">КОНТАКТИ</p>
-        <p>м. Львів, просп. В. Чорновола, 67а, <br> ринок "Старий рицар" <a routerLink="contacts">(детальніше)</a></p>
-        <a href="tel:+380975583332" class="phone">+38 097 558 3332</a>
-        <a href="mailto:tarassvidnytskyy@gmail.com" class="email">tarassvidnytskyy@gmail.com</a>
+    <div class="logo-column flex-column">
+      <a class="logo" routerLink="" title="Головна"><img src="assets/images/logo-white.svg" alt="logo" height="40"></a>
+      <div id="footer-info" class="flex-column">
+            <a [routerLink]="['/delivery']">ДОСТАВКА</a>
       </div>
     </div>
 
+    <div id="footer-contacts" class="flex-column">
+      <p routerLink="contacts">КОНТАКТИ</p>
+      <p>м. Львів, просп. В. Чорновола, 67а, <br> ринок "Старий рицар" <a routerLink="contacts">(детальніше)</a></p>
+      <a href="tel:+380975583332" class="phone">+38 097 558 3332</a>
+      <a href="mailto:opticity.com.ua@gmail.com" class="email">opticity.com.ua@gmail.com</a>
+    </div>
+  </div>
 
+  <div id="copyright" class="flex-column ai-center">
+    <p>&#169; Інтернет-магазин "OptiCity" 2019. Всі права захищені</p>
+    <div class="flex-row jc-space-between">
+        <p>Розробка:
+          <a href="https://www.linkedin.com/in/taras-svidnytskyy-a8b198177/" title="LinkedIn" target="_blank">Тарас Свідницький
+            <img src="assets/images/in_logo.png">
+          </a>
+        </p>
+        <p>Дизайн:
+          <a href="https://www.linkedin.com/in/alina-svitlak-8a1246150/" title="LinkedIn" target="_blank">Аліна Світлак
+            <img src="assets/images/in_logo.png">
+          </a>
+    </div>
+  </div>
 </div>

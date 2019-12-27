@@ -9,7 +9,7 @@ import {Category} from '../shared/models/category';
 })
 export class FooterComponent implements OnInit {
 
-  categories: Category[] = [];
+  categories: Category[];
 
   constructor(private productsService: ProductsService) {
   }
@@ -19,9 +19,8 @@ export class FooterComponent implements OnInit {
   }
 
   private loadCategories() {
-    this.productsService.getCategories().subscribe((data: Category[]) => {
-      this.categories = data;
+    this.productsService.getCategories().subscribe((categories: Category[]) => {
+      this.categories = categories;
     });
   }
-
 }

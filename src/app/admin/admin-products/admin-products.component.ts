@@ -17,7 +17,6 @@ export class AdminProductsComponent implements OnInit {
   ngOnInit() {
     this.productService.getFilteredProducts().subscribe(data => {
       this.products = data.content;
-      console.log(this.products);
     });
   }
 
@@ -26,5 +25,4 @@ export class AdminProductsComponent implements OnInit {
     .subscribe(data => {this.products = this.products.filter(u => u !== product);
     });
   }
-
 }

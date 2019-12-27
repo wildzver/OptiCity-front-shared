@@ -14,23 +14,26 @@
     <tbody>
     <tr *ngFor="let item of cartService.cart?.orderList" [@fadeInOut]>
       <td>
-        <div class="img-container">
+        <div [routerLink]="['/products', item.product.productDetails.category.name, item.product.productNumber]"
+        class="img-container">
           <img [src]="[imageUrl + item.product.images[0].imageName]">
         </div>
       </td>
-      <td class="info-td">
-        <p class="category">{{item.product.productDetails.category.uaName}}</p>
-        <p class="product-number">{{item.product.productNumber}}</p>
+      <td>
+        <a [routerLink]="['/products', item.product.productDetails.category.name, item.product.productNumber]">
+          <p class="category">{{item.product.productDetails.category.uaName}}</p>
+          <p class="product-number">{{item.product.productNumber}}</p>
+        </a>
         <p class="price">{{item.product.productDetails.price}}</p>
       </td>
-      <td class="quantity-td">
+      <td>
         <div class="quantity flex-row jc-flex-end align-items-center">
           <button (click)="quantity.control.reset(quantity.value-1)">-</button>
           <input #quantity='ngModel' type="number" min="0" step="1" pattern="\d+" [(ngModel)]="item.quantity" (ngModelChange)=onChangeQuantity(item)>
           <button (click)="quantity.control.reset(quantity.value+1)">+</button>
         </div>
       </td>
-      <td class="subtotal-td">{{item.product.productDetails.price*item.quantity}}</td>
+      <td>{{item.product.productDetails.price*item.quantity}}</td>
       <td>
         <img class="cancel-filter-button" src="assets/images/close_black.svg" (click)="cartService.removeItemByUUID(item.product.uuid)">
       </td>

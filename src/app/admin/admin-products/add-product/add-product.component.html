@@ -21,18 +21,6 @@
       <small class="warning-text" *ngIf="hasError('modelNumber', 'intSrartsAtZero')">Неправильний формат!</small>
     </div>
 
-    <!--<div class="form-group">-->
-    <!--<div class="flex-row">-->
-    <!--<app-file-uploader [progressAddedImages]="progressAddedImages" [ngClass]="checker('productImage')" formControlName="productImage"></app-file-uploader>-->
-    <!--&lt;!&ndash;<div>&ndash;&gt;-->
-    <!--&lt;!&ndash;<input class="form-control" type="file" name="image.ts" value="Зображення *"&ndash;&gt;-->
-    <!--&lt;!&ndash;formControlName="productImage"&ndash;&gt;-->
-    <!--&lt;!&ndash;[ngClass]="checker('productImage')">&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-    <!--<small class="form-text" *ngIf="isControlRequired('productImage')">Обов'язкове поле!</small>-->
-    <!--</div>-->
-
     <div formArrayName="productMainImages">
       <div class="form-group" *ngFor="let productMainImage of addProductForm.controls['productMainImages'].controls; let i = index">
         <div>
@@ -46,7 +34,6 @@
           <label class="btn btn-default">
             <input type="file" (change)="selectMainFile($event)" name="image" formControlName="{{i}}">
           </label>
-          <button class="btn btn-success" [disabled]="!selectedMainFiles" (click)="upload()">Upload</button>
         </div>
       </div>
     </div>
@@ -63,11 +50,9 @@
           <label class="btn btn-default">
             <input type="file" (change)="selectFile($event)" name="image" formControlName="{{i}}" multiple>
           </label>
-          <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
         </div>
       </div>
     </div>
-
 
     <div class="form-group">
       <div class="flex-row">
@@ -130,7 +115,6 @@
       </div>
       <small class="warning-text" *ngIf="hasError('productCategory', 'required')">Обов'язкове поле!</small>
     </div>
-
 
     <div class="form-group">
       <div class="flex-row">
@@ -279,7 +263,4 @@
     <input type="submit" value="Додати продукт" [disabled]="addProductForm.invalid">
 
   </form>
-  <div *ngIf="isLoading" class="relative">
-    <app-spinner></app-spinner>
-  </div>
 </div>

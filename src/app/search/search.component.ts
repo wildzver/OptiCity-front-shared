@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Product} from '../shared/models/product';
 import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {ProductsService} from '../shared/app-services/products.service';
 import {FilterService} from '../shared/app-services/filter.service';
 import {PagerService} from '../shared/app-services/pager.service';
 import {Subscription} from 'rxjs';
-import {filter, takeWhile} from 'rxjs/operators';
+import {delay, filter} from 'rxjs/operators';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -33,9 +33,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   category: string;
   sortBy: string;
   sortDirection: string;
-
-
-
+  isLoading = false;
   private querySubscription: Subscription;
   productsSubscription: Subscription;
   filterSubscription = new Subscription();
@@ -47,12 +45,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   });
   minPriceSubscription = this.filterService.currentMinPrice.subscribe(minPrice => {
     this.minPrice = minPrice;
-    console.log('MIN PRICE CHANGING IN CATALOG', this.minPrice);
   });
   maxPriceSubscription = this.filterService.currentMaxPrice.subscribe(maxPrice => this.maxPrice = maxPrice);
   searchedLensColorsSubscription = this.filterService.currentSearchedLensColors.subscribe(searchedLensColors => {
     this.searchedLensColors = searchedLensColors;
-    console.log('SEARCHED LENS COLORS CHANGING IN CATALOG', this.searchedLensColors);
   });
   searchedFrameColorsSubscription = this.filterService.currentSearchedFrameColors.subscribe(searchedFrameColors => {
     this.searchedFrameColors = searchedFrameColors;
@@ -68,7 +64,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   });
   pageNumberSubscription = this.pagerService.currentPageNumber.subscribe(pageNumber => {
     this.pageNumber = pageNumber;
-    // this.loadProducts();
   });
   pageSizeSubscription = this.pagerService.currentPageSize.subscribe(pageSize => this.pageSize = pageSize);
   totalItemsSubscription = this.pagerService.currentTotalItems.subscribe(totalItems => {
@@ -82,7 +77,6 @@ export class SearchComponent implements OnInit, OnDestroy {
               private productsService: ProductsService,
               private filterService: FilterService,
               private pagerService: PagerService,
-              private cdRef: ChangeDetectorRef,
   ) {
   }
 
@@ -90,14 +84,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.querySubscription = this.route.queryParams.subscribe((queryParams: any) => {
       this.search = queryParams.search;
-      console.log('MY SEARCH!' + queryParams.search);
-      console.log('MY SEARCH TYPE!' + typeof queryParams.search);
     });
 
     this.routeCategorySubscription = this.route.paramMap.subscribe(params => {
       this.category = params.get('category');
       this.navigateTo = [`/products/${this.category}`];
-      console.log('PARAMS CATEGORY!!!', params.get('category'));
     });
 
     this.filterSubscription
@@ -121,17 +112,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ngAfterViewInit(): void {
-
-  // this.router.events.pipe(
-  //   filter((event: RouterEvent) => event instanceof NavigationEnd)).subscribe(() => {
-  //   this.loadProducts();
-  // });
-  // }
-
   ngOnDestroy(): void {
     this.pagerSubscription.unsubscribe();
-    // this.filterSubscription.unsubscribe();
     this.routeCategorySubscription.unsubscribe();
     this.querySubscription.unsubscribe();
     this.productsSubscription.unsubscribe();
@@ -156,75 +138,25 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private loadProducts() {
-    console.log('LAUNCH LOAD PRODUCTS!');
+    this.isLoading = true;
 
     if (this.search) {
-
-      console.log('this.search.length!!!!', this.search.length);
-      console.log('this.search[0]!!!!', this.search[0]);
-      console.log('this.search[1]!!!!', this.search[1]);
-      // let parameters;
       const parameters = this.getSearchParameters();
       if (this.search.length === 1) {
         parameters.search = this.search.toString();
-
-        // parameters = {
-        //   search: this.search,
-        //   pageNumber: this.pageNumber - 1,
-        //   pageSize: this.pageSize
-        // };
       }
 
       if (this.search.length > 1) {
-        // parameters = {
-        //   search: this.search.toString().split(',').join(' '),
-        //   pageNumber: this.pageNumber - 1,
-        //   pageSize: this.pageSize
-        // };
         parameters.search = this.search.toString().split(',').join(' ');
       }
 
       this.productsService.getSearchedPagedProducts(parameters)
+        .pipe(delay(200))
         .subscribe(data => {
           this.products = data.content;
           this.pagerService.changeTotalItems(data.totalElements);
-          // this.totalItems = data.totalElements;
-          console.log('----------------]]]', data);
-          console.log('-{{---------------]]]', this.products);
+          this.isLoading = false;
         });
     }
-
   }
 }
-
-
-//   implements OnInit {
-//
-//   products = Product[''];
-//
-//   private category: string;
-//   private subscription: Subscription;
-//
-//   constructor(private route: ActivatedRoute,
-//               private router: Router,
-//               private productService: ProductsService) {
-//
-//     // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-//   }
-//
-//   ngOnInit() {
-//     this.router.events.pipe(
-//       filter((event: RouterEvent) => event instanceof NavigationEnd)).subscribe(() => {
-//         this.productService.getProductsByCategory(this.category)
-//           .subscribe(data => {this.products = data.content;
-//                               console.log('PRODUCT-CATALOG-CATAGORY!!', this.products);
-//           });
-//       }
-//     );
-//     this.productService.getProductsByCategory(this.category)
-//       .subscribe(data => {this.products = data.content;
-//                           console.log('PRODUCT-CATALOG-CATAGORY2!!', this.products);
-//     });
-//   }
-//
-// }

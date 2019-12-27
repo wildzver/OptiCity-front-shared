@@ -1,4 +1,4 @@
-import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from '../shared/models/user';
 import {OrderDetailsComponent} from './order-details/order-details.component';
@@ -7,11 +7,8 @@ import {CartItem} from '../shared/models/cart-item';
 import {OrderService} from '../shared/app-services/order.service';
 import {Adress} from '../shared/models/adress';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomValidators} from '../signup/custom-validators';
-import {ErrorCode} from '@angular/compiler-cli/src/ngtsc/diagnostics';
-import {ERROR_TYPE} from '@angular/core/src/errors';
-import {LocalStorageService} from '../shared/app-services/local-storage.service';
+import {FormGroup} from '@angular/forms';
+import {CartLocalStorageService} from '../shared/app-services/cart-local-storage.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CartService} from '../shared/app-services/cart.service';
 
@@ -46,7 +43,7 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
     private router: Router,
     private orderService: OrderService,
     private cdRef: ChangeDetectorRef,
-    private localStorageService: LocalStorageService,
+    private localStorageService: CartLocalStorageService,
     private cartService: CartService
   ) {
   }
@@ -54,14 +51,8 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
   ngOnInit() {
   }
 
-  // clearCart(): void {
-  //   localStorage.removeItem('_cart');
-  //   this.router.navigate(['/products']);
-  // }
-
   order() {
     this.showSpinner = true;
-    console.log('this.buyerContacts EXIST3!!!', this.buyerContacts);
     const cart: Order = this.localStorageService.getCartLocalStorage();
 
     const order: Order = {
@@ -93,8 +84,6 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
       (error: HttpErrorResponse) => {
         if (error.status === 200) {
           this.showSpinner = false;
-          console.log('MY SHOW SPINER STATUS', this.showSpinner);
-          console.log('MY STATUS 200');
           setTimeout(() => {
             alert('Замовлення здійснено успішно! Протягом доби з Вами зв`яжеться наш менеджер.');
           });
@@ -106,9 +95,9 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
         }
 
         if (error.status === 400) {
+          this.showSpinner = false;
           // The backend returned an unsuccessful response code.
           // The response body may contain clues as to what went wrong,
-          console.error('Backend returned code', error.status, 'body was: ', error.error);
           Object.keys(error.error.errors).forEach(serverField => {
             if (serverField === 'user.firstName') {
               this.setErrorByServerField(error, serverField, 'userFirstName');
@@ -119,8 +108,6 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
             }
           });
         }
-        console.log('MY ERROR type of', typeof error.error.errors);
-        console.log('MY ERROR', error.error.errors);
       });
   }
 
@@ -163,7 +150,6 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
       this.deliveryAdress = this.buyerContactsComponent.deliveryAdress;
       this.isDeliveryAdressFormValid = this.buyerContactsComponent.isDeliveryAdressFormValid;
     }
-    // this.totalCartQuantity = CartComponent.quantityTotal;
     this.cdRef.detectChanges();
   }
 }

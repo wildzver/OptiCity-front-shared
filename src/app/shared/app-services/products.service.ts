@@ -3,22 +3,15 @@ import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest, HttpRespons
 import {Product} from '../models/product';
 import {Category} from '../models/category';
 import {Color} from '../models/color';
-import {observable, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import * as _ from 'lodash';
-import {ParamMap, Params} from '@angular/router';
-import {defaultIfEmpty} from 'rxjs/operators';
-import {parseHttpResponse} from 'selenium-webdriver/http';
-import {url} from '@rxweb/reactive-form-validators';
+import {Params} from '@angular/router';
 import {PageProduct} from '../models/pageProduct';
 import {Material} from '../models/material';
 import {Diopter} from '../models/diopter';
 import {Origin} from '../models/origin';
 import {Sex} from '../models/sex';
 import {Image} from '../models/image';
-
-
-const header = new HttpHeaders({'Content-Type': 'application/json'});
-const header2 = new HttpHeaders({'Content-Type': 'multipart/formdata'});
 
 @Injectable({
   providedIn: 'root'
@@ -115,9 +108,6 @@ export class ProductsService {
       productParams = _.isUndefined(parameters.searchedDiopters) ? productParams : productParams.append('diopter', parameters.searchedDiopters);
       productParams = _.isUndefined(parameters.searchedPolarization) ? productParams : productParams.append('polarization', parameters.searchedPolarization);
     }
-    console.log('productParams!!!', productParams.getAll('lensColor'));
-    console.log('productParams!!!', productParams);
-    console.log('productParams!!!', parameters);
     return this.http.get<PageProduct>(this.productsUrl, {params: productParams});
   }
 
@@ -127,7 +117,6 @@ export class ProductsService {
   }
 
   public getProductsByModelNumber(modelNumber): Observable<Product[]> {
-
     const url = `${this.productsUrl}/modelNumbers/${modelNumber}`;
     return this.http.get<Product[]>(url);
   }
@@ -137,11 +126,6 @@ export class ProductsService {
     return this.http.get<number>(url);
   }
 
-  // public getProductByProductNumber(productNumber): Observable<Product> {
-  //   const url = `${this.productsUrl}/cart/${productNumber}`;
-  //   return this.http.get<Product>(url);
-  // }
-
   public getProductByUUID(uuid): Observable<Product> {
     const url = `${this.productsUrl}/cart/${uuid}`;
     return this.http.get<Product>(url);
@@ -149,8 +133,6 @@ export class ProductsService {
 
   public getProductByUUIDList(formData: FormData): Observable<HttpEvent<{}>> {
     const url = `${this.productsUrl}/UUIDList`;
-    // let searchParams = new HttpParams();
-    // searchParams = _.isUndefined(uuidList) ? searchParams : searchParams.append('searchParameter', FormData);
     const req = new HttpRequest(
       'post',
       url,
@@ -170,14 +152,6 @@ export class ProductsService {
   }
 
   public createProduct(formData: FormData): Observable<HttpEvent<{}>> {
-
-    // const json = JSON.stringify(product);
-    // const blob = new Blob([json], {type: 'application/json'});
-    // const formData = new FormData();
-    //
-    // formData.append('product', blob);
-    // formData.append('image', file);
-
     const req = new HttpRequest(
       'post',
       this.productsUrl + '/addProduct',
@@ -187,7 +161,6 @@ export class ProductsService {
   }
 
   public updateProduct(productId: string, formData: FormData): Observable<HttpEvent<{}>> {
-
     const req = new HttpRequest(
       'post',
       `${this.productsUrl}/${productId}/update`,
@@ -196,32 +169,18 @@ export class ProductsService {
     return this.http.request(req);
   }
 
-
   public uploadProducts(formData: FormData): Observable<HttpEvent<{}>> {
-    // const url = this.productsUrl + '/uploadProducts';
-
     const req = new HttpRequest(
       'post',
       this.productsUrl + '/uploadProducts',
       formData,
       {reportProgress: true, responseType: 'json'},
     );
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json'
-    //   }),
-    //   observe: 'response',
-    //   reportProgress: true, responseType: 'json'
-    // };
-    // console.log('THIS IS RESPONSE!' + );
     const res = new HttpResponse();
     return this.http.request(req);
-    // return this.http.post(url, formData, {observe: 'response', reportProgress: true});
   }
 
-
   public uploadProductImages(productId: number, formData: FormData): Observable<HttpEvent<{}>> {
-
     const req = new HttpRequest(
       'post',
       `${this.productsUrl}/${productId}/uploadProductImages`,
@@ -235,15 +194,7 @@ export class ProductsService {
     return this.http.get<Image[]>(url);
   }
 
-  // public deleteProductImage(productId, imageName) {
-  //   let param = new HttpParams();
-  //   param = _.isUndefined(imageName) ? param : param.append('imageName', imageName);
-  //   return this.http.get(`${this.productsUrl}/${productId}/deleteImage`, {params: param});
-  // }
-
   public deleteProductImage(productId, imageId) {
-    // let param = new HttpParams();
-    // param = _.isUndefined(imageId) ? param : param.append('imageName', imageId);
     return this.http.get<Image[]>(`${this.productsUrl}/${productId}/images/${imageId}/delete`);
   }
 
@@ -257,13 +208,10 @@ export class ProductsService {
 
   public getCategoryByName(categoryName): Observable<Category> {
     let categoryNameParam = new HttpParams();
-
-    // const url = `${this.categoriesUrl}/as/${categoryName}`;
     if (!_.isUndefined(categoryName)) {
       categoryNameParam = _.isUndefined(categoryName) ? categoryNameParam : categoryNameParam.append('categoryName', categoryName);
     }
-
-    return this.http.get<Category>(this.categoriesUrl + '/as', {params: categoryNameParam});
+    return this.http.get<Category>(this.categoriesUrl + '/categoryByName', {params: categoryNameParam});
   }
 
   public createCategory(formData: FormData) {

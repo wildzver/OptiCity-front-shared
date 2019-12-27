@@ -42,7 +42,6 @@ export class FrameColorsComponent implements OnInit {
   private loadFrameColors() {
     this.productService.getFrameColors().subscribe((data: Color[]) => {
       this.frameColors = data;
-      console.log(this.frameColors);
     });
   }
 
@@ -53,9 +52,7 @@ export class FrameColorsComponent implements OnInit {
   }
 
   editFrameColor(frameColor: Color) {
-    console.log(frameColor);
     this.editedFrameColor = new Color(frameColor.id, frameColor.name, frameColor.uaName);
-    console.log(frameColor.id);
   }
 
   loadTemplate(frameColor: Color) {
@@ -81,7 +78,6 @@ export class FrameColorsComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadFrameColors();
       });
-      console.log(this.editedFrameColor);
       this.isNewRecord = false;
       this.editedFrameColor = null;
     } else {

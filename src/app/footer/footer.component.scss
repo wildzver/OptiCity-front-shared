@@ -1,46 +1,36 @@
 #footer {
-  height: 200px;
+  height: 250px;
   width: 100%;
-  background-color: rgba(#002C40, 0.9);
+  background-color: rgba(#002C40, 1);
   align-items: center;
   justify-content: center;
-  //padding: 0 20px;
   color: #E4E4E4;
   font-size: 14px;
   padding: 10px 40px;
   overflow: hidden;
-  //position: absolute;
-  //left: 0;
-  //right: 0;
-  //bottom: 0;
 
-  #footer-nav {
+  #footer-nav, #copyright {
     width: 80%;
-    height: 90%;
-    justify-content: space-between;
-    align-items: center;
 
+  }
+  #footer-nav {
+    height: 90%;
 
     & div {
-      margin: 20px 0;
+      margin: 20px 0 0 0;
     }
 
     #footer-products {
       justify-content: flex-start;
       align-items: flex-start;
       padding: 0 10px;
-
-
     }
 
     ul {
-      padding-left: 5px;
+      padding: 0;
       list-style-type: none;
       margin: 0;
-
-
     }
-
 
     .logo-column {
       margin: 0;
@@ -49,11 +39,9 @@
       height: auto;
       padding: 0 10px;
 
-
       #footer-info {
         justify-content: center;
         align-items: flex-start;
-
       }
     }
 
@@ -61,14 +49,15 @@
       justify-content: flex-start;
       align-items: flex-start;
       padding: 0 10px;
-
-
-      //height: auto;
-
     }
+  }
 
-    .logo {
-
+  #copyright {
+    div {
+      width: 100%;
+      img {
+        height: 20px;
+      }
     }
   }
 }
@@ -78,22 +67,16 @@ a {
   text-decoration: none;
 }
 
-;
-
 .flex-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-direction: row;
-
 }
 
 .flex-column {
   display: flex;
-  //justify-content: flex-start;
-  //align-items: flex-start;
   flex-direction: column;
-
 }
 
 .phone, .email {
@@ -107,16 +90,6 @@ a {
   }
 }
 
-.material-icons.md-light {
-  font-size: 20px;
-  //text-decoration: none;
-  //outline: 0px !important;
-}
-
-.material-icons.md-dark {
-  color: rgba(0, 0, 0, 0.54);
-}
-
 p {
   margin-bottom: 8px;
 }
@@ -125,4 +98,22 @@ p {
   #footer {
     padding: 0;
   }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.jc-space-between {
+  justify-content: space-between;
 }

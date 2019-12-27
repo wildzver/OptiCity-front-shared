@@ -1,52 +1,27 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-      <app-search-panel></app-search-panel>
-    </div>
-    <div class="form-inline my-2 my-lg-0">
-      <a routerLink="cart">
-        <div class="item row">
-          <!--<img src="assets/images/like.png">-->
-          <i class="material-icons md-light">shopping_cart</i>
-          <div id="counter">
-            <span>{{2}}</span>
-          </div>
-        </div>
-      </a>    </div>
-
-    <!--<form class="form-inline my-2 my-lg-0">-->
-      <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-      <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-    <!--</form>-->
+<app-breadcrumb-navigation></app-breadcrumb-navigation>
+<div id="contacts">
+  <div id="contacts-info">
+    <h4>Контакти:</h4>
+    <p>м. Львів, просп. В. Чорновола, 67а, ринок "Старий лицар" <a target="_blank" href="https://www.google.com/maps/place/%D0%A1%D1%82%D0%B0%D1%80%D0%B8%D0%B9+%D0%BB%D0%B8%D1%86%D0%B0%D1%80/@49.8598321,24.01833,19z/data=!4m13!1m7!3m6!1s0x473adda8b0f8d087:0xc8ab9592c1f29bfc!2z0L_RgNC-0YHQv9C10LrRgiDQkifRj9GH0LXRgdC70LDQstCwINCn0L7RgNC90L7QstC-0LvQsCwgNjcsINCb0YzQstGW0LIsINCb0YzQstGW0LLRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwgNzkwMDA!3b1!8m2!3d49.8595187!4d24.0190757!3m4!1s0x473adda8b0f046b1:0x16130d7fb9e2798c!8m2!3d49.8599264!4d24.018833">(детальніше на карті)</a></p>
+    <a href="tel:+380975583332">
+      +38 (097) 558 3332
+    </a>
   </div>
-</nav>
-
-
-
+  <div id="schedule">
+    <h6>Графік роботи:</h6>
+    <table>
+      <tr>
+        <th>Пн - Пт</th>
+        <td>11:00 - 17:00</td>
+      </tr>
+      <tr>
+        <th>Сб</th>
+        <td>10:00 - 14:00</td>
+      </tr>
+      <tr>
+        <th>Нд</th>
+        <td>вихідний</td>
+      </tr>
+    </table>
+  </div>
+</div>

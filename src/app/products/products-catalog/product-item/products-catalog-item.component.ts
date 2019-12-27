@@ -1,8 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../../../shared/models/product';
-import {ProductsService} from '../../../shared/app-services/products.service';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
-import {Router} from '@angular/router';
 import {CartService} from '../../../shared/app-services/cart.service';
 
 @Component({
@@ -16,8 +13,7 @@ export class ProductsCatalogItemComponent implements OnInit {
   imageUrl: string;
   price: number;
 
-  constructor(private cartService: CartService
-              ) {
+  constructor(private cartService: CartService) {
   }
 
   ngOnInit() {
@@ -37,9 +33,6 @@ export class ProductsCatalogItemComponent implements OnInit {
       } else {
         this.imageUrl = `/api/product-image/${this.productInput.imageName}`;
       }
-
     }
-
   }
-
 }

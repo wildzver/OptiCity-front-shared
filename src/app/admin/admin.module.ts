@@ -5,9 +5,7 @@ import {AdminRoutingModule} from './admin-routing.module';
 import {AdminProductsComponent} from './admin-products/admin-products.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AddProductModule} from './admin-products/add-product/add-product.module';
-import {AdminUsersComponent} from './admin-users/admin-users.component';
 import {CategoriesComponent} from './admin-products/category/categories.component';
-import {InlineEditComponent} from './inline-edit/inline-edit.component';
 import {FrameColorsComponent} from './admin-products/frame-colors/frame-colors.component';
 import {LensColorsComponent} from './admin-products/lens-colors/lens-colors.component';
 import {UploadProductsComponent} from './admin-products/upload-products/upload-products.component';
@@ -22,9 +20,7 @@ import { EditProductComponent } from './admin-products/edit-product/edit-product
   declarations: [
     AdminComponent,
     AdminProductsComponent,
-    AdminUsersComponent,
     CategoriesComponent,
-    InlineEditComponent,
     FrameColorsComponent,
     LensColorsComponent,
     UploadProductsComponent,

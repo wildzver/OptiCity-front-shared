@@ -1,5 +1,4 @@
 import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Color} from '../../../shared/models/color';
 import {ProductsService} from '../../../shared/app-services/products.service';
 import {Material} from '../../../shared/models/material';
 
@@ -40,7 +39,6 @@ export class LensMaterialsComponent  implements OnInit {
   private loadLensMaterials() {
     this.productService.getLensMaterials().subscribe((lensMaterials: Material[]) => {
       this.lensMaterials = lensMaterials;
-      console.log(this.lensMaterials);
     });
   }
 
@@ -51,9 +49,7 @@ export class LensMaterialsComponent  implements OnInit {
   }
 
   editLensMaterial(lensMaterial: Material) {
-    console.log(lensMaterial);
     this.editedLensMaterial = new Material(lensMaterial.id, lensMaterial.name, lensMaterial.uaName);
-    console.log(lensMaterial.id);
   }
 
   loadTemplate(lensMaterial: Material) {
@@ -70,7 +66,6 @@ export class LensMaterialsComponent  implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadLensMaterials();
       });
-      console.log(this.editedLensMaterial);
       this.isNewRecord = false;
       this.editedLensMaterial = null;
     } else {

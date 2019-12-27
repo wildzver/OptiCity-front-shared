@@ -15,6 +15,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     ]),
   ]
 })
+
 export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild(HomeCatalogComponent) homeCatalogComponent;
 
@@ -34,12 +35,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.isLoading = this.homeCatalogComponent.isLoading;
   }
 
-
   private scrollToHomeCatalog() {
     const homeCatalogTop = document.getElementById('home-catalog').offsetTop;
     window.scrollTo({behavior: 'smooth', top: homeCatalogTop - 60});
-    // scrollTo(0, homeCatalogTop - 60);
   }
-
-
 }

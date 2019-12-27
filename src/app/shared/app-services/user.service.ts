@@ -1,21 +1,17 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {User} from '../models/user';
-
-const header = new HttpHeaders({'Content-Type': 'application/json'});
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   private userUrl = '/api/users';
 
-  // public createProduct(product, progressAddedImages) {
-  //   return this.http.post<Product>(this.productUrl + '/addProduct', product, progressAddedImages);
-  // }
   public createUser(user) {
     return this.http.post<User>(this.userUrl + '/addUser', user);
   }
@@ -31,6 +27,4 @@ export class UserService {
   public deleteUser(user) {
     return this.http.delete(this.userUrl + '/' + user.id);
   }
-
-
 }

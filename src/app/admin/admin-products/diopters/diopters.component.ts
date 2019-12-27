@@ -40,7 +40,6 @@ export class DioptersComponent implements OnInit {
   private loadDiopters() {
     this.productService.getDiopters().subscribe((diopters: Diopter[]) => {
       this.diopters = diopters;
-      console.log(this.diopters);
     });
   }
 
@@ -51,9 +50,7 @@ export class DioptersComponent implements OnInit {
   }
 
   editDiopter(diopter: Diopter) {
-    console.log(diopter);
     this.editedDiopter = new Diopter(diopter.id, diopter.value);
-    console.log(diopter.id);
   }
 
   loadTemplate(diopter: Diopter) {
@@ -70,7 +67,6 @@ export class DioptersComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadDiopters();
       });
-      console.log(this.editedDiopter);
       this.isNewRecord = false;
       this.editedDiopter = null;
     } else {

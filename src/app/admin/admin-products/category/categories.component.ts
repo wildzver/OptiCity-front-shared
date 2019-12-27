@@ -42,7 +42,6 @@ export class CategoriesComponent implements OnInit {
   private loadCategories() {
     this.productsService.getCategories().subscribe((data: Category[]) => {
       this.categories = data;
-      console.log(this.categories);
     });
   }
 
@@ -53,9 +52,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   editCategory(category: Category) {
-    console.log(category);
     this.editedCategory = new Category(category.id, category.name, category.uaName);
-    console.log(category.id);
   }
 
   loadTemplate(category: Category) {
@@ -81,7 +78,6 @@ export class CategoriesComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadCategories();
       });
-      console.log(this.editedCategory);
       this.isNewRecord = false;
       this.editedCategory = null;
     } else {

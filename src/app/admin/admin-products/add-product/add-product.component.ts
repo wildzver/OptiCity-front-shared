@@ -1,20 +1,18 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Product} from '../../../shared/models/product';
 import {ProductsService} from '../../../shared/app-services/products.service';
-import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
-import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {Category} from '../../../shared/models/category';
 import {Color} from '../../../shared/models/color';
-import {UploadFileService} from '../../../shared/app-services/upload-file.service';
-import {CustomValidators} from '../../../signup/custom-validators';
+import {CustomValidators} from '../../../shared/custom-validators';
 import * as _ from 'lodash';
 import {Subscription} from 'rxjs';
 import {Diopter} from '../../../shared/models/diopter';
 import {Material} from '../../../shared/models/material';
 import {Origin} from '../../../shared/models/origin';
 import {Sex} from '../../../shared/models/sex';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 export enum KEY_CODE {
   ESCAPE = 27
@@ -30,7 +28,6 @@ export class AddProductComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productsService: ProductsService,
-    private uploadService: UploadFileService,
   ) {
   }
 
@@ -43,20 +40,6 @@ export class AddProductComponent implements OnInit {
   lensMaterials: Material[];
   frameMaterials: Material[];
   products: Product[];
-  // frameColors = [
-  //   {id: 0, color: 'Білий'},
-  //   {id: 1, color: 'Чорний'},
-  //   {id: 2, color: 'Синій'},
-  //   {id: 3, color: 'Червоний'},
-  //   {id: 4, color: 'Жовтий'},
-  //   {id: 5, color: 'Срібний'},
-  //   {id: 6, color: 'Золотистий'},
-  //   {id: 7, color: 'Коричневий'},
-  //   {id: 8, color: 'Хамелеон'},
-  //   {id: 10, color: 'Прозорий'},
-  //   {id: 13, color: 'Чорно-червоний'},
-  //   {id: 14, color: 'Чорно-жовтий'}
-  // ];
   diopters: Diopter[];
   origins: Origin[];
   sexes: Sex[];
@@ -94,11 +77,9 @@ export class AddProductComponent implements OnInit {
 
   }
 
-
   @HostListener('document:click', ['$event.target'])
   clickOutsideDiopters(targetElement) {
     if (!document.getElementById('diopters').contains(targetElement)) {
-      console.log('OUTSIDE WORKS!');
       this.hideDioptersCheckBoxes();
     }
   }
@@ -107,7 +88,6 @@ export class AddProductComponent implements OnInit {
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.ESCAPE) {
       this.hideDioptersCheckBoxes();
-      console.log('EVENT KEY BOARD WORKS!');
     }
   }
 
@@ -146,11 +126,8 @@ export class AddProductComponent implements OnInit {
     this.productsService.getLensColors().subscribe((lensColors: Color[]) => {
       this.lensColors = lensColors.map(lensColor => {
         lensColor.enableOption = true;
-        lensColor.enableOption = true;
         return lensColor;
       });
-      console.log('MY LENSCOLORS2!!!', this.lensColors);
-
     });
   }
 
@@ -161,7 +138,6 @@ export class AddProductComponent implements OnInit {
         frameColor.enableOption = true;
         return frameColor;
       });
-      console.log('MY FRAMECOLORS2!!!', this.frameColors);
     });
   }
 
@@ -172,7 +148,6 @@ export class AddProductComponent implements OnInit {
         lensMaterial.enableOption = true;
         return lensMaterial;
       });
-      console.log('MY LENS MATERIALS!!!', this.lensMaterials);
     });
   }
 
@@ -183,7 +158,6 @@ export class AddProductComponent implements OnInit {
         frameMaterial.enableOption = true;
         return frameMaterial;
       });
-      console.log('MY FRAME MATERIALS!!!', this.frameMaterials);
     });
   }
 
@@ -194,7 +168,6 @@ export class AddProductComponent implements OnInit {
         origin.enableOption = true;
         return origin;
       });
-      console.log('MY ORIGINS!!!', this.origins);
     });
   }
 
@@ -205,7 +178,6 @@ export class AddProductComponent implements OnInit {
         sex.enableOption = true;
         return sex;
       });
-      console.log('MY SEXES!!!', this.sexes);
     });
   }
 
@@ -218,7 +190,6 @@ export class AddProductComponent implements OnInit {
       });
 
       this.addDiopterCheckboxes();
-      console.log('MY DIOPTERS!!!', this.diopters);
     });
   }
 
@@ -228,12 +199,8 @@ export class AddProductComponent implements OnInit {
         Validators.required,
         CustomValidators.patternValidator(/^[0-9]+$/, {hasDigit: true}),
         CustomValidators.intSrartsAtZeroValidator({intSrartsAtZero: true})
-        // CustomValidators.patternValidator(/^[0-9]+$/, {pattern: true}),
-        // CustomValidators.patternValidator(/^(0|[1-9][0-9]*)$/, {pattern: true})
       ]),
-      productMainImages: new FormArray([new FormControl(null, [
-        // Validators.required
-      ])]),
+      productMainImages: new FormArray([new FormControl(null, [])]),
       productImages: new FormArray([new FormControl(null, [
         // Validators.required
       ])]),
@@ -245,7 +212,6 @@ export class AddProductComponent implements OnInit {
         Validators.required,
         CustomValidators.patternValidator(/^[0-9]+$/, {hasDigit: true}),
         CustomValidators.intSrartsAtZeroValidator({intSrartsAtZero: true})
-        // Validators.pattern('^[ 0-9]+$')
       ]),
       productSex: new FormControl('', [
         Validators.required
@@ -294,26 +260,16 @@ export class AddProductComponent implements OnInit {
         if (this.addProductForm.controls.modelNumber.valid) {
           this.getProductsByModelNumber(modelNumber);
         }
-        // setTimeout(() => {
         this.initEnableOption();
-        // }, 300
-        // );
       });
 
     this.lensColorValueChanges = this.addProductForm.controls.productLensColor.valueChanges.subscribe(() => {
-      // setTimeout(() => {
       this.initEnableOption();
-      // }, 300
-      // );
     });
 
     this.frameColorValueChanges = this.addProductForm.controls.productFrameColor.valueChanges.subscribe(() => {
-      // setTimeout(() => {
       this.initEnableOption();
-      //   }, 300
-      // );
     });
-
   }
 
   private addDiopterCheckboxes() {
@@ -340,12 +296,9 @@ export class AddProductComponent implements OnInit {
           this.addProductForm.controls.productFrameMaterial.setValue(productList[0].productDetails.frameMaterial.id);
           this.addProductForm.controls.productOrigin.setValue(productList[0].productDetails.origin.id);
         }
-
         this.initEnableOption();
         this.loadFreeModelNumber();
-
-      }
-    );
+      });
   }
 
 
@@ -354,25 +307,12 @@ export class AddProductComponent implements OnInit {
     if (_.isUndefined(this.products)) {
       return null;
     } else {
-
       const lensFrameColorCoupleArray: string[][] = [];
       this.products.forEach((product: Product) => {
         const lensFrameColorCouple = product.productNumber.split('_');
         lensFrameColorCouple.shift();
         lensFrameColorCoupleArray.push(lensFrameColorCouple);
-
       });
-
-      // for (let i = 0; i < this.products.length; i++) {
-      //   const lensFrameColorCouple = this.products[i].productNumber.split('_');
-      //   //   .map(color => {
-      //   //   return parseInt(color, 10);
-      //   // });
-      //   lensFrameColorCouple.shift();
-      //   lensFrameColorCoupleArray[i] = lensFrameColorCouple;
-      //
-      // }
-
 
       if ((Array.isArray(this.lensColors) && (this.lensColors.length || !_.isUndefined(this.lensColors))) &&
         (Array.isArray(this.frameColors) && (this.frameColors.length || !_.isUndefined(this.frameColors)))) {
@@ -406,7 +346,6 @@ export class AddProductComponent implements OnInit {
             const frameColorMatches = lensColorMatches.find(match => frameColor.id == parseInt(match[1], 10)
             );
             frameColor.enableOption = _.isUndefined(frameColorMatches) ? true : false;
-
           });
         }
 
@@ -420,7 +359,6 @@ export class AddProductComponent implements OnInit {
             const lensColorMatches = frameColorMatches.find(match => lensColor.id == parseInt(match[0], 10)
             );
             lensColor.enableOption = _.isUndefined(lensColorMatches) ? true : false;
-
           });
         }
       }
@@ -433,26 +371,6 @@ export class AddProductComponent implements OnInit {
 
   selectMainFile(event) {
     this.selectedMainFiles = event.target.files;
-  }
-
-  upload() {
-    this.progress.percentage = 0;
-    this.progressMain.percentage = 0;
-
-    this.currentMainFileUpload = this.selectedMainFiles.item(0);
-    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
-      console.log('currentFileUpload', this.currentFileUpload);
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round(100 * event.loaded / event.total);
-        this.progressMain.percentage = Math.round(100 * event.loaded / event.total);
-      } else if (event instanceof HttpResponse) {
-        console.log('selectedImages!!!' + this.selectedFiles);
-        console.log('selectedMainImages!!!' + this.selectedMainFiles);
-        console.log('File is completely uploaded!');
-      }
-    });
-
-    this.selectedFiles = undefined;
   }
 
   checker(controlName: string): string {
@@ -471,45 +389,16 @@ export class AddProductComponent implements OnInit {
     return (control.touched || control.dirty) && control.hasError(error);
   }
 
-  // isControlRequired(controlName: string, error: string): boolean {
-  //   const control = this.editProductForm.get(controlName);
-  //
-  //   const result = (control.touched || control.dirty) && control.hasError(error);
-  //
-  //   return result;
-  // }
-  //
-  // isControlPatterned(controlName: string): boolean {
-  //   const control = this.editProductForm.controls[controlName];
-  //
-  //   const result = (control.touched || control.dirty) && control.hasError('pattern');
-  //
-  //   return result;
-  // }
-  //
-  // private onChange(control) {
-  //
-  // }
-  //
-  // isControlEmpty(controlName: string): boolean {
-  //   const control = this.editProductForm.controls[controlName];
-  //
-  //   const result = control.value === '';
-  //
-  //   return result;
-  // }
 
   changeDiopter(diopterId) {
     const diopter = this.diopters.find(value => value.id === diopterId);
     if (this.diopters) {
       diopter.checked = !diopter.checked;
     }
-    console.log('MY DIOOOPTERS', this.diopters);
   }
 
   changePolarization() {
     this.polarization = !this.polarization;
-    console.log('MY NEW POLARIZATION', this.polarization);
   }
 
   addProduct() {
@@ -539,10 +428,7 @@ export class AddProductComponent implements OnInit {
       diopters: diopersCtrlIdsArray,
       lensColor: {id: parseInt(this.addProductForm.controls.productLensColor.value, 10)},
       frameColor: {id: parseInt(this.addProductForm.controls.productFrameColor.value, 10)},
-      // image.ts: this.currentImageUpload
     };
-    // console.log('productImage.value', this.currentImageUpload, this.currentMainImageUpload.name);
-    // console.log(this.editProductForm.controls.productImages.value[0]);
 
     const json = JSON.stringify(product);
     const blob = new Blob([json], {type: 'application/json'});
@@ -562,7 +448,6 @@ export class AddProductComponent implements OnInit {
       }
     }
 
-
     this.productsService.createProduct(formData)
       .subscribe((event) => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -578,40 +463,9 @@ export class AddProductComponent implements OnInit {
 
           } else if (event instanceof HttpResponse) {
             this.isLoading = false;
-            console.log('File is completely uploaded!');
           }
-
-
           this.getProductsByModelNumber(this.addProductForm.controls.modelNumber.value);
-        }
-      );
+        });
     this.selectedFiles = undefined;
-    // this.selectedMainImages = undefined;
   }
-
-  // buildFormData(formData, data, parentKey?) {
-  //   if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-  //     Object.keys(data).forEach(key => {
-  //       this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-  //     });
-  //   } else {
-  //     const value = data == null ? '' : data;
-  //
-  //     formData.append(parentKey, value);
-  //   }
-  // }
-  //
-  // jsonToFormData(data) {
-  //   const formData = new FormData();
-  //
-  //   this.buildFormData(formData, data);
-  //
-  //   return formData;
-  // }
-
-  // addImage(): void {
-  //   (this.editProductForm.controls.productImages as FormArray).push(new FormControl('', [
-  //     Validators.required]));
-  // }
-
 }

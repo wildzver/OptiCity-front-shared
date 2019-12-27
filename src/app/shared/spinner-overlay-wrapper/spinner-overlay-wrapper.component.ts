@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ProductDetailsComponent} from '../../products/products-catalog/product-details/product-details.component';
 
 @Component({
@@ -21,8 +21,5 @@ export class SpinnerOverlayWrapperComponent implements OnInit, AfterViewInit {
     if (this.productDetailsComponent) {
       this.showSpinner = this.productDetailsComponent.showSpinner;
     }
-
   }
-
-
 }

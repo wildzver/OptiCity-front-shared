@@ -1,10 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, ReplaySubject} from 'rxjs';
-import {ActivatedRoute, NavigationEnd, ParamMap, Router, RouterEvent} from '@angular/router';
-import {SortDirection} from '../models/sortDirection';
-import {distinctUntilChanged, filter} from 'rxjs/operators';
-import * as Rx from 'rxjs';
-
+import {BehaviorSubject} from 'rxjs';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +13,7 @@ export class PagerService {
   private pageNumberSource = new BehaviorSubject(1);
   currentPageNumber = this.pageNumberSource.asObservable();
 
-  private pageSizeSource = new BehaviorSubject(16);
+  private pageSizeSource = new BehaviorSubject(24);
   currentPageSize = this.pageSizeSource.asObservable();
 
   private sortBySource = new BehaviorSubject('productNumber');
@@ -26,7 +22,7 @@ export class PagerService {
   private sortDirectionSource = new BehaviorSubject('ASC');
   currentSortDirection = this.sortDirectionSource.asObservable();
 
-  private totalItemsSource = new BehaviorSubject(1000000);
+  private totalItemsSource = new BehaviorSubject(0);
   currentTotalItems = this.totalItemsSource.asObservable();
 
   constructor(
@@ -39,7 +35,7 @@ export class PagerService {
     );
 
     this.pageSizeSource.next(
-      queryParamMap.has('pagesize') ? parseInt(queryParamMap.get('pagesize'), 10) : 16
+      queryParamMap.has('pagesize') ? parseInt(queryParamMap.get('pagesize'), 10) : 24
     );
 
     this.sortBySource.next(
@@ -49,77 +45,46 @@ export class PagerService {
     this.sortDirectionSource.next(
       queryParamMap.has('sd') ? queryParamMap.get('sd') : 'ASC'
     );
-
-
   }
 
   changePageNumber(pageNumber: number) {
     this.pageNumberSource.next(pageNumber);
-    console.log('MY NEW PAGE NUMBER IN CHANGE PAGE NUMBER', pageNumber);
   }
 
   changePageSize(pageSize: number) {
     this.pageSizeSource.next(pageSize);
-    // this.doPageQuery()
-
-    console.log('MY NEW PAGE SIZE IN CHANGE PAGE SIZE', pageSize);
   }
 
   changeSortBy(sortBy: string) {
     this.sortBySource.next(sortBy);
-    console.log('MY NEW SORT BY IN CHANGE PAGE NUMBER', sortBy);
-    // this.doSortQuery();
   }
 
   changeSortDirection(sortDirection: string) {
     this.sortDirectionSource.next(sortDirection);
-    console.log('MY NEW SORT DIRECTION IN CHANGE PAGE NUMBER', sortDirection);
   }
-
-  private doSortQuery() {
-    this.router.navigate(['.'], {
-      relativeTo: this.activatedRoute,
-      queryParams: {
-        sb: this.sortBySource.getValue(),
-        sd: this.sortDirectionSource.getValue()
-      },
-      queryParamsHandling: 'merge'
-    });
-  }
-
 
   changeTotalItems(totalItems: number) {
     this.totalItemsSource.next(totalItems);
-    console.log('MY NEW TOTAL ITEMS IN CHANGE PAGE NUMBER', totalItems);
   }
 
-  // getPager(currentPage: number = 1, totalItems: number, pageSize: number) {
   getPager(pagesIncome?, currentPage?, pageSize?, totalItems?) {
-    // getPager(currentPage = this.pageNumberSource.getValue()) {
     currentPage = currentPage ? currentPage : this.pageNumberSource.getValue();
 
     if (this.totalItemsSource.getValue() > 0) {
       totalItems = totalItems ? totalItems : this.totalItemsSource.getValue();
     }
     pageSize = pageSize ? pageSize : this.pageSizeSource.getValue();
-    // let currentPage = this.pageNumberSource.getValue();
     // calculate total pages
     const totalPages = Math.ceil(totalItems / pageSize);
-    console.log('--->TOTAL PAGES', totalItems, pageSize, totalPages);
-
     // ensure current page isn't out of range
     if (currentPage < 1) {
-      console.log('MY CURRENT PAGE FOR CHECK', currentPage);
       currentPage = 1;
       this.changePageNumber(currentPage);
 
     } else if (currentPage > totalPages) {
       currentPage = totalPages;
       this.changePageNumber(currentPage);
-
     }
-    // this.changePageNumber(currentPage);
-
 
     let startPage: number;
     let endPage: number;

@@ -39,7 +39,6 @@ export class SexComponent implements OnInit {
   private loadSex() {
     this.productService.getSexes().subscribe((sexes: Sex[]) => {
       this.sexes = sexes;
-      console.log(this.sexes);
     });
   }
 
@@ -50,9 +49,7 @@ export class SexComponent implements OnInit {
   }
 
   editSex(sex: Sex) {
-    console.log(sex);
     this.editedSex = new Sex(sex.id, sex.name, sex.uaName);
-    console.log(sex.id);
   }
 
   loadTemplate(sex: Sex) {
@@ -69,7 +66,6 @@ export class SexComponent implements OnInit {
         this.statusMessage = 'Data updated successfully',
           this.loadSex();
       });
-      console.log(this.editedSex);
       this.isNewRecord = false;
       this.editedSex = null;
     } else {

@@ -1,0 +1,30 @@
+#delivery {
+  padding: 0 40px 16px;
+  color: #002C40;
+  width: 60%;
+  min-width: 500px;
+  margin: 0 auto;
+  font-size: 14px;
+
+  a {
+    color: rgba(#002C40, .7);
+  }
+  h4 {
+    margin-bottom: 16px;
+  }
+  p, li {
+    margin-bottom: 8px;
+  }
+
+  ul {
+    padding-left: 20px;
+
+    li {
+      list-style-type: disc;
+    }
+  }
+}
+
+app-breadcrumb-navigation {
+  width: 200px;
+}

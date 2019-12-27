@@ -1,9 +1,8 @@
-import {AfterContentChecked, Component, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, NavigationEnd, Router, UrlSegment} from '@angular/router';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CartService} from '../shared/app-services/cart.service';
-import {Order} from '../shared/models/order';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {KEY_CODE} from '../admin/admin-products/add-product/add-product.component';
 
 @Component({
   selector: 'app-header',
@@ -20,27 +19,29 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class HeaderComponent implements OnInit {
 
-  showNav = false;
   constructor(private router: Router,
               private route: ActivatedRoute,
               private cartService: CartService) {
   }
 
   ngOnInit(): void {
-    // this.router.events.subscribe(event => {
-    //   if (event instanceof NavigationEnd) {
-    //
-    //     if (event.url === '/') {
-    //       console.log('MY ROUTE SUBSCRIPTION!', event);
-    //     }
-    //   }
-    // });
-    //
-    // this.router.url === '' ? console.log('THIS IS ROOT ROUTE', this.router.url) : console.log('THIS IS NOT ROOT ROUTE');
-
   }
 
-  toggleShowNav() {
+  private toggleResponsiveHeader() {
+    document.getElementById('navbar').classList.toggle('hidden');
+    document.getElementById('nav-icon').classList.toggle('open');
+  }
 
+  closeResponsiveHeader() {
+    if (!document.getElementById('navbar').classList.contains('hidden') && document.getElementById('nav-icon').classList.contains('open')) {
+      this.toggleResponsiveHeader();
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.keyCode === KEY_CODE.ESCAPE) {
+      this.closeResponsiveHeader();
+    }
   }
 }

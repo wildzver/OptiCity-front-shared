@@ -1,9 +1,9 @@
 <div class="flex-row jc-space-between align-items-end wrap">
   <div class="flex-row jc-flex-start align-items-end wrap">
     <app-breadcrumb-navigation></app-breadcrumb-navigation>
-    <h4 [hidden]="!products?.length" class="total-items">
+    <h5 *ngIf="products?.length else notfound" class="total-items">
       Знайдено {{totalItems}} {{totalItems.toString().match('[1]$') ? "товар" :
-      (totalItems.toString().match('[234]$') ? "товари" : "товарів")}}</h4>
+      ((totalItems < 10 || totalItems > 20) && totalItems.toString().match('[234]$') ? "товари" : "товарів")}}</h5>
   </div>
   <app-sort-panel></app-sort-panel>
 </div>
@@ -14,9 +14,12 @@
       <app-spinner></app-spinner>
     </div>
     <app-catalog [productsInput]="products"></app-catalog>
-
     <app-pagination [hidden]="!products?.length"></app-pagination>
   </div>
 </div>
-<!--<ng-template #spinner>-->
-<!--</ng-template>-->
+
+<ng-template #notfound>
+  <h5 *ngIf="!isLoading">
+    Товарів не знайдено :(
+  </h5>
+</ng-template>
