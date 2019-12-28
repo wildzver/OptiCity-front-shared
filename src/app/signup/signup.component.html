@@ -50,7 +50,7 @@
     </div>
 
     <div formArrayName="userPhones">
-      <div class="form-group" *ngFor="let userPhone of signupForm.controls['userPhones'].controls; let i = index">
+      <div class="form-group" *ngFor="let userPhone of signupFormUserPhones.controls; let i = index">
         <div class="flex-row">
           <div>
             <input class="form-control" type="tel" name="phoneList"

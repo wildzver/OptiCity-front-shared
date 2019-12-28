@@ -49,9 +49,7 @@ export class CartComponent implements OnInit, CanActivate {
   }
 
   ngOnInit() {
-    this.cartService.currentCart.subscribe(cart => {
-      this.cart = this.localStorageService.getCartLocalStorage();
-    });
+    this.cartService.currentCart.subscribe(cart => this.cart = cart);
 
     const snapshot = this.router.url;
   }

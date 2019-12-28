@@ -61,6 +61,10 @@ export class SearchPanelComponent implements OnInit {
     });
   }
 
+  closeResponsiveHeader() {
+    this.header.closeResponsiveHeader();
+  }
+
   doSearchQuery() {
     const searchParams: string[] = this.searchForm.controls.search.value.toString().split(' ');
     this.router.navigate(['/search'], {

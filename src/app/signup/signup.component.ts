@@ -105,4 +105,8 @@ export class SignupComponent implements OnInit {
         alert('Ви успішно зареєстровані!');
     });
   }
+
+  get signupFormUserPhones() {
+    return this.signupForm.get('userPhones') as FormArray;
+  }
 }

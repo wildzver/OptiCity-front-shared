@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CartService} from '../shared/app-services/cart.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {KEY_CODE} from '../admin/admin-products/add-product/add-product.component';
+import {Order} from '../shared/models/order';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ import {KEY_CODE} from '../admin/admin-products/add-product/add-product.componen
   ]
 })
 export class HeaderComponent implements OnInit {
+  cart: Order;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -25,9 +27,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cartService.currentCart.subscribe(cart => this.cart = cart);
   }
 
-  private toggleResponsiveHeader() {
+  toggleResponsiveHeader() {
     document.getElementById('navbar').classList.toggle('hidden');
     document.getElementById('nav-icon').classList.toggle('open');
   }

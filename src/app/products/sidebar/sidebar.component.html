@@ -24,7 +24,7 @@
              class="cancel-filter-button" (click)="nullifySexFilter()">
       </div>
       <div class="filter-items">
-        <div formArrayName="sexes" *ngFor="let sex of filterForm.controls['sexes'].controls; let i = index"
+        <div formArrayName="sexes" *ngFor="let sex of filterFormSexes.controls; let i = index"
              class="filter-container-item flex-row align-items-center">
           <input id="sex{{sexes[i].id}}" [checked]="sexes[i].checked" type="checkbox" name="sex"
                  (change)="doSexesFilter(sexes[i].id)" [formControlName]="i" class="inp-cbx">
@@ -86,7 +86,7 @@
       </div>
       <div class="filter-items">
         <div formArrayName="lensColors" class="filter-container-item flex-row jc-space-between align-items-center"
-             *ngFor="let lensColor of filterForm.controls['lensColors'].controls; let i = index">
+             *ngFor="let lensColor of filterFormLensColors.controls; let i = index">
           <div class="flex-row jc-flex-start align-items-center">
             <input id="lensColor{{lensColors[i].id}}" [checked]="lensColors[i].checked" class="inp-cbx"
                    type="checkbox" name="lensColor"
@@ -117,7 +117,7 @@
       </div>
       <div class="filter-items">
         <div formArrayName="frameColors" class="filter-container-item flex-row jc-space-between align-items-center"
-             *ngFor="let frameColor of filterForm.controls['frameColors'].controls; let i = index">
+             *ngFor="let frameColor of filterFormFrameColors.controls; let i = index">
           <div class="flex-row jc-flex-start align-items-center">
             <input id="frameColor{{frameColors[i].id}}" [checked]="frameColors[i].checked" class="inp-cbx"
                    type="checkbox" name="frameColor"
@@ -148,7 +148,7 @@
       </div>
       <div class="filter-items">
         <div formArrayName="frameMaterials" class="filter-container-item flex-row align-items-center"
-             *ngFor="let frameMaterial of filterForm.controls['frameMaterials'].controls; let i = index">
+             *ngFor="let frameMaterial of filterFormFrameMaterials.controls; let i = index">
           <input id="frameMaterial{{frameMaterials[i].id}}" [checked]="frameMaterials[i].checked"
                  class="inp-cbx" type="checkbox" name="frameMaterial"
                  (change)="doFrameMaterialsFilter(frameMaterials[i].id)" [formControlName]="i">
@@ -172,7 +172,7 @@
       </div>
       <div class="filter-items">
           <div formArrayName="diopters" class="filter-container-item flex-row align-items-center"
-               *ngFor="let diopter of filterForm.controls['diopters'].controls; let i = index">
+               *ngFor="let diopter of filterFormDiopters.controls; let i = index">
             <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked"
                    class="inp-cbx" type="checkbox" name="diopter"
                    (change)="doDioptersFilter(diopters[i].id)" [formControlName]="i">

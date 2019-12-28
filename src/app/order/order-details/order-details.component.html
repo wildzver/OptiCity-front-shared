@@ -63,7 +63,7 @@
       </div>
 
       <div formArrayName="userPhones" class="input-item">
-        <div *ngFor="let userPhone of buyerContactsForm.controls['userPhones'].controls; let i = index">
+        <div *ngFor="let userPhone of buyerContactsFormUserPhones.controls; let i = index">
           <label>
             <span>
               Телефон*

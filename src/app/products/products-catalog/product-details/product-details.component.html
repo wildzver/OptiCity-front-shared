@@ -36,7 +36,7 @@
           <div class="price flex-row jc-space-between align-items-center">
             <h4>{{currentProduct?.productDetails.price}} грн</h4>
             <button class="add-to-cart flex-row jc-space-between align-items-center"
-                 (click)="cartService.addItem(currentProduct.uuid, 1)">ДОДАТИ
+                 (click)="addItem(currentProduct.uuid, 1)">ДОДАТИ
               <img src="assets/images/shopping-bag-white.svg" alt="cart-ico">
             </button>
           </div>

@@ -35,4 +35,8 @@ export class ProductsCatalogItemComponent implements OnInit {
       }
     }
   }
+
+  addItem(uuid: string, quantity: number) {
+    this.cartService.addItem(uuid, quantity);
+  }
 }

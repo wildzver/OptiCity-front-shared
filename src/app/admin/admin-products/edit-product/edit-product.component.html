@@ -56,7 +56,7 @@
 
             <div id="diopter-checkboxes" class="form-group">
               <div formArrayName="productDiopters"
-                   *ngFor="let diopter of editProductForm.controls['productDiopters'].controls; let i = index">
+                   *ngFor="let diopter of editProductFormProductDiopters.controls; let i = index">
                 <label>
                   <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked" type="checkbox"
                          name="productDiopter"
@@ -271,7 +271,7 @@
         <div>
           <div formArrayName="productMainImages">
             <div class="form-group"
-                 *ngFor="let productMainImage of editProductForm.controls['productMainImages'].controls; let i = index">
+                 *ngFor="let productMainImage of editProductFormMainImages.controls; let i = index">
               <div class="flex-column imgs-container">
 
                 <div class="images">
@@ -302,7 +302,7 @@
 
           <div formArrayName="productImages">
             <div class="form-group"
-                 *ngFor="let productImage of editProductForm.controls['productImages'].controls; let i = index">
+                 *ngFor="let productImage of editProductFormProductImages.controls; let i = index">
               <div class="flex-column imgs-container">
                 <div class="flex-row images">
                   <div *ngFor="let addedImg of addedImages let i = index">

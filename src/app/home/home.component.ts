@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.isLoading = this.homeCatalogComponent.isLoading;
   }
 
-  private scrollToHomeCatalog() {
+  scrollToHomeCatalog() {
     const homeCatalogTop = document.getElementById('home-catalog').offsetTop;
     window.scrollTo({behavior: 'smooth', top: homeCatalogTop - 60});
   }

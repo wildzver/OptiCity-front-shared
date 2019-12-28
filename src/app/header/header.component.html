@@ -39,8 +39,8 @@
       <a class="cart-ico" routerLink="cart" (click)="closeResponsiveHeader()" title="Корзина">
         <div class="cart-item">
           <img src="assets/images/shopping-bag-white.svg">
-          <div *ngIf="cartService.cart?.orderList.length > 0" id="counter">
-            <span>({{cartService.cart?.quantityTotal}})</span>
+          <div *ngIf="cart?.orderList.length > 0" id="counter">
+            <span>({{cart?.quantityTotal}})</span>
           </div>
         </div>
       </a>

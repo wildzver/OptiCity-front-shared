@@ -50,7 +50,7 @@ export class UploadProductsComponent implements OnInit {
     });
   }
 
-  private selectFile(event) {
+  selectFile(event) {
     this.selectedFiles = event.target.files;
     this.currentFileUpload = this.selectedFiles.item(0);
     if (this.currentFileUpload) {

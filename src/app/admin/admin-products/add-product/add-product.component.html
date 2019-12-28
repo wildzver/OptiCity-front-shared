@@ -22,7 +22,7 @@
     </div>
 
     <div formArrayName="productMainImages">
-      <div class="form-group" *ngFor="let productMainImage of addProductForm.controls['productMainImages'].controls; let i = index">
+      <div class="form-group" *ngFor="let productMainImage of addProductFormMainImages.controls; let i = index">
         <div>
           <div *ngIf="currentMainFileUpload" class="progress">
             <div class="progress-bar progress-bar-info progress-bar-animated" role="progressbar"
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div formArrayName="productImages">
-      <div class="form-group" *ngFor="let productImage of addProductForm.controls['productImages'].controls; let i = index">
+      <div class="form-group" *ngFor="let productImage of addProductFormProductImages.controls; let i = index">
         <div>
           <div *ngIf="currentFileUpload" class="progress">
             <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
@@ -78,7 +78,7 @@
 
       <div id="diopter-checkboxes" class="form-group">
         <div formArrayName="productDiopters"
-             *ngFor="let diopter of addProductForm.controls['productDiopters'].controls; let i = index">
+             *ngFor="let diopter of addProductFormProductDiopters.controls; let i = index">
           <label>
             <input id="diopter{{diopters[i].id}}" [checked]="diopters[i].checked" type="checkbox" name="productDiopter"
                    [formControlName]="i" (change)=changeDiopter(diopters[i].id)>

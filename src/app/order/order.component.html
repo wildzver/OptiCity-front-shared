@@ -2,7 +2,7 @@
 <div id="order" class="flex-column align-items-center">
   <div class="flex-column">
     <app-cart></app-cart>
-    <button *ngIf="!showOrderDetails && cartService.cart?.orderList.length > 0 else chooseProducts"
+    <button *ngIf="!showOrderDetails && cart?.orderList.length > 0 else chooseProducts"
             (click)="scrollToOrderDetails()">ОФОРМИТИ
     </button>
   </div>

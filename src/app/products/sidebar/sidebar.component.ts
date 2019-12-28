@@ -467,7 +467,7 @@ export class SidebarComponent implements OnInit, AfterViewChecked {
     this.doDioptersQuery(diopters);
   }
 
-  private doPolarizationFilter() {
+  doPolarizationFilter() {
     this.polarization = !this.polarization;
     this.doPolarizationQuery();
   }
@@ -490,5 +490,25 @@ export class SidebarComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
+  }
+
+  get filterFormSexes() {
+    return this.filterForm.get('sexes') as FormArray;
+  }
+
+  get filterFormLensColors() {
+    return this.filterForm.get('lensColors') as FormArray;
+  }
+
+  get filterFormFrameColors() {
+    return this.filterForm.get('frameColors') as FormArray;
+  }
+
+  get filterFormFrameMaterials() {
+    return this.filterForm.get('frameMaterials') as FormArray;
+  }
+
+  get filterFormDiopters() {
+    return this.filterForm.get('diopters') as FormArray;
   }
 }

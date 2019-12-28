@@ -38,6 +38,8 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
   isDeliveryAdressFormValid = false;
   showOrderDetails = false;
   showSpinner = false;
+  cart: Order;
+
 
   constructor(
     private router: Router,
@@ -49,6 +51,7 @@ export class OrderComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.cartService.currentCart.subscribe(cart => this.cart = cart);
   }
 
   order() {

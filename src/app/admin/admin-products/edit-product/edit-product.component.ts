@@ -571,4 +571,17 @@ export class EditProductComponent implements OnInit {
       this.progressMainImages.percentage = Math.round(100 * (event.loaded - filesSize) / (event.total - filesSize));
     }
   }
+
+  get editProductFormProductDiopters() {
+    return this.editProductForm.get('productDiopters') as FormArray;
+  }
+
+  get editProductFormMainImages() {
+    return this.editProductForm.get('productMainImages') as FormArray;
+  }
+
+  get editProductFormProductImages() {
+    return this.editProductForm.get('productImages') as FormArray;
+  }
+
 }

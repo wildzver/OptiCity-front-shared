@@ -12,7 +12,7 @@
     </a>
     <div class="flex-row jc-space-between align-items-center">
       <p class="price">{{productInput.productDetails ? productInput.productDetails.price : productInput.price}} грн</p>
-      <a class="cart" (click)="cartService.addItem(productInput.uuid, 1)" title="Додати">
+      <a class="cart" (click)="addItem(productInput.uuid, 1)" title="Додати">
         <img src="assets/images/shopping-bag-blue.svg">
       </a>
     </div>

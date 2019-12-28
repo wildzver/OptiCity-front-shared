@@ -156,4 +156,8 @@ export class ProductDetailsComponent implements OnInit {
     }
     addedImgsElem.style.left = leftValue;
   }
+
+  addItem(uuid: string, quantity: number) {
+    this.cartService.addItem(uuid, quantity);
+  }
 }

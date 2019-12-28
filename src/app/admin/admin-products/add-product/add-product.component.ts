@@ -468,4 +468,16 @@ export class AddProductComponent implements OnInit {
         });
     this.selectedFiles = undefined;
   }
+
+ get addProductFormMainImages() {
+   return this.addProductForm.get('productMainImages') as FormArray;
+ }
+
+  get addProductFormProductImages() {
+    return this.addProductForm.get('productImages') as FormArray;
+  }
+
+  get addProductFormProductDiopters() {
+    return this.addProductForm.get('productDiopters') as FormArray;
+  }
 }

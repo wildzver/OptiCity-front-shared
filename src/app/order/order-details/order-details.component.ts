@@ -108,7 +108,7 @@ export class OrderDetailsComponent implements OnInit {
     return (control.touched || control.dirty) && control.hasError(error);
   }
 
-  private checker(form: FormGroup, controlName: string): string {
+  checker(form: FormGroup, controlName: string): string {
     if (form.controls[controlName].valid) {
       return 'is-valid';
     } else if (form.controls[controlName].touched && form.controls[controlName].invalid) {
@@ -118,7 +118,7 @@ export class OrderDetailsComponent implements OnInit {
     }
   }
 
-  private makeOrder() {
+  makeOrder() {
 
     const user: User = {
       firstName: this.buyerContactsForm.controls.userFirstName.value,
@@ -150,5 +150,9 @@ export class OrderDetailsComponent implements OnInit {
     } else {
       this.isDeliveryAdressFormValid = true;
     }
+  }
+
+  get buyerContactsFormUserPhones() {
+    return this.buyerContactsForm.get('userPhones') as FormArray;
   }
 }
