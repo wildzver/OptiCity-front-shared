@@ -12,7 +12,7 @@ import {
 import {Observable} from 'rxjs';
 import {Order} from '../../shared/models/order';
 import {CartLocalStorageService} from '../../shared/app-services/cart-local-storage.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 import {CartService} from '../../shared/app-services/cart.service';
 
 @Component({
@@ -20,12 +20,12 @@ import {CartService} from '../../shared/app-services/cart.service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
   animations: [
-    trigger('fadeInOut', [
+    trigger('fadeIn', [
       state('void', style({
         opacity: 0
       })),
-      transition('void <=> *', animate(500)),
-    ]),
+      transition('void => *', animate(500)),
+    ])
   ]
 })
 
@@ -34,9 +34,10 @@ import {CartService} from '../../shared/app-services/cart.service';
 })
 
 export class CartComponent implements OnInit, CanActivate {
-  cart: Order;
+  cart: Order = new Order();
   total: number;
   imageUrl = 'http://localhost:8080/api/product-image/';
+  fadeOutTrigger: string;
 
   constructor(
     private productsService: ProductsService,
@@ -49,9 +50,7 @@ export class CartComponent implements OnInit, CanActivate {
   }
 
   ngOnInit() {
-    this.cartService.currentCart.subscribe(cart => this.cart = cart);
-
-    const snapshot = this.router.url;
+    this.cartService.currentCart.subscribe(cart => setTimeout(() => this.cart = cart, 500));
   }
 
   onChangeQuantity(item: CartItem) {

@@ -1,4 +1,4 @@
-<div *ngIf="cart.orderList?.length" id="cart" class="flex-column" [@fadeInOut]>
+<div *ngIf="cart.orderList?.length" id="cart" class="flex-column" [@fadeIn]>
   <h4> Обрані товари:</h4>
 
   <table class="">
@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of cartService.cart?.orderList" [@fadeInOut]>
+    <tr *ngFor="let item of cart?.orderList">
       <td>
         <div [routerLink]="['/products', item.product.productDetails.category.name, item.product.productNumber]"
         class="img-container">
@@ -41,10 +41,9 @@
     <tr>
       <th></th>
       <th>Разом:</th>
-      <th>{{cartService.cart.quantityTotal}} шт.</th>
-      <th>{{cartService.cart.total}} грн</th>
+      <th>{{cart?.quantityTotal}} шт.</th>
+      <th>{{cart?.total}} грн</th>
       <th></th>
-
     </tr>
     </tbody>
   </table>

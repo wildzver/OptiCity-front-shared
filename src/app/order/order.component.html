@@ -16,7 +16,7 @@
   </div>
 
   <ng-template #chooseProducts>
-    <div *ngIf="cartService.cart?.orderList.length == 0" class="" routerLink="/products" [hidden]="totalCartQuantity > 0">
+    <div *ngIf="cart?.orderList.length == 0" class="" routerLink="/products" [hidden]="totalCartQuantity > 0">
       <h4>Корзина пуста :(</h4>
       <button title="Оберіть товар">КАТАЛОГ</button>
     </div>
