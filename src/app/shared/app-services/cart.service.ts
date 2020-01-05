@@ -12,7 +12,7 @@ import {HttpResponse} from '@angular/common/http';
 })
 
 export class CartService {
-  static cart: Order = null;
+  static cart: Order = new Order();
 
   public get cart() {
     return CartService.cart;
@@ -125,24 +125,26 @@ export class CartService {
   }
 
   syncProducts() {
-    const uuidList: string[] = CartService.cart.orderList.map(cartItem => cartItem.product.uuid);
-    const json = JSON.stringify(uuidList);
-    const blob = new Blob([json], {type: 'application/json'});
-    const formData = new FormData();
-    formData.append('uuidList', blob);
+    if (CartService.cart) {
+      const uuidList: string[] = CartService.cart.orderList.map(cartItem => cartItem.product.uuid);
+      const json = JSON.stringify(uuidList);
+      const blob = new Blob([json], {type: 'application/json'});
+      const formData = new FormData();
+      formData.append('uuidList', blob);
 
-    this.productsService.getProductByUUIDList(formData).subscribe((products: HttpResponse<{}>) => {
-      if (products.body) {
-        const productsInput = products.body as Product[];
-        for (let i = 0; i < CartService.cart.orderList.length; i++) {
-          const pI = productsInput.find(productInput => productInput.uuid === CartService.cart.orderList[i].product.uuid);
-          if (pI) {
-            CartService.cart.orderList[i] = this.initCartItem(pI, CartService.cart.orderList[i].quantity);
+      this.productsService.getProductByUUIDList(formData).subscribe((products: HttpResponse<{}>) => {
+        if (products.body) {
+          const productsInput = products.body as Product[];
+          for (let i = 0; i < CartService.cart.orderList.length; i++) {
+            const pI = productsInput.find(productInput => productInput.uuid === CartService.cart.orderList[i].product.uuid);
+            if (pI) {
+              CartService.cart.orderList[i] = this.initCartItem(pI, CartService.cart.orderList[i].quantity);
+            }
+            this.initCart();
+            this.changeCart(CartService.cart);
           }
-          this.initCart();
-          this.changeCart(CartService.cart);
         }
-      }
-    });
+      });
+    }
   }
 }
