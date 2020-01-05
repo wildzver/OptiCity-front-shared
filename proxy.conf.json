@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "http://localhost:8080",
+    "target": "http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

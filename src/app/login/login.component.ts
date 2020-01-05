@@ -46,6 +46,6 @@ export class LoginComponent implements OnInit {
   getInfo() {
     const headersOption = new HttpHeaders({Authorization: localStorage.getItem('_token')});
 
-    this.http.get('http://localhost:8080/get', {headers: headersOption, responseType: 'text'}).subscribe(data => console.log(data));
+    this.http.get('http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com/get', {headers: headersOption, responseType: 'text'}).subscribe(data => console.log(data));
   }
 }
