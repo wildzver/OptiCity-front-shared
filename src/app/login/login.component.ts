@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loginService.login(JSON.stringify(this.getLoginParams())).subscribe(value => {
-      const token = value.headers.get('authorization');
+      const token = value.headers.get('Authorization');
       localStorage.setItem('_token', token);
     });
   }

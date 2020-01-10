@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'contacts', component: ContactsComponent, data: {breadcrumb: 'Контакти'}},
   {path: 'delivery', component: DeliveryComponent, data: {breadcrumb: 'Доставка'}},
   {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent, canActivate: [AuthGuard]},
+  {path: 'signup', component: SignupComponent},
   {path: 'cart', component: OrderComponent, canActivate: [CartComponent], data: {breadcrumb: 'Корзина'}},
   {path: 'admin', loadChildren: './admin/admin.module#AdminModule', canActivate: [AuthGuard]},
   {path: 'search', component: SearchComponent, data: {breadcrumb: 'Пошук'}},

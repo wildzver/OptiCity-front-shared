@@ -1,12 +1,12 @@
 <div id="home-catalog">
   <div *ngFor="let categoryRow of categories" class="catalog-row">
-    <div *ngFor="let category of categoryRow" [routerLink]="['/products/',category.name]" class="catalog-row-item">
-      <p class="home-catalog-title">{{category.uaName.toUpperCase()}}</p>
+    <div *ngFor="let category of categoryRow" [routerLink]="['/products/',category?.name]" class="catalog-row-item">
+      <p class="home-catalog-title">{{category?.uaName.toUpperCase()}}</p>
       <button class="choose">
         <span>обрати</span>
         <img src="assets/images/arrow_right_long_white.svg">
         </button>
-      <img class="home-catalog-img" src='/api/category-image/{{category.imageName}}'>
+      <img class="home-catalog-img" src='/api/category-image/{{category?.imageName}}'>
     </div>
   </div>
   <div class="overlay" *ngIf="isLoading">

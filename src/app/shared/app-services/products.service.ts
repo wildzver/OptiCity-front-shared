@@ -203,7 +203,7 @@ export class ProductsService {
   }
 
   public getCategories() {
-    return this.http.get<Category[]>(this.categoriesUrl);
+    return this.http.get<Category[]>(this.categoriesUrl, {responseType: 'json'});
   }
 
   public getCategoryByName(categoryName): Observable<Category> {
