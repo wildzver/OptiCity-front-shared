@@ -42,6 +42,7 @@ export class ProductDetailsComponent implements OnInit {
   showSlider = false;
   showSpinner = false;
 
+  // /api/products/categories?category=veloglasses&productNumber=1
   constructor(private route: ActivatedRoute,
               private router: Router,
               private productService: ProductsService,

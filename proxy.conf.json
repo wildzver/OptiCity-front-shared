@@ -1,5 +1,5 @@
 {
-  "/api/**": {
+  "/api": {
     "target": "http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com",
     "secure": false,
     "logLevel": "debug",
