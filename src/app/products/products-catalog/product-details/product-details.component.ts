@@ -37,8 +37,8 @@ export class ProductDetailsComponent implements OnInit {
   subscription: Subscription;
   mainImageUrl: string;
   mainImageName: string;
-  lensColorUrl = '/api/lensColor-image/';
-  frameColorUrl = '/api/frameColor-image/';
+  lensColorUrl = 'https://api.opticity.com.ua/api/lensColor-image/';
+  frameColorUrl = 'https://api.opticity.com.ua/api/frameColor-image/';
   showSlider = false;
   showSpinner = false;
 
@@ -83,7 +83,7 @@ export class ProductDetailsComponent implements OnInit {
       this.auxiliaryProducts = data.filter(value => value.productNumber !== this.productNumber);
       this.getDiopterValues();
       this.navigate();
-      this.mainImageUrl = `/api/product-image/${this.findMainImage(this.currentProduct)}`;
+      this.mainImageUrl = `https://api.opticity.com.ua/api/product-image/${this.findMainImage(this.currentProduct)}`;
       this.showSpinner = false;
     });
   }
@@ -105,7 +105,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   private changeImage(imageName: string) {
-    this.mainImageUrl = `/api/product-image/${imageName}`;
+    this.mainImageUrl = `https://api.opticity.com.ua/api/product-image/${imageName}`;
     this.mainImageName = imageName;
     this.changeAddedImgsContainerLocation();
   }

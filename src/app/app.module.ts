@@ -29,6 +29,7 @@ import {ServicesModule} from './services/services.module';
 import {FooterComponent} from './footer/footer.component';
 import {SearchModule} from './search/search.module';
 import {SpinnerOverlayModule} from './core/spinner-overlay/spinner-overlay.module';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,9 @@ import {SpinnerOverlayModule} from './core/spinner-overlay/spinner-overlay.modul
     SearchModule,
     SpinnerOverlayModule
   ],
-  providers: [],
+  providers: [
+    // {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

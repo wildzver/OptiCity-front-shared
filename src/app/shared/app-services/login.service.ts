@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 
 export class LoginService {
 
-  private loginUrl = '/api/login';
+  private loginUrl = 'https://api.opticity.com.ua/api/login';
 
   constructor(private http: HttpClient) {
   }

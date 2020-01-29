@@ -28,7 +28,7 @@ export class SearchPanelComponent implements OnInit {
   searchForm: FormGroup;
   products: Product[];
   numberOfResults = 5;
-  imageUrl = 'http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com/api/product-image/';
+  imageUrl = 'https://api.opticity.com.ua/api/product-image/';
 
   constructor(private fb: FormBuilder,
               private productsService: ProductsService,

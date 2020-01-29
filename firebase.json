@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/glasses-angular",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",

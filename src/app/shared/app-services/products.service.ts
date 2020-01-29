@@ -21,15 +21,25 @@ export class ProductsService {
   constructor(private http: HttpClient) {
   }
 
-  private productsUrl = '/api/products';
-  private categoriesUrl = '/api/products/categories';
-  private lensColorsUrl = '/api/products/lens-colors';
-  private frameColorsUrl = '/api/products/frame-colors';
-  private lensMaterialUrl = '/api/products/lens-materials';
-  private frameMaterialUrl = '/api/products/frame-materials';
-  private diopterUrl = '/api/products/diopters';
-  private originUrl = '/api/products/origins';
-  private sexUrl = '/api/products/sex';
+  private productsUrl = 'https://api.opticity.com.ua/api/products';
+  private categoriesUrl = 'https://api.opticity.com.ua/api/products/categories';
+  private lensColorsUrl = 'https://api.opticity.com.ua/api/products/lens-colors';
+  private frameColorsUrl = 'https://api.opticity.com.ua/api/products/frame-colors';
+  private lensMaterialUrl = 'https://api.opticity.com.ua/api/products/lens-materials';
+  private frameMaterialUrl = 'https://api.opticity.com.ua/api/products/frame-materials';
+  private diopterUrl = 'https://api.opticity.com.ua/api/products/diopters';
+  private originUrl = 'https://api.opticity.com.ua/api/products/origins';
+  private sexUrl = 'https://api.opticity.com.ua/api/products/sex';
+
+  // private productsUrl = '/api/products';
+  // private categoriesUrl = '/api/products/categories';
+  // private lensColorsUrl = '/api/products/lens-colors';
+  // private frameColorsUrl = '/api/products/frame-colors';
+  // private lensMaterialUrl = '/api/products/lens-materials';
+  // private frameMaterialUrl = '/api/products/frame-materials';
+  // private diopterUrl = '/api/products/diopters';
+  // private originUrl = '/api/products/origins';
+  // private sexUrl = '/api/products/sex';
 
   public getProductsByCategory(category, parameters?: Params): Observable<PageProduct> {
     const url = `${this.productsUrl}/${category}`;

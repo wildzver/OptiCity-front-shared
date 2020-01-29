@@ -39,8 +39,8 @@ export class SidebarComponent implements OnInit, AfterViewChecked {
   searchedFrameColors = new Array<any>();
   searchedFrameMaterials = new Array<any>();
   searchedDiopters = new Array<any>();
-  lensColorUrl = '/api/lensColor-image/';
-  frameColorUrl = '/api/frameColor-image/';
+  lensColorUrl = 'https://api.opticity.com.ua/api/lensColor-image/';
+  frameColorUrl = 'https://api.opticity.com.ua/api/frameColor-image/';
 
   private routeSubscription: Subscription;
 

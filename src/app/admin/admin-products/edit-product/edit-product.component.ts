@@ -39,7 +39,7 @@ export class EditProductComponent implements OnInit {
   frameMaterials: Material[];
   products: Product[];
   product: Product;
-  productImagesUrl = '/api/product-image/';
+  productImagesUrl = 'https://api.opticity.com.ua/api/product-image/';
   mainImage: Image;
   addedImages: Image[] = new Array();
   diopters: Diopter[];

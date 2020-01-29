@@ -1,8 +1,8 @@
-{
-  "/api": {
-    "target": "http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
-}
+//{
+//  "/api": {
+//    "target": "https://ec2-18-222-124-224.us-east-2.compute.amazonaws.com",
+//    "secure": false,
+//    "logLevel": "debug",
+//    "changeOrigin": true
+//  }
+//}

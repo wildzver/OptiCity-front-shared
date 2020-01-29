@@ -36,7 +36,7 @@ import {CartService} from '../../shared/app-services/cart.service';
 export class CartComponent implements OnInit, CanActivate {
   cart: Order = new Order();
   total: number;
-  imageUrl = 'http://opticityback-env.gw7hzrtssp.us-east-2.elasticbeanstalk.com/api/product-image/';
+  imageUrl = 'https://api.opticity.com.ua/api/product-image/';
   fadeOutTrigger: string;
 
   constructor(

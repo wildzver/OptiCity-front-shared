@@ -22,7 +22,7 @@
               <div id="added-imgs" class="flex-row jc-flex-start align-items-center">
                 <div class="img-container flex-row jc-center align-items-center"
                      [ngClass]="{active: image.imageName===mainImageName}" *ngFor="let image of currentProductImages">
-                  <img src='/api/product-image/{{image.imageName}}' alt="img" (click)="changeImage(image.imageName)">
+                  <img src='https://api.opticity.com.ua/api/product-image/{{image.imageName}}' alt="img" (click)="changeImage(image.imageName)">
                 </div>
               </div>
             </div>

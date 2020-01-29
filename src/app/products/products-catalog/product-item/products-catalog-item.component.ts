@@ -22,16 +22,16 @@ export class ProductsCatalogItemComponent implements OnInit {
 
       const mainImageIndex = this.productInput.images.findIndex(value => value.mainImage = true);
       if (this.productInput.images.length === 0) {
-        this.imageUrl = `/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
+        this.imageUrl = `https://api.opticity.com.ua/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
       } else {
-        this.imageUrl = `/api/product-image/${this.productInput.images[mainImageIndex].imageName}`;
+        this.imageUrl = `https://api.opticity.com.ua/api/product-image/${this.productInput.images[mainImageIndex].imageName}`;
       }
     } else {
 
       if (this.productInput.imageName === null) {
-        this.imageUrl = `/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
+        this.imageUrl = `https://api.opticity.com.ua/api/product-image/HTB1B6T6LXXXXXXhaXXXq6xXFXXXD.jpg`;
       } else {
-        this.imageUrl = `/api/product-image/${this.productInput.imageName}`;
+        this.imageUrl = `https://api.opticity.com.ua/api/product-image/${this.productInput.imageName}`;
       }
     }
   }

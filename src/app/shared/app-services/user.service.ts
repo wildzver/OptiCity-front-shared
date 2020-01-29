@@ -10,7 +10,7 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  private userUrl = '/api/users';
+  private userUrl = 'https://api.opticity.com.ua/api/users';
 
   public createUser(user) {
     return this.http.post<User>(this.userUrl + '/addUser', user);

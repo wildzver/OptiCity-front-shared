@@ -10,7 +10,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  private orderUrl = '/api/orders';
+  private orderUrl = 'https://api.opticity.com.ua/api/orders';
 
   public createOrder(order: Order): Observable<HttpResponse<{}>> {
     const url = `${this.orderUrl}/addOrder`;
