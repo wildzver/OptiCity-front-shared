@@ -1,4 +1,13 @@
-import {AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import {HomeCatalogComponent} from './home-catalog/home-catalog.component';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
@@ -18,10 +27,14 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild(HomeCatalogComponent) homeCatalogComponent;
+  @ViewChild('imageContainer') imageContainerElem: ElementRef;
+  screenWidth = window.innerWidth;
 
   isLoading = false;
 
-  constructor() {
+  constructor(
+    private renderer: Renderer2
+  ) {
   }
 
   ngOnInit() {
@@ -29,10 +42,25 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   ngAfterViewInit(): void {
     this.isLoading = this.homeCatalogComponent.isLoading;
+    this.setBannerContainerHeight();
   }
 
   ngAfterViewChecked(): void {
     this.isLoading = this.homeCatalogComponent.isLoading;
+  }
+
+  setBannerContainerHeight() {
+    let height = '100vh';
+    if (this.screenWidth < 1280) {
+      height = this.screenWidth * 2 / 3 + 'px';
+    }
+    this.renderer.setStyle(this.imageContainerElem.nativeElement, 'height', height);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onScreenResize() {
+    this.screenWidth = window.innerWidth;
+    this.setBannerContainerHeight();
   }
 
   scrollToHomeCatalog() {

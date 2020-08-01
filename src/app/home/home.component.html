@@ -1,11 +1,12 @@
 <div class="home" [@fadeInOut]>
-  <div id="start-img-container" class="flex-column">
-    <img id="start-img" class="flex-column" src="assets/images/start-img.jpg">
-    <img class="title-home-img" src="assets/images/optiCity_title_home_page.png">
-    <div id="home-arrow-down" class="flex-column" title="Каталог">
-      <img (click)="scrollToHomeCatalog()" src="assets/images/arrow_down_white.svg">
-    </div>
+  <div #imageContainer id="img-container" class="flex-column">
+    <img id="main-img" src="../../assets/images/start-img-2.jpg">
+    <img class="main-img-title" src="assets/images/optiCity_title_home_page.png">
+<!--    <div id="home-arrow-down" class="flex-column" title="Каталог">-->
+      <img class="arrow-down" (click)="scrollToHomeCatalog()" src="assets/images/arrow_down_white.svg">
+<!--    </div>-->
   </div>
   <app-home-catalog id="home-catalog"></app-home-catalog>
   <router-outlet></router-outlet>
 </div>
+

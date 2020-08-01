@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     if (this.isStartPage) {
       const windowScroll = window.pageYOffset;
       const headerElement = document.getElementById('header');
-      const startImgElement = document.getElementById('start-img').getBoundingClientRect();
+      const startImgElement = document.getElementById('main-img').getBoundingClientRect();
       const startImgBottom = startImgElement.bottom;
       if ((startImgBottom - document.getElementById('page-wrap').clientHeight) <= 0) {
         headerElement.classList.add('sticky');
