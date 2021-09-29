@@ -1,5 +1,8 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {SeoService} from './shared/app-services/seo.service';
+import {filter, map, mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -35,10 +38,34 @@ export class AppComponent implements OnInit {
     }
   }
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private seoService: SeoService
+  ) {
   }
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.route),
+      map((route) => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data)
+    )
+      .subscribe((event) => {
+        this.seoService.updateTitle(event.title);
+
+        this.seoService.updateOgUrl(event.ogUrl);
+        this.seoService.updateOgImage(event.ogImage);
+        // Updating Description tag dynamically with title
+        this.seoService.updateDescription(event.description);
+      });
   }
 
   onActivate(event) {

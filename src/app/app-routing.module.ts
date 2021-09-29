@@ -16,7 +16,17 @@ const routes: Routes = [
   {path: 'products', loadChildren: './products/products.module#ProductsModule', data: {breadcrumb: 'Каталог'}},
   // {path: 'app-services', component: ServicesComponent, data: {breadcrumb: 'Послуги'}},
   {path: 'contacts', component: ContactsComponent, data: {breadcrumb: 'Контакти'}},
-  {path: 'delivery', component: DeliveryComponent, data: {breadcrumb: 'Доставка'}},
+  {
+    path: 'delivery',
+    component: DeliveryComponent,
+    data: {
+      breadcrumb: 'Доставка',
+      title: 'Доставка',
+      description: 'OptiCity пропонує наступні способи доставки: власна (вартість 40 грн), Нова Пошта, забрати товар самостійно',
+      ogUrl: 'https://opticity.com.ua/delivery',
+      ogImage: 'https://opticity.com.ua/assets/images/delivery.png'
+    }
+  },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'cart', component: OrderComponent, canActivate: [CartComponent], data: {breadcrumb: 'Корзина'}},

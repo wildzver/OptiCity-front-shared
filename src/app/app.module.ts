@@ -45,7 +45,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     FooterComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
     AppRoutingModule,
     HomeModule,

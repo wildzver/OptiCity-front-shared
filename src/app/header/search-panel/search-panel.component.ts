@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ProductsService} from '../../shared/app-services/products.service';
 import {Product} from '../../shared/models/product';
 import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {MatAutocompleteTrigger} from '@angular/material';
+import {MatAutocompleteModule, MatAutocompleteTrigger} from '@angular/material';
 import {CloseScrollStrategy, Overlay} from '@angular/cdk/overlay';
 import {HeaderComponent} from '../header.component';
 import {filter} from 'rxjs/operators';
